@@ -206,7 +206,6 @@ The tables below describe all possible request/response parameters for the Booki
 | executors | array | No | Array of companies the offer is sent to |
 | vehicle_types | array | Yes | Array of vehicle types. Check possible values in the list below |
 | scheduled_pickup_at | object | Yes | Pick up date and time |
-| scheduled_dropoff_at | object | No | Drop off date and time |
 | luggage_count | integer | No | Count of lagguage (Default value: 0) |
 | passenger_count | integer | Yes | Count of passengers |
 | infant_child_seat_count | integer | No | Count of "Infant" child seats (Default value: 0) |
@@ -345,7 +344,6 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `executors` (object)
     + `vehicle_types` (object) Required.
     + `scheduled_pickup_at` (object)
-    + `scheduled_dropoff_at` (object)
     + `luggage_count` (int) Range: inclusive between 0 and 2147483647.
     + `passenger_count` (int) Range: inclusive between 1 and 2147483647.
     + `infant_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
@@ -398,7 +396,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
 
     + Body
 
-            { "executors": [ "rosalimo" ], "vehicle_types": [ "hybrid_sedans" ], "scheduled_pickup_at": "2016-03-24T00:00:00+02:00", "scheduled_dropoff_at": "2016-03-24T02:15:00+02:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
+            { "executors": [ "limotest1" ], "vehicle_types": [ "hybrid_sedans" ], "scheduled_pickup_at": "2016-03-24T00:00:00+02:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
 
  + Response 200
 
