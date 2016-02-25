@@ -1,0 +1,688 @@
+FORMAT: 1A
+HOST: https://sandbox-api.mylimobiz.com/
+
+# Partner API
+
+## Overview
+
+The Partner API allows 3rd-party services to interact programmatically with Limo Anywhere. Using the Partner API you interact with resources allowing for actions such as:
+
+- Rate Lookup & Calculation.
+- Reservation Creation/Modification/Cancellation.
+- Notification Subscriptions.
+
+The API accepts/returns JSON data and attempts to conform to the <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> design principles. You can interact with the resources exposed via the API by accessing resource collections and element URIs by using the HTTP verbs (GET, POST, PUT, and DELETE). 
+
+## General Requirements
+
+To use the Limo Anywhere Partner API, you must have an API authentication token from the token service. See the <a href="#reference/authentication">Authentication documentation</a> for the authorization guide.
+
+<b>Before you can generate an access token, you must agree to the API Terms of Service and receive a Client ID and Client Secret from Limo Anywhere.</b> 
+
+If you have not done this and would like to use the API, please email api@limoanywhere.com
+
+## HTTP Status Codes
+
+| Status Code | Label | Returned After|
+|--------------------------|---------------------------|--------------------------------------------------------------------------------|
+|200 | OK.| Operation worked as expected. |
+|201 | Created. | Successful POST where a resource was created. |
+|202 | Accepted. |Successful operation. |
+|204 | No Content. | GET request where content doesn't exist. |
+|400 | Bad request. | |
+|401 | Unauthorized. | Request when API client credentials have not been validated. |
+|403 | Forbidden. | Unauthorized requests such as improper OAuth 2.0 scopes or permissions issues. |
+|404 | Not Found. |  Requested resource was not found. |
+|409 | Conflict. | A conflict exists and needs to be resolved before the request can be made. |
+|429 | Too Many Requests. | Rate limit has been reached. |
+|500 | Internal Server Error. |  |
+
+## Getting Started
+
+Follow the below steps to complete some of the most popular actions.
+
+<b> Get Authorization to use the Partner API before doing anything else.</b>
+
+1. Contact api@limoanywhere.com and receive your Client Id & Client Secret.
+2. Use Client Id & Client Secret to generate an access token as described <a href="/#reference/authentication">here.</a>
+
+Once you have completed the above, choose a sub-section to follow:
+
+<b> Create a Booking</b>
+
+1. Call the <a href="/#reference/booking/rate-lookup/rate-lookup">Rate Lookup</a> method to get the pricing for your trip requirements. Choose the optimal pricing and hold the Id of this rate from the `results` array.
+2. Use the <a href="/#reference/booking/booking/booking">Booking</a> method. In `search_result_id` parameter set the rate Id of the desired rate and provide additional necessary information: passengers, flight information etc.
+
+## Group Authentication
+The API uses the <a href="https://tools.ietf.org/html/rfc6749"> OAuth 2.0 </a> protocol for simple, but effective authentication and authorization.
+All API endpoints require an OAuth access token, thus we have exposed a service that will provide the user with an OAuth 2 Access token.
+This token should be provided in the header in all requests.
+
+
+
+
+## GET Access Token [/get]
+
+For the partner we support such way of obtaining authorization as <b>Client Credentials Grant</b>. 
+It allows access to general resources that do not need account authentication.
+
+The tables below describe all possible request/response parameters of the Authentication process methods:
+
+#####Request:
+
+| Parameter | Description |
+|------------------|-------------------------------------------------------------------------------------------------------------------------|
+| grant_type | Type of Grant described above. Possible values: `client_credentials`, `authorization_code`, `password`, `refresh_token` |
+| client_id | The client ID of your application |
+| client_secret | The client Secret of your application |
+| company_alias | The Alias of your company |
+| username | Username or Email |
+| passwod | Password |
+
+#####Response:
+
+| Parameter | Description |
+|------------------|------------------------------------------------------------|
+| access_token | Access Token |
+| token_type | Token type (Always `bearer`) |
+| expires_in | Expiration time of Access token (in seconds) |
+| refresh_token | Refresh Token |
+
+
+### Possible Authentication Errors
+
+| Parameter | Description |
+|-------------------------------|---------------------------------------------------------------|
+| invalid_request | Required parameters were not provided |
+| invalid_client | The Сlient ID or Client secret provided is invalid |
+| invalid_scope (not used now) | The scope parameter provided is not a valid subset of scopes |
+| unsupported_grant_type | Unsupported Grand Type provided |
+
+
+In 'execution' console you can see request/response samples, data types and sizes of parameters.
+
+For getting an 'access_token', create the appropriate request. 
+Parameter `grant_type` will depend on Authorization method:
+
+### Client Credentials Grant [POST /oauth2/token]
+`grant_type` = `client_credentials`
+
++ Request
+
+    + `grant_type` (string) Required. String length: inclusive between 0 and 50.f
+    + `client_id` (string) Required. String length: inclusive between 6 and 50.
+    + `client_secret` (string) Required. String length: inclusive between 50 and 50.
+ 
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "grant_type": "client_credentials",
+                "client_id": "tpp_integration_test",
+                "client_secret": "lcdLYzj7RaUgmRp7sVngt2fpD5JaBJ18Pkk2IrNSmF75GI5kAR",
+            }
+
++ Response 200 (application/json)
+    
+    + Body
+
+            {
+                "access_token": "YE0W7CSdfVaQFmC8GTQ1",
+                "token_type": "bearer",
+                "expires_in": 3600,
+            }
+
+## Refresh Access Token [/refresh]
+Your access token will expire after a period of time and must be refreshed. Time until token expiration is provided in the `expired_in` parameter when receiving your token. <b>If you receive a 401 error, you may need to refresh your token.</b>
+
+
+### Refresh [POST /oauth2/token]
+
++ Request
+
+    + `grant_type` (string) Required. String length: inclusive between 0 and 50.
+    + `refresh_token` (string) Required. String length: 20.
+    + `client_id` (string) Required. String length: inclusive between 6 and 50.
+    + `client_secret` (string) Required. String length: inclusive between 50 and 50.
+ 
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            {
+                "grant_type": "refresh_token",
+                "refresh_token": "CSYE0W7dfVaQFmC8GTQPL",
+                "client_id": "la_customer_test",
+                "client_secret": "lcfLYzj7RaUgmRp8sVngt2fpD5GaBJ19Ptt2MrNSlF57GI5kAR"
+            }
+
++ Response 200 (application/json)
+    
+    + Body
+
+            {
+                "access_token": "YE0W7CSdfVaQFmC8GTQ1",
+                "token_type": "bearer",
+                "expires_in": 3600
+            }
+
+
+## Group Booking
+
+Provides the following abilities:
+
+- Return and choose pricing.
+- Create reservations.
+- Update existing reservations.
+- Cancel existing reservations.
+
+<b> Basic Steps for creating/updating a reservation: </b>
+
+1. Call the <a href="/#reference/booking/rate-lookup/rate-lookup">Rate Lookup</a> method to get the pricing for your trip requirements. Choose the optimal pricing and hold the Id of this rate from the `results` array. To get a breakdown of the chosen rate, call the <a href="/#reference/booking/rate-lookup/get-rate-details">Get Rate Details</a> method.
+
+2. Use the <a href="/#reference/booking/booking/booking">Booking</a> method. In `search_result_id` parameter set the rate Id of the desired rate and provide additional necessary information: passengers, flight information etc.
+In booking requst we accept `pickup_flight_info` and `dropoff_flight_info`. This can be useful if you would want to specify them after rate lookup.
+
+3. To update an existing reservation use the <a href="/#reference/booking/booking/update-booking">Update Booking</a> method. Request information is the same as for `Booking` method.
+
+4. To cancel an existing reservation use <a href="/#reference/booking/booking/cancel">Cancel</a> or <a href="/#reference/booking/booking/cancel-by-passenger">Cancel by Passenger</a>. The deifference between them is the cancelation reason is stored for the reservation.
+
+*You can create a booking with a minimal set of fields by using only required parameters.*
+
+
+
+The tables below describe all possible request/response parameters for the Booking process methods:
+
+
+#### *Rate Lookup* request parameters
+
+| Name | Type |Required| Description |
+|-----------------------------------------------|-----------|--------|--------------------------------------------------------------------------------------|
+| executors | array | No | Array of companies the offer is sent to |
+| vehicle_types | array | Yes | Array of vehicle types. Check possible values in the list below |
+| scheduled_pickup_at | object | Yes | Pick up date and time |
+| scheduled_dropoff_at | object | No | Drop off date and time |
+| luggage_count | integer | No | Count of lagguage (Default value: 0) |
+| passenger_count | integer | Yes | Count of passengers |
+| infant_child_seat_count | integer | No | Count of "Infant" child seats (Default value: 0) |
+| booster_child_seat_count | integer | No | Count of "Booster" child seats (Default value: 0) |
+| toddler_child_seat_count | integer | No | Count of "Toddler" child seats (Default value: 0) |
+| is_handicap_access_required | boolean | No | Is required handicap access (Default Value: false) |
+| duration | integer | No | Trip duration (In seconds) |
+| pickup | object | Yes | Pick Up location information |
+| pickup.scheduled_arriving_at | object | No | Drop Off date and time |
+| pickup.address | object | Yes | Pick Up address |
+| pickup.address.name | string | No | Address name |
+| pickup.address.phone | string | No | Phone |
+| pickup.address.country_code | string | No | Country code |
+| pickup.address.state_code | string | No | State code |
+| pickup.address.postal_code | string | No | Postal/Zip code |
+| pickup.address.city | string | No | City |
+| pickup.address.address_line1 | string | No | Address Line 1 |
+| pickup.address.address_line2 | string | No | Address Line 2 |
+| pickup.address.latitude | float | Yes | Latitude |
+| pickup.address.longitude | float | Yes | Longitude |
+| pickup.flight | object | Yes* | Pick Up flight information (Required when pickup type is airport) |
+| pickup.flight.airport_code | string | Yes | Airport code |
+| pickup.flight.airline_code | string | No | Airline Code |
+| pickup.flight.flight_number | string | No | Flight Number |
+| pickup.flight.airport_pickup_option | object | No | Pick Up area (Possible values: `curbside`, `inside`) |
+| pickup.udf | object | No | Key value dictionary of user defined fields |
+| stops | object | No | Array of stops (Included objects same with `pickup`) |
+| dropoff | object | No | Drop off location information (Included objects same with `pickup`) |
+
+Check the list of supported `vehicle_types`:
+
+- *hybrid_sedans*
+- *vip_sedans*
+- *other_sedans*
+- *hybrid_suvs*
+- *vip_suvs*
+- *other_suvs*
+- *mini_vans*
+- *other_vans*
+- *limousines*
+- *mini_buses*
+- *party_buses*
+- *coach_buses*
+- *other_buses*
+- *shared_vehicles*
+- *other_vehicles*
+
+
+#### *Rate Lookup* response parameters
+
+| Name | Type | Description |
+|-----------------------------------|-----------|---------------------------------------------------|
+| results | array | Array of charge results |
+| results[].search_result_id | integer | Search result Id (Is required for booking) |
+| results[].executor | string | The company the reservation will be executed by |
+| results[].vehicle_type | string | Vehicle type code |
+| results[].vehicle_type_name | string | Vehicle type name |
+| results[].vehicle_type_description | string | Vehicle type description |
+| results[].vehicle_type_images | array | Array of links for vehicle type images |
+| results[].passenger_capacity | integer | Passenger capacity |
+| results[].luggage_capacity | integer | Luggage capacity |
+| results[].is_handicap_accessible | boolean | Is handicap accessible |
+| results[].currency_code | string | String code of the currency |
+| results[].total_amount | float | Total rate amount |
+
+
+#### *Get Rate Details* response parameters
+
+| Name |Type |Description |
+|-------------------------------------------------------|-----------|---------------------------------------------------|
+| charges | array | Original charges |
+| charges[].name | string | Charge name. Check possible names in the list below |
+| charges[].value | float | Charge value |
+| search_result_id | integer | Search result Id (Is required for booking) |
+| executor | string | The company the reservation will be executed by | 
+| vehicle_type | string | Vehicle type code |
+| vehicle_type_name | string | Vehicle type name |
+| vehicle_type_description | string | Vehicle type description |
+| vehicle_type_images | array | Array of links for vehicle type images |
+| passenger_capacity | integer | Passenger capacity |
+| luggage_capacity | integer | Luggage capacity |
+| is_handicap_accessible | boolean | Is handicap accessible |
+| currency_code | string | String code of the currency |
+| total_amount | float | Total rate amount |
+
+Check the list of supported `charges`:
+
+- *fixed*
+- *per_hour*
+- *per_passenger*
+- *per_mile*
+- *gratuity*
+- *extra_gratuity*
+- *stops*
+- *tolls*
+- *fuel_surcharge*
+- *parking*
+- *miscellaneous*
+
+
+#### *Booking*, *Update Booking* request parameters
+
+| Name | Type |Required | Description |
+|-----------------------------------------------|---------|---------|-------------------------------------------------------------------|
+| search_result_id | integer | Yes | Id of choosed price from Rate Lookup response |
+| passengers | array | Yes | List of passengers (Minimum 1 passenger) |
+| passengers[].first_name | string | Yes | Passenger first name |
+| passengers[].last_name | string | Yes | Passenger last name |
+| passengers[].phone | string | Yes | Passenger phone |
+| passengers[].email | string | Yes | Passenger email |
+| pickup_flight_info | object | No | Pick Up flight information |
+| pickup_flight_info.airline_code | string | No | Airline code |
+| pickup_flight_info.flight_number | string | No | Flight number |
+| dropoff_flight_info | object | No | Drop Off flight information (Included fields same with `pickup_flight_info`) |
+| originator_udfs | object | No | Key value dictionary of user defined fields |
+| originator_reference_number | string | No | The reference number of the reservation on originator side |
+
+
+#### *Booking* response parameters
+
+| Name |Type |Description |
+|-------------------------------|-------|---------------------------------------------------|
+| reservation_id | integer | Id of the reservation on executor side |
+| executor_reference_number | string | The reference number of the reservation on executor side |
+| executor_udfs | object | Key value dictionary of user defined fields from executor |
+
+In 'execution' console you can see request/response samples, data types and sizes of parameters.
+
+## Rate Lookup [/Rate Lookup]
+
+### Rate Lookup [POST /partners/self/rate_lookup]
+Allows you to see pricing for your trip requirements by returning a collection of charges.
+
+ + Request
+
+    + `executors` (object)
+    + `vehicle_types` (object) Required.
+    + `scheduled_pickup_at` (object)
+    + `scheduled_dropoff_at` (object)
+    + `luggage_count` (int) Range: inclusive between 0 and 2147483647.
+    + `passenger_count` (int) Range: inclusive between 1 and 2147483647.
+    + `infant_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
+    + `booster_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
+    + `toddler_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
+    + `duration` (int) Range: inclusive between 60 and 2147483647.
+    + `is_handicap_access_required` (boolean)
+    + `pickup` (object) Required.
+    + `pickup.scheduled_arriving_at` (object)
+    + `pickup.address` (object) Required.
+    + `pickup.address.latitude` (float)
+    + `pickup.address.longitude` (float)
+    + `pickup.address.name` (string) String length: inclusive between 0 and 500.
+    + `pickup.address.country_code` (string) String length: inclusive between 0 and 5.
+    + `pickup.address.state_code` (string) String length: inclusive between 0 and 5.
+    + `pickup.address.postal_code` (string) String length: inclusive between 0 and 15.
+    + `pickup.address.city` (string) String length: inclusive between 0 and 250.
+    + `pickup.address.address_line1` (string) String length: inclusive between 0 and 250.
+    + `pickup.address.address_line2` (string) String length: inclusive between 0 and 250.
+    + `flight` (object)
+    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3.
+    + `flight.airline_code` (string) Max length: 2. Min length: 2.
+    + `flight.flight_number` (string) Max length: 4. Min length: 1.
+    + `flight.airport_pickup_option` (object)
+    + `udf` (object)
+    + `stops` (object) Required.
+    + `dropoff` (object)
+    + `dropoff.scheduled_arriving_at` (object)
+    + `dropoff.address` (object) Required.
+    + `dropoff.address.latitude` (float)
+    + `dropoff.address.longitude` (float)
+    + `dropoff.address.name` (string) String length: inclusive between 0 and 500.
+    + `dropoff.address.country_code` (string) String length: inclusive between 0 and 5.
+    + `dropoff.address.state_code` (string) String length: inclusive between 0 and 5.
+    + `dropoff.address.postal_code` (string) String length: inclusive between 0 and 15.
+    + `dropoff.address.city` (string) String length: inclusive between 0 and 250.
+    + `dropoff.address.address_line1` (string) String length: inclusive between 0 and 250.
+    + `dropoff.address.address_line2` (string) String length: inclusive between 0 and 250.
+    + `flight` (object)
+    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3.
+    + `flight.airline_code` (string) Max length: 2. Min length: 2.
+    + `flight.flight_number` (string) Max length: 4. Min length: 1.
+    + `flight.airport_pickup_option` (object)
+    + `udf` (object)
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
+    + Body
+
+            { "executors": [ "rosalimo" ], "vehicle_types": [ "hybrid_sedans" ], "scheduled_pickup_at": "2016-03-24T00:00:00+02:00", "scheduled_dropoff_at": "2016-03-24T02:15:00+02:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
+
+ + Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            { "results": [ { "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedans", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path_2/vehicle_image.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 99.99 } ] } 
+
+### Get Rate Details [GET /partners/self/rate_lookup/results/{id}]
+Returns a detailed (breakdown) list of charges by search_id from the previous method.
+
++ Parameters
+    + id: `1` (required, int)
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            { "charges": [ { "name": "fixed", "value": 95.0 }, { "name": "per_hour", "value": 2.25 }, { "name": "per_passenger", "value": 2.75 } ], "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedans", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path/vehicle_image2.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 100.0 } 
+
+
+## Booking [/Booking]
+
+### Booking [POST /partners/self/bookings]
+Creates new reservation using specified booking information and specified rate lookup information (`search_result_id`) which was accepted previously.
+
+ + Request
+
+    + `search_result_id` (int) Range: inclusive between 1 and 9.22337203685478E+18.
+    + `passengers` (object) Required.
+    + `pickup_flight_info` (object)
+    + `pickup_flight_info.airline_code` (string) Max length: 2. Min length: 2.
+    + `pickup_flight_info.flight_number` (string) Max length: 4. Min length: 1.
+    + `dropoff_flight_info` (object)
+    + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
+    + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
+    + `originator_udfs` (object)
+    + `originator_reference_number` (string) String length: inclusive between 0 and 50.
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
+    + Body
+
+            { "search_result_id": 546225, "passengers": [ { "first_name": "John", "last_name": "Smith", "phone": "+12345678900", "email": "john.smith@test.net" } ], "pickup_flight_info": {}, "dropoff_flight_info": { "airline_code": "AA", "flight_number": "46" }, "originator_udfs": { "key": "value" }, "originator_reference_number": "gh5ffd123" }
+
+ + Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            { "reservation_id": 557891, "executor_reference_number": "hg77ti56", "executor_udfs": { "key": "value" } } 
+
+
+### Update Booking [PUT /partners/self/bookings/{id}]
+Updates a reservation by reservation Id using specified booking information rate lookup information which was previously returned.
+
++ Parameters
+    + id: `1` (required, int)
+
++ Request
+
+    + `search_result_id` (int) Range: inclusive between 1 and 9.22337203685478E+18.
+    + `passengers` (object) Required.
+    + `pickup_flight_info` (object)
+    + `pickup_flight_info.airline_code` (string) Max length: 2. Min length: 2.
+    + `pickup_flight_info.flight_number` (string) Max length: 4. Min length: 1.
+    + `dropoff_flight_info` (object)
+    + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
+    + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
+    + `originator_udfs` (object)
+    + `originator_reference_number` (string) String length: inclusive between 0 and 50.
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
+    + Body
+
+            { "search_result_id": 546225, "passengers": [ { "first_name": "John", "last_name": "Smith", "phone": "+12345678900", "email": "john.smith@test.net" } ], "pickup_flight_info": {}, "dropoff_flight_info": { "airline_code": "AA", "flight_number": "46" }, "originator_udfs": { "key": "value" }, "originator_reference_number": "gh5ffd123" }
+
++ Response 204
+
+### Cancel Booking [PUT /partners/self/bookings/{id}/cancel]
+Cancels the reservation on behalf of affiliate.
+
++ Parameters
+    + id: `1` (required, int)
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+            
++ Response 204
+
+
+### Cancel Booking By Passenger [PUT /partners/self/bookings/{id}/cancel_by_passenger]
+Cancels the reservation on behalf of passenger.
+
++ Parameters
+    + id: `1` (required, int)
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
++ Response 204
+
+
+## Group Reservations
+
+Provides the following abilities:
+
+- Check current position of the driver for the reservation.
+
+
+To check driver's position, you just need to have the `reservation_id`, 
+received during booking the ride and call <a href="/#reference/reservations/driver-gps/get">gps</a> endpoint
+
+
+The tables below describe all possible response parameters for the Reservation group methods:
+
+
+#### *Get Driver GPS* response parameters
+
+| Name | Type | Description |
+|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------|
+| latitude | float | Latitude |
+| longitude | float | Longitude |
+
+In 'execution' console you can see request/response samples, data types and sizes of parameters.
+
+## Driver GPS [/Gps]
+
+### Get [GET /partners/self/reservations/{id}/driver/gps]
+Returns current position of the driver for the reservation.
+
+
++ Parameters
+    + id: `1` (required, int)
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            { "latitude": 1.1, "longitude": 2.1 } 
+            
+            
+## Group Notification Subscriptions
+
+We provide partners with ability to receive notifications about reservation events. 
+You can subscribe on any of them. Currently we use <a href="/#reference/notification-subscriptions/web-hook">Web Hook</a>s only to send notifications.
+
+
+The tables below describe all possible request/response parameters for the Subscription process methods:
+
+
+#### *Create Web Hook Subscription* request parameters
+
+| Name | Type | Required | Description |
+|-----------------------------------------------|-----------|--------|--------------------------------------------------------------------------------------|
+| url | string | Yes | The endpoint the notification will be sent to |
+| events | object | Yes | List of evens to subscribe on |
+
+#### *Get Web Hook Subscriptions* response parameters
+
+| Name | Type | Description |
+|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------|
+| url | string | The endpoint the notification will be sent to |
+| events | object | List of evens you are subscribe on |
+
+Check the table of supported `events`:
+
+| Event | Description |
+|---------------------|----------------------------------------|
+| reservation.created | New reservations has been created |
+| reservation.updated | Reservation has been updated |
+| reservation.assigned | Driver has been assigned for the reservation |
+| reservation.unassigned | Driver has been unassigned from the reservation |
+| reservation.driver_is_on_the_way | Driver is on the way to pick-up location |
+| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location |
+| reservation.driver_is_circling | Driver cannot stop and is circling the pick-up location |
+| reservation.driver_is_waiting_at_pickup | Driver is wating at the pick-up location |
+| reservation.driver_is_waiting_for_passenger_started | Waiting time has started |
+| reservation.driver_is_waiting_for_passenger_stopped | Waiting time has stopped |
+| reservation.cancelled | Reservation has been cancelled |
+| reservation.closed | Reservatoin has been closed |
+
+In 'execution' console you can see request/response samples, data types and sizes of parameters.
+
+## Web Hook [/Web Hook]
+
+### Get [GET /partners/self/subscriptions/webhook]
+Returns all events you are subscribed on.
+
++ Request
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
++ Response 200
+
+    + Headers
+
+            Content-Type: application/json
+
+    + Body
+
+            [ { "url": "http://some-partner.net", "events": [ "reservation.created", "reservation.updated", "reservation.assigned", "reservation.unassigned", "reservation.cancelled", "reservation.closed" ] } ]
+
+
+### Create Or Update [PUT /partners/self/subscriptions/webhook]
+Allows you to specify the list of events you want to subscribe on.
+
++ Request
+
+    + `url` (string) Required.
+    + `events` (object) Required.
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
+    + Body
+
+            { "url": "http://some-partner.net", "events": [ "reservation.created", "reservation.updated", "reservation.assigned", "reservation.unassigned", "reservation.cancelled", "reservation.closed" ] }
+
++ Response 202
+
+### Delete [DELETE /partners/self/subscriptions/webhook]
+Allows you to remove events you want to unsubscribe from.
+
++ Request
+
+    + `url` (string) Required.
+    + `events` (object) Required.
+
+    + Headers
+
+            Content-Type: application/json
+            Authorization: bearer {access_token}
+
+    + Body
+
+            { "url": "http://some-partner.net", "events": [ "reservation.created", "reservation.updated", "reservation.assigned", "reservation.unassigned", "reservation.cancelled", "reservation.closed" ] }
+
++ Response 202
