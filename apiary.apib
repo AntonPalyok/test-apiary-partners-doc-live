@@ -212,7 +212,7 @@ The tables below describe all possible request/response parameters for the Booki
 | booster_child_seat_count | integer | No | Count of "Booster" child seats (Default value: 0) |
 | toddler_child_seat_count | integer | No | Count of "Toddler" child seats (Default value: 0) |
 | is_handicap_access_required | boolean | No | Is required handicap access (Default Value: false) |
-| duration | integer | No | Trip duration (In seconds) |
+| duration | integer | Yes* | Trip duration (In seconds). Required for hourly rides only |
 | pickup | object | Yes | Pick Up location information |
 | pickup.scheduled_arriving_at | object | No | Drop Off date and time |
 | pickup.address | object | Yes | Pick Up address |
