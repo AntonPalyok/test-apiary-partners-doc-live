@@ -598,13 +598,6 @@ The tables below describe all possible request/response parameters for the Subsc
 | url | string | Yes | The endpoint the notification will be sent to |
 | events | object | Yes | List of evens to subscribe on |
 
-#### *Get Web Hook Subscriptions* response parameters
-
-| Name | Type | Description |
-|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------|
-| url | string | The endpoint the notification will be sent to |
-| events | object | List of evens you are subscribe on |
-
 Check the table of supported `events`:
 
 | Event | Description |
@@ -625,27 +618,6 @@ Check the table of supported `events`:
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
 
 ## Web Hook [/Web Hook]
-
-### Get [GET /partners/self/subscriptions/webhook]
-Returns all events you are subscribed on.
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            [ { "url": "http://some-partner.net", "events": [ "reservation.created", "reservation.updated", "reservation.assigned", "reservation.unassigned", "reservation.cancelled", "reservation.closed" ] } ]
-
 
 ### Create Or Update [PUT /partners/self/subscriptions/webhook]
 Allows you to specify the list of events you want to subscribe on.
