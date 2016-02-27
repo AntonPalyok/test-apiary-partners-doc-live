@@ -63,8 +63,7 @@ This token should be provided in the header in all requests.
 
 ## GET Access Token [/get]
 
-For the partner we support such way of obtaining authorization as <b>Client Credentials Grant</b>. 
-It allows access to general resources that do not need account authentication.
+We support authorization with a <b>Client Credentials Grant</b>. It allows access to general resources that do not need customer account authentication.
 
 The tables below describe all possible request/response parameters of the Authentication process methods:
 
@@ -72,7 +71,7 @@ The tables below describe all possible request/response parameters of the Authen
 
 | Parameter | Description |
 |------------------|-------------------------------------------------------------------------------------------------------------------------|
-| grant_type | Type of Grant described above. Possible values: `client_credentials`, `authorization_code`, `password`, `refresh_token` |
+| grant_type | Type of Grant described above. Possible values: `client_credentials` or `refresh_token` |
 | client_id | The client ID of your application |
 | client_secret | The client Secret of your application |
 | company_alias | The Alias of your company |
@@ -203,7 +202,7 @@ The tables below describe all possible request/response parameters for the Booki
 
 | Name | Type |Required| Description |
 |-----------------------------------------------|-----------|--------|--------------------------------------------------------------------------------------|
-| executors | array | No | Array of companies the offer is sent to. If not specified the 35 km radius around PU will be applied to search for possible executors |
+| executors | array | No | Array of companies the offer is sent to. If not specified, 25 mile radius around PU will be applied to search for possible executors |
 | vehicle_types | array | Yes | Array of vehicle types. Check possible values in the list below |
 | scheduled_pickup_at | object | Yes | Pick up date and time |
 | luggage_count | integer | No | Count of lagguage (Default value: 0) |
@@ -584,11 +583,10 @@ Returns current position of the driver for the reservation.
             
 ## Group Notification Subscriptions
 
-We provide partners with ability to receive notifications about reservation events. 
-You can subscribe on any of them. Currently we use <a href="/#reference/notification-subscriptions/web-hook">Web Hook</a>s only to send notifications.
+Partners can subscribe to receive notifications about reservation events via <a href="/#reference/notification-subscriptions/web-hook">Web Hooks</a>.
 
 
-The tables below describe all possible request/response parameters for the Subscription process methods:
+The tables below describes all possible request/response parameters for the Subscription process methods:
 
 
 #### *Create Web Hook Subscription* request parameters
@@ -602,25 +600,19 @@ Check the table of supported `events`:
 
 | Event | Description |
 |---------------------|----------------------------------------|
-| reservation.created | New reservations has been created |
-| reservation.updated | Reservation has been updated |
-| reservation.assigned | Driver has been assigned for the reservation |
-| reservation.unassigned | Driver has been unassigned from the reservation |
-| reservation.driver_is_on_the_way | Driver is on the way to pick-up location |
-| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location |
-| reservation.driver_is_circling | Driver cannot stop and is circling the pick-up location |
-| reservation.driver_is_waiting_at_pickup | Driver is wating at the pick-up location |
-| reservation.driver_is_waiting_for_passenger_started | Waiting time has started |
-| reservation.driver_is_waiting_for_passenger_stopped | Waiting time has stopped |
 | reservation.cancelled | Reservation has been cancelled |
 | reservation.closed | Reservatoin has been closed |
+
+The list of events will be extended in the future.
 
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
 
 ## Web Hook [/Web Hook]
 
+To subscribe you need to specify the list of events and the url you would want to receive notifications on.
+
 ### Create Or Update [PUT /partners/self/subscriptions/webhook]
-Allows you to specify the list of events you want to subscribe on.
+Allows you to specify the list of events you want to subscribe to.
 
 + Request
 
@@ -634,7 +626,7 @@ Allows you to specify the list of events you want to subscribe on.
 
     + Body
 
-            { "url": "http://some-partner.net", "events": [ "reservation.created", "reservation.updated", "reservation.assigned", "reservation.unassigned", "reservation.cancelled", "reservation.closed" ] }
+            { "url": "http://some-partner.net", "events": [ "reservation.cancelled", "reservation.closed" ] }
 
 + Response 202
 
@@ -653,6 +645,6 @@ Allows you to remove events you want to unsubscribe from.
 
     + Body
 
-            { "url": "http://some-partner.net", "events": [ "reservation.created", "reservation.updated", "reservation.assigned", "reservation.unassigned", "reservation.cancelled", "reservation.closed" ] }
+            { "url": "http://some-partner.net", "events": [ "reservation.cancelled", "reservation.closed" ] }
 
 + Response 202
