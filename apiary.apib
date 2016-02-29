@@ -605,6 +605,20 @@ Check the table of supported `events`:
 
 The list of events will be extended in the future.
 
+The table below describes all possible parameters of <a href="/#reference/notification-subscriptions/web-hook">Web Hook</a> notification.
+
+| Name | Type | Description |
+|------|------|-------------|
+| id | integer | Notification ID |
+| executor_reference_number | string | Reference number for the reservation on executor's side |
+| originator_reference_number | string | Reference number for the reservation on originator's side |
+| state | string | Current reservation state |
+| state_reason | string | The reservation state reason |
+| charges | array | Array of final charges. Sent only on 'reservation.closed` event |
+| charges[].name | string | Charge name |
+| charges[].value | float | Charge value |
+
+
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
 
 ## Web Hook [/Web Hook]
