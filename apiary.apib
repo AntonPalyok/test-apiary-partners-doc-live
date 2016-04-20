@@ -398,7 +398,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
 
     + Body
 
-            { "executors": [ "limotest1" ], "vehicle_types": [ "hybrid_sedans" ], "scheduled_pickup_at": "2016-03-24T00:00:00+02:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
+            { "executors": [ "limotest1" ], "vehicle_types": [ "hybrid_sedan" ], "scheduled_pickup_at": "2016-03-24T00:00:00+02:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
 
  + Response 200
 
@@ -408,7 +408,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
 
     + Body
 
-            { "results": [ { "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedans", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path_2/vehicle_image.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 99.99 } ] } 
+            { "results": [ { "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedan", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path_2/vehicle_image.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 99.99 } ] } 
 
 ### Get Rate Details [GET /partners/self/rate_lookup/results/{id}]
 Returns a detailed (breakdown) list of charges by search_id from the previous method.
@@ -431,7 +431,7 @@ Returns a detailed (breakdown) list of charges by search_id from the previous me
 
     + Body
 
-            { "charges": [ { "name": "fixed", "value": 95.0 }, { "name": "per_hour", "value": 2.25 }, { "name": "per_passenger", "value": 2.75 } ], "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedans", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path/vehicle_image2.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 100.0 } 
+            { "charges": [ { "name": "fixed", "value": 95.0 }, { "name": "per_hour", "value": 2.25 }, { "name": "per_passenger", "value": 2.75 } ], "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedan", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path/vehicle_image2.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 100.0 } 
 
 
 ## Booking [/Booking]
