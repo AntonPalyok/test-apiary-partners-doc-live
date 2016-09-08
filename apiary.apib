@@ -202,7 +202,8 @@ The tables below describe all possible request/response parameters for the Booki
 
 | Name | Type |Required| Description |
 |-----------------------------------------------|-----------|--------|--------------------------------------------------------------------------------------|
-| executors | array | No | Array of companies the offer is sent to. If not specified, 25 mile radius around PU will be applied to search for possible executors |
+| executors | array | Yes* | Array of companies the offer is sent to. If not specified, 25 mile radius around PU will be applied to search for possible executors. (Requires only one item when you provide Executor Billing Contact Account Number) |
+| executor_billing_contact_account_number | string | No | Executor Billing Contact Account Number. (If specified then only one executor should be provided) |
 | vehicle_types | array | Yes | Array of vehicle types. Check possible values in the list below |
 | scheduled_pickup_at | object | Yes | Pick up date and time |
 | luggage_count | integer | No | Count of lagguage (Default value: 0) |
@@ -344,6 +345,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
  + Request
 
     + `executors` (object)
+    + `executor_billing_contact_account_number` (string) String length: inclusive between 0 and 50.
     + `vehicle_types` (object) Required.
     + `scheduled_pickup_at` (object)
     + `luggage_count` (int) Range: inclusive between 0 and 2147483647.
@@ -398,7 +400,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
 
     + Body
 
-            { "executors": [ "limotest1" ], "vehicle_types": [ "hybrid_sedan" ], "scheduled_pickup_at": "2016-03-24T00:00:00+02:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
+            { "executors": [ "dfw-limo","dfw-limo2","dfw-limo3" ], "vehicle_types": [ "vip_sedan","other_sedan" ], "scheduled_pickup_at": "2017-03-24T00:00:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
 
  + Response 200
 
@@ -603,10 +605,16 @@ Check the table of supported `events`:
 
 | Event | Description |
 |---------------------|----------------------------------------|
+| reservation.assigned | Driver has been assigned to the reservation |
+| reservation.unassigned | Driver has been unassigned from the reservation |
+| reservation.driver_is_on_the_way | Driver is on the way to pick-up location |
+| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location |
+| reservation.passenger_in_car | Passenger has been picked up |
+| reservation.passenger_dropped_off | Passenger has been dropped off |
 | reservation.cancelled | Reservation has been cancelled |
 | reservation.closed | Reservatoin has been closed |
 
-The list of events will be extended in the future.
+The list of events may be extended in the future.
 
 The table below describes all possible parameters of <a href="/#reference/notification-subscriptions/web-hook">Web Hook</a> notification.
 
