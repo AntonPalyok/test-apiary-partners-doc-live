@@ -456,6 +456,7 @@ Creates new reservation using specified booking information and specified rate l
     + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
     + `originator_udfs` (object)
     + `originator_reference_number` (string) String length: inclusive between 0 and 50.
+    + `notes` (string) String length: inclusive between 0 and 500.
 
     + Headers
 
@@ -507,39 +508,472 @@ Updates a reservation by reservation Id using specified booking information rate
 
 + Response 204
 
-### Cancel Booking [PUT /partners/self/bookings/{id}/cancel]
-Cancels the reservation on behalf of affiliate.
-
-+ Parameters
-    + id: `1` (required, int)
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-            
-+ Response 204
-
-
-### Cancel Booking By Passenger [PUT /partners/self/bookings/{id}/cancel_by_passenger]
-Cancels the reservation on behalf of passenger.
-
-+ Parameters
-    + id: `1` (required, int)
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-
-+ Response 204
-
 
 ## Group Reservations
+
+## Create Reservation [/Reservation/create]
+
+### Create Reservation [POST /partners/self/reservations] 
+
+Creates reservation for specified executor using originator price 
+
++ Parameters 
+
++ Request 
+
+    + `originator_reference_number` (string) String length: inclusive between 0 and 50. 
+    + `executor` (string) Required. String length: inclusive between 0 and 50. 
+    + `notes` (string) String length: inclusive between 0 and 4000. 
+    + `charges` (object) Required. 
+    + `vehicle_type` (object) Required. 
+    + `vehicle_type.value` (string) 
+    + `scheduled_pickup_at` (object) 
+    + `scheduled_duration` (int) Range: inclusive between 60 and 2147483647. 
+    + `passenger_count` (int) Range: inclusive between 1 and 2147483647. 
+    + `passengers` (object) Required. 
+    + `pickup` (object) Required. 
+    + `pickup.scheduled_arriving_at` (object) 
+    + `pickup.address` (object) Required. 
+    + `pickup.address.latitude` (float) 
+    + `pickup.address.longitude` (float) 
+    + `pickup.address.name` (string) String length: inclusive between 0 and 500. 
+    + `pickup.address.country_code` (string) String length: inclusive between 0 and 5. 
+    + `pickup.address.state_code` (string) String length: inclusive between 0 and 5. 
+    + `pickup.address.postal_code` (string) String length: inclusive between 0 and 15. 
+    + `pickup.address.city` (string) String length: inclusive between 0 and 250. 
+    + `pickup.address.address_line1` (string) String length: inclusive between 0 and 250. 
+    + `pickup.address.address_line2` (string) String length: inclusive between 0 and 250. 
+    + `flight` (object) 
+    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3. 
+    + `flight.airline_code` (string) Max length: 2. Min length: 2. 
+    + `flight.flight_number` (string) Max length: 4. Min length: 1. 
+    + `flight.airport_pickup_option` (object) 
+    + `notes` (string) String length: inclusive between 0 and 4000. 
+    + `udf` (object) 
+    + `stops` (object) Required. 
+    + `dropoff` (object) 
+    + `dropoff.scheduled_arriving_at` (object) 
+    + `dropoff.address` (object) Required. 
+    + `dropoff.address.latitude` (float) 
+    + `dropoff.address.longitude` (float) 
+    + `dropoff.address.name` (string) String length: inclusive between 0 and 500. 
+    + `dropoff.address.country_code` (string) String length: inclusive between 0 and 5. 
+    + `dropoff.address.state_code` (string) String length: inclusive between 0 and 5. 
+    + `dropoff.address.postal_code` (string) String length: inclusive between 0 and 15. 
+    + `dropoff.address.city` (string) String length: inclusive between 0 and 250. 
+    + `dropoff.address.address_line1` (string) String length: inclusive between 0 and 250. 
+    + `dropoff.address.address_line2` (string) String length: inclusive between 0 and 250. 
+    + `flight` (object) 
+    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3. 
+    + `flight.airline_code` (string) Max length: 2. Min length: 2. 
+    + `flight.flight_number` (string) Max length: 4. Min length: 1. 
+    + `flight.airport_pickup_option` (object) 
+    + `notes` (string) String length: inclusive between 0 and 4000. 
+    + `udf` (object) 
+    + `currency_code` (string) Required. String length: inclusive between 3 and 3. 
+    + `luggage_count` (int) Range: inclusive between 0 and 2147483647. 
+    + `is_handicap_access_required` (boolean) 
+    + `infant_child_seat_count` (int) Range: inclusive between 0 and 2147483647. 
+    + `booster_child_seat_count` (int) Range: inclusive between 0 and 2147483647. 
+    + `toddler_child_seat_count` (int) Range: inclusive between 0 and 2147483647. 
+    + `originator_udfs` (object) 
+
+    + Headers 
+
+            Content-Type: application/json 
+            Authorization: bearer {access_token} 
+
+    + Body 
+
+{
+  "originator_reference_number": "ref12345",
+  "executor": "rosalimo",
+  "notes": "Trip notes",
+  "charges": [
+    {
+      "name": "base_charge",
+      "value": 10.0
+    },
+    {
+      "name": "other_charges",
+      "value": 15.0
+    }
+  ],
+  "vehicle_type": "coach_bus",
+  "scheduled_pickup_at": "2017-05-17T03:28:23",
+  "scheduled_duration": 10800,
+  "passenger_count": 1,
+  "passengers": [
+    {
+      "first_name": "John",
+      "last_name": "Smith",
+      "phone": "+12345678900",
+      "email": "john.smith@test.net"
+    }
+  ],
+  "pickup": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "stops": [
+    {
+      "scheduled_arriving_at": "00:30:00",
+      "address": {
+        "latitude": 0.0,
+        "longitude": 0.0,
+        "name": "JFK Airport"
+      },
+      "flight": {
+        "airport_code": "JFK",
+        "airline_code": "AA",
+        "flight_number": "1466",
+        "airport_pickup_option": "inside"
+      },
+      "notes": "Notes",
+      "udf": {
+        "key": "value"
+      }
+    }
+  ],
+  "dropoff": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "currency_code": "USD",
+  "luggage_count": 1,
+  "is_handicap_access_required": true,
+  "infant_child_seat_count": 1,
+  "booster_child_seat_count": 1,
+  "toddler_child_seat_count": 1,
+  "originator_udfs": {
+    "key": "value"
+  }
+}
+
++ Response 200 
+
+    + Headers 
+
+            Content-Type: application/json 
+
+    + Body 
+
+{
+  "id": 123455,
+  "executor": "rosalimo",
+  "state": "driver_is_at_pickup",
+  "state_reason": "Some reason",
+  "executor_billing_contact_number": "31445",
+  "scheduled_dropoff_at": "2017-05-17T05:28:23",
+  "distance": 200.0,
+  "charges": [
+    {
+      "name": "base_charge",
+      "value": 10.0
+    },
+    {
+      "name": "other_charges",
+      "value": 15.0
+    }
+  ],
+  "total_amount": 25.0,
+  "notes": "Trip notes",
+  "driver": {
+    "portrait_url": "https://somedomain.com/some.png",
+    "first_name": "Josh",
+    "last_name": "Smith",
+    "email": "driver@emai.com",
+    "phone": "+12345678900"
+  },
+  "car": {
+    "license_plate": "1232125",
+    "car_make": "Toyota",
+    "model": "Corolla",
+    "color": "Green",
+    "phone": "+12345678900"
+  },
+  "executor_reference_number": "0023423",
+  "originator_reference_number": "ref12345",
+  "vehicle_type": "coach_bus",
+  "scheduled_pickup_at": "2017-05-17T03:28:23",
+  "scheduled_duration": 10800,
+  "passenger_count": 1,
+  "passengers": [
+    {
+      "first_name": "John",
+      "last_name": "Smith",
+      "phone": "+12345678900",
+      "email": "john.smith@test.net"
+    }
+  ],
+  "pickup": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "stops": [
+    {
+      "scheduled_arriving_at": "00:30:00",
+      "address": {
+        "latitude": 0.0,
+        "longitude": 0.0,
+        "name": "JFK Airport"
+      },
+      "flight": {
+        "airport_code": "JFK",
+        "airline_code": "AA",
+        "flight_number": "1466",
+        "airport_pickup_option": "inside"
+      },
+      "notes": "Notes",
+      "udf": {
+        "key": "value"
+      }
+    }
+  ],
+  "dropoff": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "currency_code": "USD",
+  "luggage_count": 1,
+  "is_handicap_access_required": true,
+  "infant_child_seat_count": 1,
+  "booster_child_seat_count": 1,
+  "toddler_child_seat_count": 1,
+  "originator_udfs": {
+    "key": "value"
+  }
+}
+
+## Get Reservation [/Reservation/get]
+
+### Get Reservation [GET /partners/self/reservations/{id}] 
+
+Returns detailed reservation info
+
++ Parameters 
+    + id: `1` (required, int)
+
++ Request 
+
+    + Headers 
+
+            Content-Type: application/json 
+            Authorization: bearer {access_token}
+
++ Response 200 
+
+    + Headers 
+
+            Content-Type: application/json 
+
+    + Body 
+
+{
+  "id": 123455,
+  "executor": "rosalimo",
+  "state": "driver_is_at_pickup",
+  "state_reason": "Some reason",
+  "executor_billing_contact_number": "31445",
+  "scheduled_dropoff_at": "2017-05-17T05:28:23",
+  "distance": 200.0,
+  "charges": [
+    {
+      "name": "base_charge",
+      "value": 10.0
+    },
+    {
+      "name": "other_charges",
+      "value": 15.0
+    }
+  ],
+  "total_amount": 25.0,
+  "notes": "Trip notes",
+  "driver": {
+    "portrait_url": "https://somedomain.com/some.png",
+    "first_name": "Josh",
+    "last_name": "Smith",
+    "email": "driver@emai.com",
+    "phone": "+12345678900"
+  },
+  "car": {
+    "license_plate": "1232125",
+    "car_make": "Toyota",
+    "model": "Corolla",
+    "color": "Green",
+    "phone": "+12345678900"
+  },
+  "executor_reference_number": "0023423",
+  "originator_reference_number": "ref12345",
+  "vehicle_type": "coach_bus",
+  "scheduled_pickup_at": "2017-05-17T03:28:23",
+  "scheduled_duration": 10800,
+  "passenger_count": 1,
+  "passengers": [
+    {
+      "first_name": "John",
+      "last_name": "Smith",
+      "phone": "+12345678900",
+      "email": "john.smith@test.net"
+    }
+  ],
+  "pickup": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "stops": [
+    {
+      "scheduled_arriving_at": "00:30:00",
+      "address": {
+        "latitude": 0.0,
+        "longitude": 0.0,
+        "name": "JFK Airport"
+      },
+      "flight": {
+        "airport_code": "JFK",
+        "airline_code": "AA",
+        "flight_number": "1466",
+        "airport_pickup_option": "inside"
+      },
+      "notes": "Notes",
+      "udf": {
+        "key": "value"
+      }
+    }
+  ],
+  "dropoff": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "currency_code": "USD",
+  "luggage_count": 1,
+  "is_handicap_access_required": true,
+  "infant_child_seat_count": 1,
+  "booster_child_seat_count": 1,
+  "toddler_child_seat_count": 1,
+  "originator_udfs": {
+    "key": "value"
+  }
+}
+
+## Cancel Reservation [/Reservation/cancel]
+
+### Cancel Reservation [PUT /partners/self/reservations/{id}/cancel] 
+
+Cancels the reservation on behalf of affiliate. 
+
++ Parameters 
+    + id: `1` (required, int)
+
++ Request 
+
+    + Headers 
+
+            Content-Type: application/json 
+            Authorization: bearer {access_token}
+
+
+
+
+### Cancel Reservation By Passenger [PUT /partners/self/reservations/{id}/cancel_by_passenger] 
+
+Cancels the reservation on behalf of passenger. 
+
++ Parameters 
+    + id: `1` (required, int)
+
++ Request 
+
+    + Headers 
+
+            Content-Type: application/json 
+            Authorization: bearer {access_token}
+
+## Driver GPS [/Gps]
 
 Provides the following abilities:
 
@@ -561,8 +995,6 @@ The tables below describe all possible response parameters for the Reservation g
 | longitude | float | Longitude |
 
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
-
-## Driver GPS [/Gps]
 
 ### Get [GET /partners/self/reservations/{id}/driver/gps]
 Returns current position of the driver for the reservation.
