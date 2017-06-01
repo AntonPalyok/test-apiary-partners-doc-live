@@ -327,7 +327,7 @@ Check the list of supported `charges`:
 | pickup_flight_info.flight_number | string | No | Flight number |
 | dropoff_flight_info | object | No | Drop Off flight information (Included fields same with `pickup_flight_info`) |
 | originator_udfs | object | No | Key value dictionary of user defined fields |
-| originator_reference_number | string | No | The reference number of the reservation on originator side |
+| originator_reference_number | string | Yes | The reference number of the reservation on originator side |
 
 
 #### *Booking* response parameters
@@ -455,7 +455,7 @@ Creates new reservation using specified booking information and specified rate l
     + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
     + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
     + `originator_udfs` (object)
-    + `originator_reference_number` (string) String length: inclusive between 0 and 50.
+    + `originator_reference_number` (string) Required. String length: inclusive between 0 and 50.
     + `notes` (string) String length: inclusive between 0 and 500.
 
     + Headers
@@ -495,7 +495,7 @@ Updates a reservation by reservation Id using specified booking information rate
     + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
     + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
     + `originator_udfs` (object)
-    + `originator_reference_number` (string) String length: inclusive between 0 and 50.
+    + `originator_reference_number` (string) Required. String length: inclusive between 0 and 50.
 
     + Headers
 
@@ -521,7 +521,7 @@ Creates reservation for specified executor using originator price
 
 + Request 
 
-    + `originator_reference_number` (string) String length: inclusive between 0 and 50. 
+    + `originator_reference_number` (string) Required. String length: inclusive between 0 and 50. 
     + `executor` (string) Required. String length: inclusive between 0 and 50. 
     + `notes` (string) String length: inclusive between 0 and 4000. 
     + `charges` (object) Required. 
