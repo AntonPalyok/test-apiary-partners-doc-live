@@ -23,19 +23,20 @@ If you have not done this and would like to use the API, please email api@limoan
 
 ## HTTP Status Codes
 
-| Status Code | Label | Returned After|
+| Status Code | Default Reason Phrase | Description |
 |--------------------------|---------------------------|--------------------------------------------------------------------------------|
-|200 | OK.| Operation worked as expected. |
-|201 | Created. | Successful POST where a resource was created. |
-|202 | Accepted. |Successful operation. |
-|204 | No Content. | GET request where content doesn't exist. |
-|400 | Bad request. | |
-|401 | Unauthorized. | Request when API client credentials have not been validated. |
-|403 | Forbidden. | Unauthorized requests such as improper OAuth 2.0 scopes or permissions issues. |
-|404 | Not Found. |  Requested resource was not found. |
-|409 | Conflict. | A conflict exists and needs to be resolved before the request can be made. |
-|429 | Too Many Requests. | Rate limit has been reached. |
-|500 | Internal Server Error. |  |
+|200 | OK.| Request was processed successfully and the response contains entity body. |
+|201 | Created | Request was processed successfully and the response contains `Location` header with URI of created resource. |
+|202 | Accepted | Request was accepted but the server cannot determine whether the operation was successfully processed. |
+|204 | No Content | Request was processed successfully and response doesn't contain entity body. |
+|400 | Bad request | Request wasn't processed and the response contains entity body with description of the request errors. |
+|401 | Unauthorized | Request wasn't processed because client didn't send `Authorization` header with valid scheme and parameter. |
+|403 | Forbidden | Request wasn't processed because client didn't have enough permissions to access requested resource. |
+|404 | Not Found | Request wasn't processed because requested resource is not existing. |
+|409 | Conflict | Request wasn't processed because conflict was occurred. Response body will contain infomration about occurred conlict and reason phrase of the response may contain custom value which can be used by client to handle occurred conflict.  |
+|429 | Too Many Requests Per Minute | Request count limit has been reached. `Retry-After` header will contain information about the time when the request query counter will be reset. |
+|429 | Too Many Requests Per Day | Request count limit has been reached. `Retry-After` header will contain information about the time when the request query counter will be reset. |
+|500 | Internal Server Error | Request wasn't processed because internal server error was occurred and the response contains `correlation_id` field which should be used for future investigation of the issue. |
 
 ## Getting Started
 
