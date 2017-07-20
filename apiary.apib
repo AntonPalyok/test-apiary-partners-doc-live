@@ -1059,7 +1059,7 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 
 | Name | Type | Description |
 |------|------|-------------|
-| id | integer | Reservation ID. |
+| id | number | Reservation ID. |
 | event | string | Reservation event which was occurred. |
 | event_occurred_at | string | The UTC timestamp of reservation event which was occurred. |
 | executor_reference_number | string | Reference number for the reservation on executor's side. |
@@ -1067,13 +1067,13 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 | state | string | Current reservation state. It is not the same as event. |
 | state_reason | string | The reservation state reason. |
 | driver_phone | string | Driver phone number in E.164 format. |
-| driver_first_name | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
-| driver_last_name | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
-| car_licence_plate | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
-| car_color | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
-| car_make | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
-| car_model | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
-| car_year | number | Year when the car was manufactured. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| driver_first_name | string | Driver first name. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| driver_last_name | string | Driver last name. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_licence_plate | string | Car license plate. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_color | string | Car color. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_make | string | Car make. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_model | string | Car model. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_year | number | Year when the car was manufactured. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | charges | array | Array of final charges. Sent only on `reservation.closed` event. |
 | charges[].name | string | Charge name. Sent only on `reservation.closed` event. |
 | charges[].value | number | Charge value. Sent only on `reservation.closed` event. |
