@@ -1066,7 +1066,7 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 | originator_reference_number | string | Reference number for the reservation on originator's side. |
 | state | string | Current reservation state. It is not the same as event. |
 | state_reason | string | The reservation state reason. |
-| driver_phone | string | Driver phone number in E.164 format. |
+| driver_phone | string | Driver phone number in E.164 format. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | driver_first_name | string | Driver first name. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | driver_last_name | string | Driver last name. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | car_licence_plate | string | Car license plate. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
