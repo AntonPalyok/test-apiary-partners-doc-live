@@ -1039,14 +1039,19 @@ Check the table of supported `events`:
 
 | Event | Description |
 |---------------------|----------------------------------------|
-| reservation.assigned | Driver has been assigned to the reservation |
-| reservation.unassigned | Driver has been unassigned from the reservation |
-| reservation.driver_is_on_the_way | Driver is on the way to pick-up location |
-| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location |
-| reservation.passenger_in_car | Passenger has been picked up |
-| reservation.passenger_dropped_off | Passenger has been dropped off |
-| reservation.cancelled | Reservation has been cancelled |
-| reservation.closed | Reservatoin has been closed |
+| reservation.accepted | Executor accepted the reservation. |
+| reservation.rejected | Executor rejected the reservation. After this event, any processing of reservation will be suppressed. |
+| reservation.assigned | Driver has been assigned to the reservation. Payload of webhook for this event may contains driver and car information. |
+| reservation.unassigned | Driver has been unassigned from the reservation. After this event previously accepted driver and car infomation information became not actual. |
+| reservation.driver_is_on_the_way | Driver is on the way to pick-up location. Payload of webhook for this event may contains driver and car information. |
+| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location. Payload of webhook for this event may contains driver and car information. |
+| reservation.driver_is_waiting_at_pickup | Driver has started waiting for passenger at pickup location (additional fee may be included in final charges). |
+| reservation.driver_is_waiting_for_passenger_started | Driver has started waiting for passenger at current location (additional fee may be include in final chargesd). |
+| reservation.driver_is_waiting_for_passenger_stopped | Driver has stopped waiting for passenger at current location. |
+| reservation.passenger_in_car | Passenger has been picked up. |
+| reservation.passenger_dropped_off | Passenger has been dropped off. |
+| reservation.cancelled | Reservation has been cancelled. |
+| reservation.closed | Reservatoin has been closed. Payload for this event will contain final charges. After this event, any processing of reservation will be suppressed. |
 
 The list of events may be extended in the future.
 
@@ -1054,16 +1059,24 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 
 | Name | Type | Description |
 |------|------|-------------|
-| id | integer | Reservation ID |
+| id | integer | Reservation ID. |
 | event | string | Reservation event which was occurred. |
-| event_occurred_at | string | The timestamp of reservation event which was occurred. |
-| executor_reference_number | string | Reference number for the reservation on executor's side |
-| originator_reference_number | string | Reference number for the reservation on originator's side |
-| state | string | Current reservation state |
-| state_reason | string | The reservation state reason |
-| charges | array | Array of final charges. Sent only on `reservation.closed` event |
-| charges[].name | string | Charge name |
-| charges[].value | float | Charge value |
+| event_occurred_at | string | The UTC timestamp of reservation event which was occurred. |
+| executor_reference_number | string | Reference number for the reservation on executor's side. |
+| originator_reference_number | string | Reference number for the reservation on originator's side. |
+| state | string | Current reservation state. It is not the same as event. |
+| state_reason | string | The reservation state reason. |
+| driver_phone | string | Driver phone number in E.164 format. |
+| driver_first_name | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| driver_last_name | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| car_licence_plate | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| car_color | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| car_make | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| car_model | string | May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| car_year | number | Year when the car was manufactured. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup`. |
+| charges | array | Array of final charges. Sent only on `reservation.closed` event. |
+| charges[].name | string | Charge name. Sent only on `reservation.closed` event. |
+| charges[].value | number | Charge value. Sent only on `reservation.closed` event. |
 
 
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
