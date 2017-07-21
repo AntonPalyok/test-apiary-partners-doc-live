@@ -15,7 +15,7 @@ The API accepts/returns JSON data and attempts to conform to the <a href="https:
 
 ## General Requirements
 
-To use the Limo Anywhere Partner API, you must have an API authentication token from the token service. See the <a href="#reference/authentication">Authentication documentation</a> for the authorization guide.
+To use the Limo Anywhere Partner API, you must have an API authorization token from the token endpoint. See the <a href="#reference/authentication">Authentication documentation</a> for the authorization guide.
 
 <b>Before you can generate an access token, you must agree to the API Terms of Service and receive a Client ID and Client Secret from Limo Anywhere.</b> 
 
@@ -54,7 +54,7 @@ Once you have completed the above, choose a sub-section to follow:
 1. Call the <a href="/#reference/booking/rate-lookup/rate-lookup">Rate Lookup</a> method to get the pricing for your trip requirements. Choose the optimal pricing and hold the Id of this rate from the `results` array.
 2. Use the <a href="/#reference/booking/booking/booking">Booking</a> method. In `search_result_id` parameter set the rate Id of the desired rate and provide additional necessary information: passengers, flight information etc.
 
-## Group Authentication
+## Group Authorization
 The API uses the <a href="https://tools.ietf.org/html/rfc6749"> OAuth 2.0 </a> protocol for simple, but effective authentication and authorization.
 All API endpoints require an OAuth access token, thus we have exposed a service that will provide the user with an OAuth 2 Access token.
 This token should be provided in the header in all requests.
@@ -109,7 +109,7 @@ Parameter `grant_type` will depend on Authorization method:
 
 + Request
 
-    + `grant_type` (string) Required. String length: inclusive between 0 and 50.f
+    + `grant_type` (string) Required. String length: inclusive between 0 and 50.
     + `client_id` (string) Required. String length: inclusive between 6 and 50.
     + `client_secret` (string) Required. String length: inclusive between 50 and 50.
  
