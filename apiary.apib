@@ -511,6 +511,145 @@ Updates a reservation by reservation Id using specified booking information rate
 
 ## Group Reservations
 
+## Get Reservation [/Reservation/get]
+
+### Get Reservation [GET /partners/self/reservations/{id}] 
+
+Returns detailed reservation info
+
++ Parameters 
+    + id: `1` (required, int)
+
++ Request 
+
+    + Headers 
+
+            Content-Type: application/json 
+            Authorization: bearer {access_token}
+
++ Response 200 
+
+    + Headers 
+
+            Content-Type: application/json 
+
+    + Body 
+
+{
+  "id": 123455,
+  "executor": "rosalimo",
+  "state": "driver_is_at_pickup",
+  "state_reason": "Some reason",
+  "executor_billing_contact_number": "31445",
+  "scheduled_dropoff_at": "2017-05-17T05:28:23",
+  "distance": 200.0,
+  "charges": [
+    {
+      "name": "base_charge",
+      "value": 10.0
+    },
+    {
+      "name": "tolls",
+      "value": 15.0
+    }
+  ],
+  "total_amount": 25.0,
+  "notes": "Trip notes",
+  "driver": {
+    "portrait_url": "https://somedomain.com/some.png",
+    "first_name": "Josh",
+    "last_name": "Smith",
+    "email": "driver@emai.com",
+    "phone": "+12345678900"
+  },
+  "car": {
+    "license_plate": "1232125",
+    "car_make": "Toyota",
+    "model": "Corolla",
+    "color": "Green",
+    "phone": "+12345678900"
+  },
+  "executor_reference_number": "0023423",
+  "originator_reference_number": "ref12345",
+  "vehicle_type": "coach_bus",
+  "scheduled_pickup_at": "2017-05-17T03:28:23",
+  "scheduled_duration": 10800,
+  "passenger_count": 1,
+  "passengers": [
+    {
+      "first_name": "John",
+      "last_name": "Smith",
+      "phone": "+12345678900",
+      "email": "john.smith@test.net"
+    }
+  ],
+  "pickup": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "stops": [
+    {
+      "scheduled_arriving_at": "00:30:00",
+      "address": {
+        "latitude": 0.0,
+        "longitude": 0.0,
+        "name": "JFK Airport"
+      },
+      "flight": {
+        "airport_code": "JFK",
+        "airline_code": "AA",
+        "flight_number": "1466",
+        "airport_pickup_option": "inside"
+      },
+      "notes": "Notes",
+      "udf": {
+        "key": "value"
+      }
+    }
+  ],
+  "dropoff": {
+    "scheduled_arriving_at": "00:30:00",
+    "address": {
+      "latitude": 45.0,
+      "longitude": 46.0,
+      "name": "Super important steet",
+      "country_code": "US",
+      "state_code": "TX",
+      "postal_code": "12345",
+      "city": "City",
+      "address_line1": "123 Some Street",
+      "address_line2": "2 apartment"
+    },
+    "notes": "Notes",
+    "udf": {
+      "key": "value"
+    }
+  },
+  "currency_code": "USD",
+  "luggage_count": 1,
+  "is_handicap_access_required": true,
+  "infant_child_seat_count": 1,
+  "booster_child_seat_count": 1,
+  "toddler_child_seat_count": 1,
+  "originator_udfs": {
+    "key": "value"
+  }
+}
+
 ## Create Reservation [/Reservation/create]
 
 ### Create Reservation [POST /partners/self/reservations] 
@@ -801,144 +940,285 @@ Creates reservation for specified executor using originator price
   }
 }
 
-## Get Reservation [/Reservation/get]
+## Update Reservation [/Reservation/update]
 
-### Get Reservation [GET /partners/self/reservations/{id}] 
+### Update Reservation [PUT /partners/self/reservations/{id}] 
+Updates the reservation by reservation Id
++ Parameters
+    + `id` (required, number) 
 
-Returns detailed reservation info
-
-+ Parameters 
-    + id: `1` (required, int)
-
-+ Request 
-
++ Request(application/json)
+    + `vehicle_type` (required, enum[string]) 
+        + Members 
+            + `economy_sedan` 
+            + `hybrid_sedan` 
+            + `vip_sedan` 
+            + `sedan` 
+            + `economy_suv` 
+            + `hybrid_suv` 
+            + `vip_suv` 
+            + `suv` 
+            + `mini_van` 
+            + `passenger_van` 
+            + `other_van` 
+            + `limousine` 
+            + `mini_bus` 
+            + `party_bus` 
+            + `coach_bus` 
+            + `other_bus` 
+            + `shared_vehicle` 
+            + `other_vehicle` 
+            + `undefined` 
+    + `scheduled_pickup_at` (required, string) 
+        The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
+    + `scheduled_duration` (optional, number) 
+        The value must be integer which is not less than 60. 
+    + `passenger_count` (required, number) 
+        The value must be integer which is not less than 1. 
+    + `passengers[].first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `passengers[].email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `pickup.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `pickup.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `pickup.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `pickup.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `pickup.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `pickup.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `pickup.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `pickup.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `pickup.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `stops[].scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `stops[].address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `stops[].address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `stops[].address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `stops[].address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `stops[].address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `stops[].flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `stops[].flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `stops[].notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `dropoff.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `dropoff.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `dropoff.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `dropoff.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `dropoff.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `dropoff.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `dropoff.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `dropoff.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `currency_code` (required, string) 
+        The value must be string with valid ISO 4217 currency alpha code. 
+    + `charges[].name` (required, enum[string]) 
+        + Members 
+            + `base_charge` 
+            + `hourly_charge` 
+            + `passenger_charge` 
+            + `distance_charge` 
+            + `gratuity_charge` 
+            + `extra_gratuity` 
+            + `stops_charge` 
+            + `tolls` 
+            + `surcharges` 
+            + `parking` 
+            + `miscellaneous_charge` 
+            + `discount` 
+            + `taxes` 
+    + `charges[].value` (optional, number) 
+        + Default: `0` 
+    + `luggage_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `is_handicap_access_required` (optional, boolean) 
+        + Default: `false` 
+    + `infant_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `booster_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `toddler_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
     + Headers 
-
-            Content-Type: application/json 
-            Authorization: bearer {access_token}
-
-+ Response 200 
-
-    + Headers 
-
-            Content-Type: application/json 
-
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
     + Body 
+        {
+            "scheduled_pickup_at": "2017-05-17T03:28:23",
+            "scheduled_duration": 10800,
+            "passenger_count": 1,
+            "passengers": [
+                {
+                   "first_name": "John",
+                   "last_name": "Smith",
+                   "phone": "+12345678900",
+                   "email": "john.smith@test.net"
+                }
+            ],
+            "pickup": {
+                "scheduled_arriving_at": "00:30:00",
+                    "address": {
+                    "latitude": 45.0,
+                    "longitude": 46.0,
+                    "name": "Super important steet",
+                    "country_code": "US",
+                    "state_code": "TX",
+                    "postal_code": "12345",
+                    "city": "City",
+                    "address_line1": "123 Some Street",
+                    "address_line2": "2 apartment"
+                },
+                "notes": "Notes",
+                "udf": {
+                   "key": "value"
+                }
+            },
+            "stops": [
+                {
+                    "scheduled_arriving_at": "00:30:00",
+                    "address": {
+                        "latitude": 1.1,
+                        "longitude": 2.1,
+                        "name": "JFK Airport"
+                    },
+                    "flight": {
+                      "airport_code": "JFK",
+                      "airline_code": "AA",
+                      "flight_number": "1466",
+                      "airport_pickup_option": "inside"
+                    },
+                    "notes": "Notes",
+                    "udf": {
+                       "key": "value"
+                    }
+                }
+            ],
+            "dropoff": {
+                "scheduled_arriving_at": "00:30:00",
+                "address": {
+                  "latitude": 45.0,
+                  "longitude": 46.0,
+                  "name": "Super important steet",
+                  "country_code": "US",
+                  "state_code": "TX",
+                  "postal_code": "12345",
+                  "city": "City",
+                  "address_line1": "123 Some Street",
+                  "address_line2": "2 apartment"
+                },
+                "notes": "Notes",
+                "udf": {
+                   "key": "value"
+                }
+            },
+            "currency_code": "USD",
+                      "charges": [
+              {
+                "name": "base_charge",
+                "value": 10.0
+              },
+              {
+                "name": "tolls",
+                "value": 15.0
+              }
+            ],
+            "luggage_count": 4,
+            "is_handicap_access_required": true,
+            "infant_child_seat_count": 6,
+            "booster_child_seat_count": 7,
+            "toddler_childseat_count": 8,
+            "originator_udfs": {
+               "key": "value"
+            }
+        } 
 
-{
-  "id": 123455,
-  "executor": "rosalimo",
-  "state": "driver_is_at_pickup",
-  "state_reason": "Some reason",
-  "executor_billing_contact_number": "31445",
-  "scheduled_dropoff_at": "2017-05-17T05:28:23",
-  "distance": 200.0,
-  "charges": [
-    {
-      "name": "base_charge",
-      "value": 10.0
-    },
-    {
-      "name": "tolls",
-      "value": 15.0
-    }
-  ],
-  "total_amount": 25.0,
-  "notes": "Trip notes",
-  "driver": {
-    "portrait_url": "https://somedomain.com/some.png",
-    "first_name": "Josh",
-    "last_name": "Smith",
-    "email": "driver@emai.com",
-    "phone": "+12345678900"
-  },
-  "car": {
-    "license_plate": "1232125",
-    "car_make": "Toyota",
-    "model": "Corolla",
-    "color": "Green",
-    "phone": "+12345678900"
-  },
-  "executor_reference_number": "0023423",
-  "originator_reference_number": "ref12345",
-  "vehicle_type": "coach_bus",
-  "scheduled_pickup_at": "2017-05-17T03:28:23",
-  "scheduled_duration": 10800,
-  "passenger_count": 1,
-  "passengers": [
-    {
-      "first_name": "John",
-      "last_name": "Smith",
-      "phone": "+12345678900",
-      "email": "john.smith@test.net"
-    }
-  ],
-  "pickup": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
-  },
-  "stops": [
-    {
-      "scheduled_arriving_at": "00:30:00",
-      "address": {
-        "latitude": 0.0,
-        "longitude": 0.0,
-        "name": "JFK Airport"
-      },
-      "flight": {
-        "airport_code": "JFK",
-        "airline_code": "AA",
-        "flight_number": "1466",
-        "airport_pickup_option": "inside"
-      },
-      "notes": "Notes",
-      "udf": {
-        "key": "value"
-      }
-    }
-  ],
-  "dropoff": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
-  },
-  "currency_code": "USD",
-  "luggage_count": 1,
-  "is_handicap_access_required": true,
-  "infant_child_seat_count": 1,
-  "booster_child_seat_count": 1,
-  "toddler_child_seat_count": 1,
-  "originator_udfs": {
-    "key": "value"
-  }
-}
++ Response 204
 
 ## Cancel Reservation [/Reservation/cancel]
 
