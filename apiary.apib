@@ -975,6 +975,8 @@ Updates the reservation by reservation Id
         The value must be integer which is not less than 60. 
     + `passenger_count` (required, number) 
         The value must be integer which is not less than 1. 
+    + `passengers[]` (required, array) 
+        The count of elements should be greater or equals to 1. 
     + `passengers[].first_name` (required, string) 
         The value must be non-empty string with maximum length 50. 
     + `passengers[].last_name` (required, string) 
@@ -984,8 +986,11 @@ Updates the reservation by reservation Id
     + `passengers[].email` (optional, string) 
         The value must be string with email address. 
         The value must be non-empty string with maximum length 255. 
+    + `pickup` (required, object) 
     + `pickup.scheduled_arriving_at` (optional, string) 
         The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `pickup.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
     + `pickup.address.latitude` (optional, number) 
         The value must be the decimal which inclusive between -90 and 90. 
         + Default: `0` 
@@ -1006,6 +1011,7 @@ Updates the reservation by reservation Id
         The value must be non-empty string with maximum length 250. 
     + `pickup.address.address_line2` (optional, string) 
         The value must be non-empty string with maximum length 250. 
+    + `pickup.flight` (optional, object) 
     + `pickup.flight.airport_code` (optional, string) 
         The value must be string with valid airport IATA or ICAO code. 
     + `pickup.flight.airline_code` (optional, string) 
@@ -1019,8 +1025,12 @@ Updates the reservation by reservation Id
             + `inside` 
     + `pickup.notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
+    + `pickup.udf[]` (optional, array) 
+    + `stops[]` (optional, array) 
     + `stops[].scheduled_arriving_at` (optional, string) 
         The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `stops[].address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
     + `stops[].address.latitude` (optional, number) 
         The value must be the decimal which inclusive between -90 and 90. 
         + Default: `0` 
@@ -1041,6 +1051,7 @@ Updates the reservation by reservation Id
         The value must be non-empty string with maximum length 250. 
     + `stops[].address.address_line2` (optional, string) 
         The value must be non-empty string with maximum length 250. 
+    + `stops[].flight` (optional, object) 
     + `stops[].flight.airport_code` (optional, string) 
         The value must be string with valid airport IATA or ICAO code. 
     + `stops[].flight.airline_code` (optional, string) 
@@ -1054,8 +1065,12 @@ Updates the reservation by reservation Id
             + `inside` 
     + `stops[].notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
+    + `stops[].udf[]` (optional, array) 
+    + `dropoff` (optional, object) 
     + `dropoff.scheduled_arriving_at` (optional, string) 
         The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `dropoff.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
     + `dropoff.address.latitude` (optional, number) 
         The value must be the decimal which inclusive between -90 and 90. 
         + Default: `0` 
@@ -1076,6 +1091,7 @@ Updates the reservation by reservation Id
         The value must be non-empty string with maximum length 250. 
     + `dropoff.address.address_line2` (optional, string) 
         The value must be non-empty string with maximum length 250. 
+    + `dropoff.flight` (optional, object) 
     + `dropoff.flight.airport_code` (optional, string) 
         The value must be string with valid airport IATA or ICAO code. 
     + `dropoff.flight.airline_code` (optional, string) 
@@ -1089,8 +1105,11 @@ Updates the reservation by reservation Id
             + `inside` 
     + `dropoff.notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
+    + `dropoff.udf[]` (optional, array) 
     + `currency_code` (required, string) 
         The value must be string with valid ISO 4217 currency alpha code. 
+    + `charges[]` (required, array) 
+        The count of elements should be greater or equals to 1. 
     + `charges[].name` (required, enum[string]) 
         + Members 
             + `base_charge` 
@@ -1122,6 +1141,7 @@ Updates the reservation by reservation Id
     + `toddler_child_seat_count` (optional, number) 
         The value must be integer which is not less than 0. 
         + Default: `0` 
+    + `originator_udfs[]` (optional, array) 
     + Headers 
         Accept-Encoding: gzip 
         Accept-Charset: utf-8 
