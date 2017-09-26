@@ -1348,6 +1348,8 @@ Check the table of supported `events`:
 | reservation.accepted | Executor accepted the reservation. |
 | reservation.rejected | Executor rejected the reservation. After this event, any processing of reservation will be suppressed. |
 | reservation.assigned | Driver has been assigned to the reservation. Payload of webhook for this event may contains driver and car information. |
+| reservation.update_accepted | Operator accepted update requests of reservation. Update requests which were sent previously were applied to the reservation. |
+| reservation.update_rejected | Operator rejected update requests of reservation. Update requests which were sent previously were not applied to the reservation. |
 | reservation.unassigned | Driver has been unassigned from the reservation. After this event previously accepted driver and car infomation information became not actual. |
 | reservation.driver_is_on_the_way | Driver is on the way to pick-up location. Payload of webhook for this event may contains driver and car information. |
 | reservation.driver_is_at_pickup | Driver has arrived at the pick-up location. Payload of webhook for this event may contains driver and car information. |
