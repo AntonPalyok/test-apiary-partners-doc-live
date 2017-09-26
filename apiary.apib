@@ -943,10 +943,15 @@ Creates reservation for specified executor using originator price
 ## Update Reservation [/Reservation/update]
 
 ### Update Reservation [PUT /partners/self/reservations/{id}] 
-Updates the reservation by reservation Id
+Updates the reservation by reservation ID.
+In most of the cases the API will return responses with <b>204 No Content</b> or <b>200 OK</b> HTTP status codes, but if reservation update should be confirmed by the operator, the API will return response with <b>202 Accepted</b> HTTP status code.
+If update request was accepted by the operator 'reservation.update_accepted' event will occur.
+If update request was rejected by the operator 'reservation.update_rejected' event will occur.
+A client application may send multiple updates before an operator will accept or reject previous updates.
+In this case, an operator will handle these updates as single update request and the associated event will occur only one time.
 + Parameters
     + `id` (required, number) 
-
+Add
 + Request(application/json)
     + `vehicle_type` (required, enum[string]) 
         + Members 
