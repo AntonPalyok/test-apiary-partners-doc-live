@@ -937,7 +937,7 @@ Creates reservation for specified executor using originator price
   "toddler_child_seat_count": 1,
   "originator_udfs": {
     "key": "value"
-  }
+  }missi
 }
 
 ## Update Reservation [/Reservation/update]
@@ -950,9 +950,8 @@ If update request was rejected by the operator 'reservation.update_rejected' eve
 A client application may send multiple updates before an operator will accept or reject previous updates.
 In this case, an operator will handle these updates as single update request and the associated event will occur only one time.
 + Parameters
-    + `id` (required, number) 
-Add
-+ Request(application/json)
+    + `id` (required, number)
++ Request(application/json;charset=utf-8)
     + `vehicle_type` (required, enum[string]) 
         + Members 
             + `economy_sedan` 
@@ -1150,8 +1149,7 @@ Add
     + Headers 
         Accept-Encoding: gzip 
         Accept-Charset: utf-8 
-        Accept: application/json 
-        Content-Type: application/json;charset=utf-8 
+        Accept: application/json
         Authorization: bearer {access_token} 
     + Body 
         {
@@ -1243,6 +1241,7 @@ Add
             }
         } 
 
++ Response 202
 + Response 204
 
 ## Cancel Reservation [/Reservation/cancel]
