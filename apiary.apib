@@ -374,8 +374,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `flight.airport_code` (string) Required. Max length: 3. Min length: 3.
     + `flight.airline_code` (string) Max length: 2. Min length: 2.
     + `flight.flight_number` (string) Max length: 4. Min length: 1.
-    + `flight.airport_pickup_option` (object)
-    + `udf` (object)
+    + `flight.airport_pickup_option` (object)Correcte
     + `stops` (object) Required.
     + `dropoff` (object)
     + `dropoff.scheduled_arriving_at` (object)
@@ -394,7 +393,6 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `flight.airline_code` (string) Max length: 2. Min length: 2.
     + `flight.flight_number` (string) Max length: 4. Min length: 1.
     + `flight.airport_pickup_option` (object)
-    + `udf` (object)
 
     + Headers
 
@@ -403,7 +401,69 @@ Allows you to see pricing for your trip requirements by returning a collection o
 
     + Body
 
-            { "executors": [ "dfw-limo","dfw-limo2","dfw-limo3" ], "vehicle_types": [ "vip_sedan","other_sedan" ], "scheduled_pickup_at": "2017-03-24T00:00:00", "luggage_count": 2, "passenger_count": 1, "infant_child_seat_count": 0, "booster_child_seat_count": 1, "toddler_child_seat_count": 0, "duration": 8100, "is_handicap_access_required": false, "pickup": { "scheduled_arriving_at": "00:10:00", "address": { "latitude": 42.3505135, "longitude": -71.10737, "name": "Metropolitan College & Extended Education", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "745 Commonwealth Ave" } }, "stops": [ { "address": { "latitude": 42.3501854, "longitude": -71.1045456, "name": "Tsai Performance Center", "country_code": "US", "state_code": "MA", "postal_code": "02125", "city": "Boston", "address_line1": "685 Commonwealth Ave" } } ], "dropoff": { "scheduled_arriving_at": "02:05:00", "address": { "latitude": 42.36552, "longitude": -71.0214844, "name": "Boston Logan Airport", "country_code": "US", "state_code": "MA", "postal_code": "02128" }, "flight": { "airport_code": "BOS", "airline_code": "AF", "flight_number": "123", "airport_pickup_option": "none" } } }
+    {  
+       "executors":[  
+          "dfw-limo",
+          "dfw-limo2",
+          "dfw-limo3"
+       ],
+       "vehicle_types":[  
+          "vip_sedan",
+          "other_sedan"
+       ],
+       "scheduled_pickup_at":"2017-03-24T00:00:00",
+       "luggage_count":2,
+       "passenger_count":1,
+       "infant_child_seat_count":0,
+       "booster_child_seat_count":1,
+       "toddler_child_seat_count":0,
+       "duration":8100,
+       "is_handicap_access_required":false,
+       "pickup":{  
+          "scheduled_arriving_at":"00:10:00",
+          "address":{  
+             "latitude":42.3505135,
+             "longitude":-71.10737,
+             "name":"Metropolitan College & Extended Education",
+             "country_code":"US",
+             "state_code":"MA",
+             "postal_code":"02125",
+             "city":"Boston",
+             "address_line1":"745 Commonwealth Ave"
+          }
+       },
+       "stops":[  
+          {  
+             "address":{  
+                "latitude":42.3501854,
+                "longitude":-71.1045456,
+                "name":"Tsai Performance Center",
+                "country_code":"US",
+                "state_code":"MA",
+                "postal_code":"02125",
+                "city":"Boston",
+                "address_line1":"685 Commonwealth Ave"
+             }
+          }
+       ],
+       "dropoff":{  
+          "scheduled_arriving_at":"02:05:00",
+          "address":{  
+             "latitude":42.36552,
+             "longitude":-71.0214844,
+             "name":"Boston Logan Airport",
+             "country_code":"US",
+             "state_code":"MA",
+             "postal_code":"02128"
+          },
+          "flight":{  
+             "airport_code":"BOS",
+             "airline_code":"AF",
+             "flight_number":"123",
+             "airport_pickup_option":"none"
+          }
+       }
+    }
 
  + Response 200
 
@@ -465,7 +525,29 @@ Creates new reservation using specified booking information and specified rate l
 
     + Body
 
-            { "search_result_id": 546225, "passengers": [ { "first_name": "John", "last_name": "Smith", "phone": "+12345678900", "email": "john.smith@test.net" } ], "pickup_flight_info": {}, "dropoff_flight_info": { "airline_code": "AA", "flight_number": "46" }, "originator_udfs": { "key": "value" }, "originator_reference_number": "gh5ffd123" }
+    {  
+       "search_result_id":546225,
+       "passengers":[  
+          {  
+             "first_name":"John",
+             "last_name":"Smith",
+             "phone":"+12345678900",
+             "email":"john.smith@test.net"
+          }
+       ],
+       "pickup_flight_info":{  
+    
+       },
+       "dropoff_flight_info":{  
+          "airline_code":"AA",
+          "flight_number":"46"
+       },
+       "originator_udfs":{  
+          "key":"value"
+       },
+       "originator_reference_number":"gh5ffd123",
+       "notes": "some notes"
+    }
 
  + Response 200
 
@@ -475,7 +557,13 @@ Creates new reservation using specified booking information and specified rate l
 
     + Body
 
-            { "reservation_id": 557891, "executor_reference_number": "hg77ti56", "executor_udfs": { "key": "value" } } 
+    {  
+       "reservation_id":557891,
+       "executor_reference_number":"hg77ti56",
+       "executor_udfs":{  
+          "key":"value"
+       }
+    }
 
 
 ### Update Booking [PUT /partners/self/bookings/{id}]
@@ -495,7 +583,6 @@ Updates a reservation by reservation Id using specified booking information rate
     + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
     + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
     + `originator_udfs` (object)
-    + `originator_reference_number` (string) Required. String length: inclusive between 0 and 50.
 
     + Headers
 
@@ -504,7 +591,27 @@ Updates a reservation by reservation Id using specified booking information rate
 
     + Body
 
-            { "search_result_id": 546225, "passengers": [ { "first_name": "John", "last_name": "Smith", "phone": "+12345678900", "email": "john.smith@test.net" } ], "pickup_flight_info": {}, "dropoff_flight_info": { "airline_code": "AA", "flight_number": "46" }, "originator_udfs": { "key": "value" }, "originator_reference_number": "gh5ffd123" }
+    {  
+       "search_result_id":546225,
+       "passengers":[  
+          {  
+             "first_name":"John",
+             "last_name":"Smith",
+             "phone":"+12345678900",
+             "email":"john.smith@test.net"
+          }
+       ],
+       "pickup_flight_info":{  
+    
+       },
+       "dropoff_flight_info":{  
+          "airline_code":"AA",
+          "flight_number":"46"
+       },
+       "originator_udfs":{  
+          "key":"value"
+       }
+    }
 
 + Response 204
 
