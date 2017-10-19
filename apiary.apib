@@ -703,10 +703,7 @@ Returns detailed reservation info
       "address_line1": "123 Some Street",
       "address_line2": "2 apartment"
     },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
+    "notes": "Notes"
   },
   "stops": [
     {
@@ -722,10 +719,7 @@ Returns detailed reservation info
         "flight_number": "1466",
         "airport_pickup_option": "inside"
       },
-      "notes": "Notes",
-      "udf": {
-        "key": "value"
-      }
+      "notes": "Notes"
     }
   ],
   "dropoff": {
@@ -741,10 +735,7 @@ Returns detailed reservation info
       "address_line1": "123 Some Street",
       "address_line2": "2 apartment"
     },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
+    "notes": "Notes"
   },
   "currency_code": "USD",
   "luggage_count": 1,
@@ -795,7 +786,6 @@ Creates reservation for specified executor using originator price
     + `flight.flight_number` (string) Max length: 4. Min length: 1. 
     + `flight.airport_pickup_option` (object) 
     + `notes` (string) String length: inclusive between 0 and 4000. 
-    + `udf` (object) 
     + `stops` (object) Required. 
     + `dropoff` (object) 
     + `dropoff.scheduled_arriving_at` (object) 
@@ -815,7 +805,6 @@ Creates reservation for specified executor using originator price
     + `flight.flight_number` (string) Max length: 4. Min length: 1. 
     + `flight.airport_pickup_option` (object) 
     + `notes` (string) String length: inclusive between 0 and 4000. 
-    + `udf` (object) 
     + `currency_code` (string) Required. String length: inclusive between 3 and 3. 
     + `luggage_count` (int) Range: inclusive between 0 and 2147483647. 
     + `is_handicap_access_required` (boolean) 
@@ -870,10 +859,7 @@ Creates reservation for specified executor using originator price
       "address_line1": "123 Some Street",
       "address_line2": "2 apartment"
     },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
+    "notes": "Notes"
   },
   "stops": [
     {
@@ -889,10 +875,7 @@ Creates reservation for specified executor using originator price
         "flight_number": "1466",
         "airport_pickup_option": "inside"
       },
-      "notes": "Notes",
-      "udf": {
-        "key": "value"
-      }
+      "notes": "Notes"
     }
   ],
   "dropoff": {
@@ -908,10 +891,7 @@ Creates reservation for specified executor using originator price
       "address_line1": "123 Some Street",
       "address_line2": "2 apartment"
     },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
+    "notes": "Notes"
   },
   "currency_code": "USD",
   "luggage_count": 1,
@@ -993,10 +973,7 @@ Creates reservation for specified executor using originator price
       "address_line1": "123 Some Street",
       "address_line2": "2 apartment"
     },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
+    "notes": "Notes"
   },
   "stops": [
     {
@@ -1012,10 +989,7 @@ Creates reservation for specified executor using originator price
         "flight_number": "1466",
         "airport_pickup_option": "inside"
       },
-      "notes": "Notes",
-      "udf": {
-        "key": "value"
-      }
+      "notes": "Notes"
     }
   ],
   "dropoff": {
@@ -1031,10 +1005,7 @@ Creates reservation for specified executor using originator price
       "address_line1": "123 Some Street",
       "address_line2": "2 apartment"
     },
-    "notes": "Notes",
-    "udf": {
-      "key": "value"
-    }
+    "notes": "Notes"
   },
   "currency_code": "USD",
   "luggage_count": 1,
@@ -1136,7 +1107,6 @@ In this case, an operator will handle these updates as single update request and
             + `inside` 
     + `pickup.notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
-    + `pickup.udf[]` (optional, array) 
     + `stops[]` (optional, array) 
     + `stops[].scheduled_arriving_at` (optional, string) 
         The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
@@ -1176,7 +1146,6 @@ In this case, an operator will handle these updates as single update request and
             + `inside` 
     + `stops[].notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
-    + `stops[].udf[]` (optional, array) 
     + `dropoff` (optional, object) 
     + `dropoff.scheduled_arriving_at` (optional, string) 
         The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
@@ -1216,7 +1185,6 @@ In this case, an operator will handle these updates as single update request and
             + `inside` 
     + `dropoff.notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
-    + `dropoff.udf[]` (optional, array) 
     + `currency_code` (required, string) 
         The value must be string with valid ISO 4217 currency alpha code. 
     + `charges[]` (required, array) 
@@ -1284,10 +1252,7 @@ In this case, an operator will handle these updates as single update request and
                     "address_line1": "123 Some Street",
                     "address_line2": "2 apartment"
                 },
-                "notes": "Notes",
-                "udf": {
-                   "key": "value"
-                }
+                "notes": "Notes"
             },
             "stops": [
                 {
@@ -1303,10 +1268,7 @@ In this case, an operator will handle these updates as single update request and
                       "flight_number": "1466",
                       "airport_pickup_option": "inside"
                     },
-                    "notes": "Notes",
-                    "udf": {
-                       "key": "value"
-                    }
+                    "notes": "Notes"
                 }
             ],
             "dropoff": {
@@ -1322,10 +1284,7 @@ In this case, an operator will handle these updates as single update request and
                   "address_line1": "123 Some Street",
                   "address_line2": "2 apartment"
                 },
-                "notes": "Notes",
-                "udf": {
-                   "key": "value"
-                }
+                "notes": "Notes"
             },
             "currency_code": "USD",
                       "charges": [
