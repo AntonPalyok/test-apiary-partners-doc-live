@@ -347,52 +347,159 @@ Allows you to see pricing for your trip requirements by returning a collection o
 
  + Request
 
-    + `executors` (object)
-    + `executor_billing_contact_account_number` (string) String length: inclusive between 0 and 50.
-    + `vehicle_types` (object) Required.
-    + `scheduled_pickup_at` (object)
-    + `luggage_count` (int) Range: inclusive between 0 and 2147483647.
-    + `passenger_count` (int) Range: inclusive between 1 and 2147483647.
-    + `infant_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
-    + `booster_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
-    + `toddler_child_seat_count` (int) Range: inclusive between 0 and 2147483647.
-    + `duration` (int) Range: inclusive between 60 and 2147483647.
-    + `is_handicap_access_required` (boolean)
-    + `pickup` (object) Required.
-    + `pickup.scheduled_arriving_at` (object)
-    + `pickup.address` (object) Required.
-    + `pickup.address.latitude` (float)
-    + `pickup.address.longitude` (float)
-    + `pickup.address.name` (string) String length: inclusive between 0 and 500.
-    + `pickup.address.country_code` (string) String length: inclusive between 0 and 5.
-    + `pickup.address.state_code` (string) String length: inclusive between 0 and 5.
-    + `pickup.address.postal_code` (string) String length: inclusive between 0 and 15.
-    + `pickup.address.city` (string) String length: inclusive between 0 and 250.
-    + `pickup.address.address_line1` (string) String length: inclusive between 0 and 250.
-    + `pickup.address.address_line2` (string) String length: inclusive between 0 and 250.
-    + `flight` (object)
-    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3.
-    + `flight.airline_code` (string) Max length: 2. Min length: 2.
-    + `flight.flight_number` (string) Max length: 4. Min length: 1.
-    + `flight.airport_pickup_option` (object)Correcte
-    + `stops` (object) Required.
-    + `dropoff` (object)
-    + `dropoff.scheduled_arriving_at` (object)
-    + `dropoff.address` (object) Required.
-    + `dropoff.address.latitude` (float)
-    + `dropoff.address.longitude` (float)
-    + `dropoff.address.name` (string) String length: inclusive between 0 and 500.
-    + `dropoff.address.country_code` (string) String length: inclusive between 0 and 5.
-    + `dropoff.address.state_code` (string) String length: inclusive between 0 and 5.
-    + `dropoff.address.postal_code` (string) String length: inclusive between 0 and 15.
-    + `dropoff.address.city` (string) String length: inclusive between 0 and 250.
-    + `dropoff.address.address_line1` (string) String length: inclusive between 0 and 250.
-    + `dropoff.address.address_line2` (string) String length: inclusive between 0 and 250.
-    + `flight` (object)
-    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3.
-    + `flight.airline_code` (string) Max length: 2. Min length: 2.
-    + `flight.flight_number` (string) Max length: 4. Min length: 1.
-    + `flight.airport_pickup_option` (object)
+   + `executors[]` (optional, array[string]) 
+        The count of elements should be less or equals to 5. 
+    + `executor_billing_contact_account_number` (optional, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact` (optional, object) 
+    + `billing_contact.company_name` (optional, string) 
+        The value must be non-empty string with maximum length 150. 
+    + `billing_contact.first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact.last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact.phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `billing_contact.email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `scheduled_pickup_at` (required, string) 
+        The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
+    + `luggage_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `passenger_count` (required, number) 
+        The value must be integer which is not less than 1. 
+    + `infant_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `booster_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `toddler_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `duration` (optional, number) 
+        The value must be integer which is not less than 60. 
+    + `is_handicap_access_required` (optional, boolean) 
+        + Default: `false` 
+    + `pickup` (required, object) 
+    + `pickup.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `pickup.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `pickup.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `pickup.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `pickup.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `pickup.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `pickup.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.flight` (optional, object) 
+    + `pickup.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `pickup.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `pickup.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `pickup.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `stops[]` (optional, array[object]) 
+    + `stops[].scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `stops[].address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `stops[].address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `stops[].address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `stops[].address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `stops[].address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `stops[].address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].flight` (optional, object) 
+    + `stops[].flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `stops[].flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `stops[].flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `stops[].notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `dropoff` (optional, object) 
+    + `dropoff.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `dropoff.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `dropoff.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `dropoff.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `dropoff.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `dropoff.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `dropoff.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.flight` (optional, object) 
+    + `dropoff.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `dropoff.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `dropoff.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
 
     + Headers
 
@@ -411,6 +518,13 @@ Allows you to see pricing for your trip requirements by returning a collection o
           "vip_sedan",
           "other_sedan"
        ],
+       "billing_contact": {
+           "company_name": "SomeCompany",
+           "first_name": "FirstName",
+           "last_name": "LastName",
+           "phone": "+380966666666",
+           "email": "someEmal@email.com"
+        },
        "scheduled_pickup_at":"2017-03-24T00:00:00",
        "luggage_count":2,
        "passenger_count":1,
@@ -506,17 +620,63 @@ Creates new reservation using specified booking information and specified rate l
 
  + Request
 
-    + `search_result_id` (int) Range: inclusive between 1 and 9.22337203685478E+18.
-    + `passengers` (object) Required.
-    + `pickup_flight_info` (object)
-    + `pickup_flight_info.airline_code` (string) Max length: 2. Min length: 2.
-    + `pickup_flight_info.flight_number` (string) Max length: 4. Min length: 1.
-    + `dropoff_flight_info` (object)
-    + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
-    + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
-    + `originator_udfs` (object)
-    + `originator_reference_number` (string) Required. String length: inclusive between 0 and 50.
-    + `notes` (string) String length: inclusive between 0 and 500.
+   + `originator_reference_number` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `search_result_id` (required, number) 
+        The valus should be number inclusive between 1 and 9.22337203685478E+18. 
+    + `passengers[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `passengers[].first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `passengers[].email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `pickup_flight_info` (optional, object) 
+    + `pickup_flight_info.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `pickup_flight_info.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `dropoff_flight_info` (optional, object) 
+    + `dropoff_flight_info.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff_flight_info.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `credit_card` (optional, object) 
+    + `credit_card.card_number` (required, string) 
+        The value must be non-empty string with maximum length 20. 
+    + `credit_card.holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.holder_type` (optional, enum[string]) 
+        + Members 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `credit_card.expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `credit_card.expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `credit_card.billing_address` (optional, object) 
+    + `credit_card.billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `credit_card.billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `credit_card.billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `originator_udfs[]` (optional, array[object]) 
 
     + Headers
 
@@ -541,6 +701,21 @@ Creates new reservation using specified booking information and specified rate l
        "dropoff_flight_info":{  
           "airline_code":"AA",
           "flight_number":"46"
+       },
+       "credit_card": {
+           "card_number": "4111111111111111",
+           "holder_name": "Holdera Name",
+           "holder_type": "personal",
+           "expiration_year": 2021,
+           "expiration_month": 9,
+           "billing_address": {
+               "country_code": "US",
+               "state_code": "TX",
+               "postal_code": "12454",
+               "city": "Dallas",
+               "address_line1": "some address",
+               "address_line2": "some address"
+           }
        },
        "originator_udfs":{  
           "key":"value"
@@ -574,15 +749,59 @@ Updates a reservation by reservation Id using specified booking information rate
 
 + Request
 
-    + `search_result_id` (int) Range: inclusive between 1 and 9.22337203685478E+18.
-    + `passengers` (object) Required.
-    + `pickup_flight_info` (object)
-    + `pickup_flight_info.airline_code` (string) Max length: 2. Min length: 2.
-    + `pickup_flight_info.flight_number` (string) Max length: 4. Min length: 1.
-    + `dropoff_flight_info` (object)
-    + `dropoff_flight_info.airline_code` (string) Max length: 2. Min length: 2.
-    + `dropoff_flight_info.flight_number` (string) Max length: 4. Min length: 1.
-    + `originator_udfs` (object)
+    + `search_result_id` (required, number) 
+        The valus should be number inclusive between 1 and 9.22337203685478E+18. 
+    + `passengers[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `passengers[].first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `passengers[].email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `pickup_flight_info` (optional, object) 
+    + `pickup_flight_info.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `pickup_flight_info.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `dropoff_flight_info` (optional, object) 
+    + `dropoff_flight_info.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff_flight_info.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `credit_card` (optional, object) 
+    + `credit_card.card_number` (required, string) 
+        The value must be non-empty string with maximum length 20. 
+    + `credit_card.holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.holder_type` (optional, enum[string]) 
+        + Members 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `credit_card.expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `credit_card.expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `credit_card.billing_address` (optional, object) 
+    + `credit_card.billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `credit_card.billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `credit_card.billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `originator_udfs[]` (optional, array[object]) 
 
     + Headers
 
@@ -607,6 +826,21 @@ Updates a reservation by reservation Id using specified booking information rate
        "dropoff_flight_info":{  
           "airline_code":"AA",
           "flight_number":"46"
+       },
+       "credit_card": {
+           "card_number": "4111111111111111",
+           "holder_name": "Holdera Name",
+           "holder_type": "personal",
+           "expiration_year": 2021,
+           "expiration_month": 9,
+           "billing_address": {
+               "country_code": "US",
+               "state_code": "TX",
+               "postal_code": "12454",
+               "city": "Dallas",
+               "address_line1": "some address",
+               "address_line2": "some address"
+           }
        },
        "originator_udfs":{  
           "key":"value"
@@ -758,60 +992,246 @@ Creates reservation for specified executor using originator price
 
 + Request 
 
-    + `originator_reference_number` (string) Required. String length: inclusive between 0 and 50. 
-    + `executor` (string) Required. String length: inclusive between 0 and 50. 
-    + `notes` (string) String length: inclusive between 0 and 4000. 
-    + `charges` (object) Required. 
-    + `vehicle_type` (object) Required. 
-    + `vehicle_type.value` (string) 
-    + `scheduled_pickup_at` (object) 
-    + `scheduled_duration` (int) Range: inclusive between 60 and 2147483647. 
-    + `passenger_count` (int) Range: inclusive between 1 and 2147483647. 
-    + `passengers` (object) Required. 
-    + `pickup` (object) Required. 
-    + `pickup.scheduled_arriving_at` (object) 
-    + `pickup.address` (object) Required. 
-    + `pickup.address.latitude` (float) 
-    + `pickup.address.longitude` (float) 
-    + `pickup.address.name` (string) String length: inclusive between 0 and 500. 
-    + `pickup.address.country_code` (string) String length: inclusive between 0 and 5. 
-    + `pickup.address.state_code` (string) String length: inclusive between 0 and 5. 
-    + `pickup.address.postal_code` (string) String length: inclusive between 0 and 15. 
-    + `pickup.address.city` (string) String length: inclusive between 0 and 250. 
-    + `pickup.address.address_line1` (string) String length: inclusive between 0 and 250. 
-    + `pickup.address.address_line2` (string) String length: inclusive between 0 and 250. 
-    + `flight` (object) 
-    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3. 
-    + `flight.airline_code` (string) Max length: 2. Min length: 2. 
-    + `flight.flight_number` (string) Max length: 4. Min length: 1. 
-    + `flight.airport_pickup_option` (object) 
-    + `notes` (string) String length: inclusive between 0 and 4000. 
-    + `stops` (object) Required. 
-    + `dropoff` (object) 
-    + `dropoff.scheduled_arriving_at` (object) 
-    + `dropoff.address` (object) Required. 
-    + `dropoff.address.latitude` (float) 
-    + `dropoff.address.longitude` (float) 
-    + `dropoff.address.name` (string) String length: inclusive between 0 and 500. 
-    + `dropoff.address.country_code` (string) String length: inclusive between 0 and 5. 
-    + `dropoff.address.state_code` (string) String length: inclusive between 0 and 5. 
-    + `dropoff.address.postal_code` (string) String length: inclusive between 0 and 15. 
-    + `dropoff.address.city` (string) String length: inclusive between 0 and 250. 
-    + `dropoff.address.address_line1` (string) String length: inclusive between 0 and 250. 
-    + `dropoff.address.address_line2` (string) String length: inclusive between 0 and 250. 
-    + `flight` (object) 
-    + `flight.airport_code` (string) Required. Max length: 3. Min length: 3. 
-    + `flight.airline_code` (string) Max length: 2. Min length: 2. 
-    + `flight.flight_number` (string) Max length: 4. Min length: 1. 
-    + `flight.airport_pickup_option` (object) 
-    + `notes` (string) String length: inclusive between 0 and 4000. 
-    + `currency_code` (string) Required. String length: inclusive between 3 and 3. 
-    + `luggage_count` (int) Range: inclusive between 0 and 2147483647. 
-    + `is_handicap_access_required` (boolean) 
-    + `infant_child_seat_count` (int) Range: inclusive between 0 and 2147483647. 
-    + `booster_child_seat_count` (int) Range: inclusive between 0 and 2147483647. 
-    + `toddler_child_seat_count` (int) Range: inclusive between 0 and 2147483647. 
-    + `originator_udfs` (object) 
+     + `originator_reference_number` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `executor` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `executor_billing_contact_account_number` (optional, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact` (optional, object) 
+    + `billing_contact.company_name` (optional, string) 
+        The value must be non-empty string with maximum length 150. 
+    + `billing_contact.first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact.last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact.phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `billing_contact.email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `vehicle_type` (required, enum[string]) 
+        + Members 
+            + `economy_sedan` 
+            + `hybrid_sedan` 
+            + `vip_sedan` 
+            + `sedan` 
+            + `economy_suv` 
+            + `hybrid_suv` 
+            + `vip_suv` 
+            + `suv` 
+            + `mini_van` 
+            + `passenger_van` 
+            + `other_van` 
+            + `limousine` 
+            + `mini_bus` 
+            + `party_bus` 
+            + `coach_bus` 
+            + `other_bus` 
+            + `shared_vehicle` 
+            + `other_vehicle` 
+            + `undefined` 
+    + `credit_card` (optional, object) 
+    + `credit_card.card_number` (required, string) 
+        The value must be non-empty string with maximum length 20. 
+    + `credit_card.holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.holder_type` (optional, enum[string]) 
+        + Members 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `credit_card.expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `credit_card.expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `credit_card.billing_address` (optional, object) 
+    + `credit_card.billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `credit_card.billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `credit_card.billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `scheduled_pickup_at` (required, string) 
+        The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
+    + `scheduled_duration` (optional, number) 
+        The value must be integer which is not less than 60. 
+    + `passenger_count` (required, number) 
+        The value must be integer which is not less than 1. 
+    + `passengers[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `passengers[].first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `passengers[].email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `pickup` (required, object) 
+    + `pickup.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `pickup.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `pickup.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `pickup.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `pickup.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `pickup.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `pickup.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.flight` (optional, object) 
+    + `pickup.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `pickup.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `pickup.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `pickup.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `stops[]` (optional, array[object]) 
+    + `stops[].scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `stops[].address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `stops[].address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `stops[].address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `stops[].address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `stops[].address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `stops[].address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].flight` (optional, object) 
+    + `stops[].flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `stops[].flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `stops[].flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `stops[].notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `dropoff` (optional, object) 
+    + `dropoff.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `dropoff.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `dropoff.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `dropoff.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `dropoff.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `dropoff.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `dropoff.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.flight` (optional, object) 
+    + `dropoff.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `dropoff.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `dropoff.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `currency_code` (required, string) 
+        The value must be string with valid ISO 4217 currency alpha code. 
+    + `charges[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `charges[].name` (required, enum[string]) 
+        + Members 
+            + `base_charge` 
+            + `hourly_charge` 
+            + `passenger_charge` 
+            + `distance_charge` 
+            + `gratuity_charge` 
+            + `extra_gratuity` 
+            + `stops_charge` 
+            + `tolls` 
+            + `surcharges` 
+            + `parking` 
+            + `miscellaneous_charge` 
+            + `discount` 
+            + `taxes` 
+    + `charges[].value` (optional, number) 
+        + Default: `0` 
+    + `luggage_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `is_handicap_access_required` (optional, boolean) 
+        + Default: `false` 
+    + `infant_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `booster_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `toddler_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `originator_udfs[]` (optional, array[object]) 
 
     + Headers 
 
@@ -823,6 +1243,28 @@ Creates reservation for specified executor using originator price
 {
   "originator_reference_number": "ref12345",
   "executor": "rosalimo",
+  "billing_contact": {
+     "company_name": "SomeCompany",
+     "first_name": "FirstName",
+     "last_name": "LastName",
+     "phone": "+380966666666",
+     "email": "someEmal@email.com"
+  },
+  "credit_card": {
+      "card_number": "4111111111111111",
+      "holder_name": "Holdera Name",
+      "holder_type": "personal",
+      "expiration_year": 2021,
+      "expiration_month": 9,
+      "billing_address": {
+          "country_code": "US",
+          "state_code": "TX",
+          "postal_code": "12454",
+          "city": "Dallas",
+          "address_line1": "some address",
+          "address_line2": "some address"
+      }
+  },
   "notes": "Trip notes",
   "charges": [
     {
@@ -1030,6 +1472,7 @@ In this case, an operator will handle these updates as single update request and
 + Parameters
     + `id` (required, number)
 + Request(application/json;charset=utf-8)
+    
     + `vehicle_type` (required, enum[string]) 
         + Members 
             + `economy_sedan` 
@@ -1051,13 +1494,42 @@ In this case, an operator will handle these updates as single update request and
             + `shared_vehicle` 
             + `other_vehicle` 
             + `undefined` 
+    + `credit_card` (optional, object) 
+    + `credit_card.card_number` (required, string) 
+        The value must be non-empty string with maximum length 20. 
+    + `credit_card.holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.holder_type` (optional, enum[string]) 
+        + Members 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `credit_card.expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `credit_card.expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `credit_card.billing_address` (optional, object) 
+    + `credit_card.billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `credit_card.billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `credit_card.billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
     + `scheduled_pickup_at` (required, string) 
         The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
     + `scheduled_duration` (optional, number) 
         The value must be integer which is not less than 60. 
     + `passenger_count` (required, number) 
         The value must be integer which is not less than 1. 
-    + `passengers[]` (required, array) 
+    + `passengers[]` (required, array[object]) 
         The count of elements should be greater or equals to 1. 
     + `passengers[].first_name` (required, string) 
         The value must be non-empty string with maximum length 50. 
@@ -1107,7 +1579,7 @@ In this case, an operator will handle these updates as single update request and
             + `inside` 
     + `pickup.notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
-    + `stops[]` (optional, array) 
+    + `stops[]` (optional, array[object]) 
     + `stops[].scheduled_arriving_at` (optional, string) 
         The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
     + `stops[].address` (required, object) 
@@ -1187,7 +1659,7 @@ In this case, an operator will handle these updates as single update request and
         The value must be non-empty string with maximum length 4000. 
     + `currency_code` (required, string) 
         The value must be string with valid ISO 4217 currency alpha code. 
-    + `charges[]` (required, array) 
+    + `charges[]` (required, array[object]) 
         The count of elements should be greater or equals to 1. 
     + `charges[].name` (required, enum[string]) 
         + Members 
@@ -1220,12 +1692,14 @@ In this case, an operator will handle these updates as single update request and
     + `toddler_child_seat_count` (optional, number) 
         The value must be integer which is not less than 0. 
         + Default: `0` 
-    + `originator_udfs[]` (optional, array) 
+    + `originator_udfs[]` (optional, array[object]) 
+    
     + Headers 
         Accept-Encoding: gzip 
         Accept-Charset: utf-8 
         Accept: application/json
         Authorization: bearer {access_token} 
+        
     + Body 
         {
             "scheduled_pickup_at": "2017-05-17T03:28:23",
@@ -1239,6 +1713,21 @@ In this case, an operator will handle these updates as single update request and
                    "email": "john.smith@test.net"
                 }
             ],
+            "credit_card": {
+                   "card_number": "4111111111111111",
+                   "holder_name": "Holdera Name",
+                   "holder_type": "personal",
+                   "expiration_year": 2021,
+                   "expiration_month": 9,
+                   "billing_address": {
+                       "country_code": "US",
+                       "state_code": "TX",
+                       "postal_code": "12454",
+                       "city": "Dallas",
+                       "address_line1": "some address",
+                       "address_line2": "some address"
+                   }
+               },
             "pickup": {
                 "scheduled_arriving_at": "00:30:00",
                     "address": {
