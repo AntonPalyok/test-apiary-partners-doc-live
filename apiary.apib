@@ -927,6 +927,25 @@ Returns detailed reservation info
     },
     "notes": "Notes"
   },
+  "credit_card_id": 123,
+  "credit_card": {
+      "card_number_first_digit": "4",
+      "card_number_last_digits": "1111",
+      "card_network": "visa",
+      "holder_name": "josh Smith",
+      "holder_type": "personal",
+      "expiration_year": 2021,
+      "expiration_month": 5,
+      "billing_address": {
+          "country_code": "US",
+          "state_code": "TX",
+          "postal_code": "12345",
+          "city": "Dallas",
+          "address_line1": "123 Some Street",
+          "address_line2": "24 ap"
+      },
+      "notes": "Some CC notes"
+  },
   "currency_code": "USD",
   "luggage_count": 1,
   "is_handicap_access_required": true,
@@ -1428,7 +1447,9 @@ In this case, an operator will handle these updates as single update request and
 + Parameters
     + `id` (required, number)
 + Request(application/json;charset=utf-8)
-    
+
+    + `credit_card_id` (optional, number) 
+        The value must be integer which is not less than 1. 
     + `vehicle_type` (required, enum[string]) 
         + Members 
             + `economy_sedan` 
@@ -1698,6 +1719,7 @@ In this case, an operator will handle these updates as single update request and
                 "value": 15.0
               }
             ],
+            "credit_card_id": 123,
             "luggage_count": 4,
             "is_handicap_access_required": true,
             "infant_child_seat_count": 6,
@@ -1743,6 +1765,228 @@ Cancels the reservation on behalf of passenger.
 
             Content-Type: application/json 
             Authorization: bearer {access_token}
+            
+## Reservation Credit Card [/Reservation/credit_card]
+
+### Get Credit Card [GET /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
+Returns credit card.
++ Parameters
+    + `reservation_id` (required, number) 
+    + `id` (required, number) 
+
++ Request
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Authorization: bearer {access_token} 
+
++ Response 200 (application/json)
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+    + Body 
+        {
+            "id": 1,
+            "card_number_first_digit": "4",
+            "card_number_last_digits": "1111",
+            "card_network": "visa",
+            "holder_name": "Josh Smith",
+            "holder_type": "personal",
+            "expiration_year": 2021,
+            "expiration_month": 6,
+            "billing_address": {
+                "country_code": "US",
+                "state_code": "TX",
+                "postal_code": "12345",
+                "city": "Dallas",
+                "address_line1": "123 Some Street",
+                "address_line2": "24 ap"
+            },
+            "notes": "Some CC notes"
+        } 
+
+### Get List of Reservation Credit Cards [GET /partners/self/reservations/{reservation_id}/credit_cards?sort_by={sort_by}&sort_order={sort_order}&page_index={page_index}&page_size={page_size}] 
+Returns credit card.
++ Parameters
+    + `reservation_id` (required, number) 
+    + `sort_by` (optional, enum[string]) 
+        + Members 
+            + `number` 
+            + `expiration_date` 
+            + `holder_name` 
+            + `preference` 
+    + `sort_order` (optional, enum[string]) 
+        + Members 
+            + `asc` 
+            + `desc` 
+    + `page_index` (optional, number) 
+        The value must be integer which inclusive between 1 and 40000000. 
+        + Default: `1` 
+    + `page_size` (optional, number) 
+        The value must be integer which inclusive between 1 and 50. 
+        + Default: `20` 
+
++ Request
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Authorization: bearer {access_token} 
+
++ Response 200 (application/json)
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+    + Body 
+        {
+            "id": 1,
+            "card_number_first_digit": "4",
+            "card_number_last_digits": "1111",
+            "card_network": "visa",
+            "holder_name": "Josh Smith",
+            "holder_type": "personal",
+            "expiration_year": 2021,
+            "expiration_month": 6,
+        } 
+
+### Create Credit Card [POST /partners/self/reservations/{reservation_id}/credit_cards] 
+Creates credit card.
++ Parameters
+    + `reservation_id` (required, number) 
+
++ Request(application/json)
+    + `card_number` (required, string) 
+        The value must be non-empty string with maximum length 20. 
+    + `holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `holder_type` (optional, enum[string]) 
+        + Members 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `billing_address` (optional, object) 
+    + `billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `notes` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
+    + Body 
+        {
+            "card_number": "4111111111111111",
+            "holder_name": "Josh Smith",
+            "holder_type": "personal",
+            "expiration_year": 2021,
+            "expiration_month": 6,
+            "billing_address": {
+                "country_code": "US",
+                "state_code": "TX",
+                "postal_code": "12345",
+                "city": "Dallas",
+                "address_line1": "123 Some Street",
+                "address_line2": "24 ap"
+            },
+            "notes": "Some CC notes"
+        } 
+
++ Response 200 (application/json)
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+    + Body 
+        {
+            "id": 1,
+            "card_number_first_digit": "4",
+            "card_number_last_digits": "1111",
+            "card_network": "visa",
+            "holder_name": "Josh Smith",
+            "holder_type": "personal",
+            "expiration_year": 2021,
+            "expiration_month": 6,
+            "billing_address": {
+                "country_code": "US",
+                "state_code": "TX",
+                "postal_code": "12345",
+                "city": "Dallas",
+                "address_line1": "123 Some Street",
+                "address_line2": "24 ap"
+            },
+            "notes": "Some CC notes"
+        } 
+
+### Edit Credit Card [PUT /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
+Edit credit card.
++ Parameters
+    + `reservation_id` (required, number) 
+    + `id` (required, number) 
+
++ Request(application/json)
+    + `holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `holder_type` (optional, enum[string]) 
+        + Members 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `billing_address` (optional, object) 
+    + `billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `notes` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
+    + Body 
+        {
+            "holder_name": "Josh Smith",
+            "holder_type": "personal",
+            "expiration_year": 2021,
+            "expiration_month": 6,
+            "billing_address": {
+                "country_code": "US",
+                "state_code": "TX",
+                "postal_code": "12345",
+                "city": "Dallas",
+                "address_line1": "123 Some Street",
+                "address_line2": "24 ap"
+            },
+            "notes": "Some CC notes"
+        } 
+
++ Response 204
 
 ## Driver GPS [/Gps]
 
