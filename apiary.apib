@@ -662,8 +662,6 @@ Creates new reservation using specified booking information and specified rate l
     + `credit_card.expiration_month` (required, number) 
         The valus should be number inclusive between 1 and 12. 
     + `credit_card.billing_address` (optional, object) 
-    + `credit_card.billing_address.name` (optional, string) 
-        The value must be non-empty string with maximum length 500. 
     + `credit_card.billing_address.country_code` (optional, string) 
         The value must be non-empty string with maximum length 5. 
     + `credit_card.billing_address.state_code` (optional, string) 
@@ -772,6 +770,8 @@ Updates a reservation by reservation Id using specified booking information rate
         The value must be string with valid airline IATA or ICAO code. 
     + `dropoff_flight_info.flight_number` (optional, string) 
         The value must be string with flight number digits.
+    + `credit_card_id` (optional, number) 
+        The value must be integer which is not less than 1. 
     + `originator_udfs[]` (optional, array[object]) 
 
     + Headers
@@ -798,6 +798,7 @@ Updates a reservation by reservation Id using specified booking information rate
           "airline_code":"AA",
           "flight_number":"46"
        },
+       "credit_card_id":123,
        "originator_udfs":{  
           "key":"value"
        }
