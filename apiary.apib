@@ -2096,6 +2096,11 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 | charges | array | Array of final charges. Sent only on `reservation.closed` event. |
 | charges[].name | string | Charge name. Sent only on `reservation.closed` event. |
 | charges[].value | number | Charge value. Sent only on `reservation.closed` event. |
+| charges[].details | number | Charge details. Sent only on `reservation.closed` event. |
+| charges[].details[].name | string | Charge details name. Sent only on `reservation.closed` event. |
+| charges[].details[].value | number | Charge details value. Sent only on `reservation.closed` event. |
+| dispute_notes | string | Reason of new price from executor side. Sent only on `reservation.closed` event. |
+
 
 
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
