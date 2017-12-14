@@ -610,8 +610,48 @@ Returns a detailed (breakdown) list of charges by search_id from the previous me
 
     + Body
 
-            { "charges": [ { "name": "fixed", "value": 95.0 }, { "name": "per_hour", "value": 2.25 }, { "name": "per_passenger", "value": 2.75 } ], "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedan", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path/vehicle_image2.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 100.0 } 
-
+{  
+   "charges":[  
+      {  
+         "name":"base_charge",
+         "value":10.0,
+         "details":[  
+            {  
+               "name":"BaseRate",
+               "value":10.0
+            }
+         ]
+      },
+      {  
+         "name":"tolls",
+         "value":15.0,
+         "details":[  
+            {  
+               "name":"Tolls1",
+               "value":5.0
+            },
+            {  
+               "name":"Tolls1",
+               "value":10.0
+            }
+         ]
+      }
+   ],
+   "search_result_id":546225,
+   "executor":"rosalimo",
+   "vehicle_type":"hybrid_sedan",
+   "vehicle_type_name":"SEDAN",
+   "vehicle_type_description":"Sedan Town Car",
+   "vehicle_type_images":[  
+      "https://test_path/vehicle_image.png",
+      "https://test_path/vehicle_image2.png"
+   ],
+   "passenger_capacity":3,
+   "luggage_capacity":5,
+   "is_handicap_accessible":true,
+   "currency_code":"USD",
+   "total_amount":100.0
+}
 
 ## Booking [/Booking]
 
@@ -839,16 +879,42 @@ Returns detailed reservation info
   "state": "driver_is_at_pickup",
   "state_reason": "Some reason",
   "executor_billing_contact_number": "31445",
-  "scheduled_dropoff_at": "2017-05-17T05:28:23",
+  "actual_pickup_at": "2017-12-14T16:18:18",
+  "scheduled_pickup_at": "2017-05-17T03:28:23",
+  "scheduled_duration": 10800,
+  "scheduled_dropoff_at": "2017-12-14T16:18:18",
+  "actual_dropoff_at": "2017-12-14T16:18:18",
+  "scheduled_on_spot_at": "2017-12-14T16:18:18",
+  "actual_on_spot_at": "2017-12-14T16:18:18",
+  "actual_duration": 0,
+  "actual_garage_out_at": "2017-12-14T16:18:18",
+  "actual_garage_in_at": "2017-12-14T16:18:18",
+  "actual_driver_duration": 0,
   "distance": 200.0,
   "charges": [
     {
       "name": "base_charge",
-      "value": 10.0
+      "value": 10.0,
+      "details": [
+       {
+            "name": "BaseRate",
+            "value": 10.0
+       }
+      ]
     },
     {
       "name": "tolls",
-      "value": 15.0
+      "value": 15.0,
+      "details": [
+       {
+            "name": "Tolls1",
+            "value": 5.0
+       },
+       {
+            "name": "Tolls1",
+            "value": 10.0
+       }
+      ]
     }
   ],
   "total_amount": 25.0,
@@ -870,8 +936,6 @@ Returns detailed reservation info
   "executor_reference_number": "0023423",
   "originator_reference_number": "ref12345",
   "vehicle_type": "coach_bus",
-  "scheduled_pickup_at": "2017-05-17T03:28:23",
-  "scheduled_duration": 10800,
   "passenger_count": 1,
   "passengers": [
     {
@@ -1336,16 +1400,42 @@ Creates reservation for specified executor using originator price
   "state": "driver_is_at_pickup",
   "state_reason": "Some reason",
   "executor_billing_contact_number": "31445",
-  "scheduled_dropoff_at": "2017-05-17T05:28:23",
+  "actual_pickup_at": "2017-12-14T16:18:18",
+  "scheduled_pickup_at": "2017-05-17T03:28:23",
+  "scheduled_duration": 10800,
+  "scheduled_dropoff_at": "2017-12-14T16:18:18",
+  "actual_dropoff_at": "2017-12-14T16:18:18",
+  "scheduled_on_spot_at": "2017-12-14T16:18:18",
+  "actual_on_spot_at": "2017-12-14T16:18:18",
+  "actual_duration": 0,
+  "actual_garage_out_at": "2017-12-14T16:18:18",
+  "actual_garage_in_at": "2017-12-14T16:18:18",
+  "actual_driver_duration": 0,
   "distance": 200.0,
   "charges": [
     {
       "name": "base_charge",
-      "value": 10.0
+      "value": 10.0,
+      "details": [
+       {
+            "name": "BaseRate",
+            "value": 10.0
+       }
+      ]
     },
     {
       "name": "tolls",
-      "value": 15.0
+      "value": 15.0,
+      "details": [
+       {
+            "name": "Tolls1",
+            "value": 5.0
+       },
+       {
+            "name": "Tolls1",
+            "value": 10.0
+       }
+      ]
     }
   ],
   "total_amount": 25.0,
@@ -1367,8 +1457,6 @@ Creates reservation for specified executor using originator price
   "executor_reference_number": "0023423",
   "originator_reference_number": "ref12345",
   "vehicle_type": "coach_bus",
-  "scheduled_pickup_at": "2017-05-17T03:28:23",
-  "scheduled_duration": 10800,
   "passenger_count": 1,
   "passengers": [
     {
@@ -2093,6 +2181,17 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 | car_make | string | Car make. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | car_model | string | Car model. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | car_year | number | Year when the car was manufactured. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| actual_pickup_at | datetime | Sent only on `reservation.closed` event. |
+| scheduled_pickup_at | datetime |Sent only on `reservation.closed` event. |
+| scheduled_duration | number | Sent only on `reservation.closed` event. |
+| scheduled_dropoff_at | datetime | Sent only on `reservation.closed` event. |
+| actual_dropoff_at | datetime | Sent only on `reservation.closed` event. |
+| scheduled_on_spot_at | datetime | Sent only on `reservation.closed` event. |
+| actual_on_spot_at | datetime | Sent only on `reservation.closed` event. |
+| actual_duration | number | Sent only on `reservation.closed` event. |
+| actual_garage_out_at | datetime | Sent only on `reservation.closed` event. |
+| actual_garage_in_at | datetime | Sent only on `reservation.closed` event. |
+| actual_driver_duration | number | Sent only on `reservation.closed` event. |
 | charges | array | Array of final charges. Sent only on `reservation.closed` event. |
 | charges[].name | string | Charge name. Sent only on `reservation.closed` event. |
 | charges[].value | number | Charge value. Sent only on `reservation.closed` event. |
