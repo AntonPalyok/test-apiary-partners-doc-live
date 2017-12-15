@@ -2137,8 +2137,8 @@ The tables below describes all possible request/response parameters for the Subs
 
 | Name | Type | Required | Description |
 |-----------------------------------------------|-----------|--------|--------------------------------------------------------------------------------------|
-| url | string | Yes | The endpoint the notification will be sent to |
-| events | object | Yes | List of evens to subscribe on |
+| url | string | Yes | Notification will be sent to this endpoint |
+| events | object | Yes | List of events to subscribe on |
 
 Check the table of supported `events`:
 
@@ -2146,12 +2146,12 @@ Check the table of supported `events`:
 |---------------------|----------------------------------------|
 | reservation.accepted | Executor accepted the reservation. |
 | reservation.rejected | Executor rejected the reservation. After this event, any processing of reservation will be suppressed. |
-| reservation.assigned | Driver has been assigned to the reservation. Payload of webhook for this event may contains driver and car information. |
+| reservation.assigned | Driver has been assigned to the reservation. Payload of webhook for this event may contain driver and car information. |
 | reservation.update_accepted | Operator accepted update requests of reservation. Update requests which were sent previously were applied to the reservation. |
 | reservation.update_rejected | Operator rejected update requests of reservation. Update requests which were sent previously were not applied to the reservation. |
-| reservation.unassigned | Driver has been unassigned from the reservation. After this event previously accepted driver and car infomation information became not actual. |
-| reservation.driver_is_on_the_way | Driver is on the way to pick-up location. Payload of webhook for this event may contains driver and car information. |
-| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location. Payload of webhook for this event may contains driver and car information. |
+| reservation.unassigned | Driver has been unassigned from the reservation. After this event previously accepted driver and car information becomes irrelevant. |
+| reservation.driver_is_on_the_way | Driver is on the way to pick-up location. Payload of webhook for this event may contain driver and car information. |
+| reservation.driver_is_at_pickup | Driver has arrived at the pick-up location. Payload of webhook for this event may contain driver and car information. |
 | reservation.driver_is_waiting_at_pickup | Driver has started waiting for passenger at pickup location (additional fee may be included in final charges). |
 | reservation.driver_is_waiting_for_passenger_started | Driver has started waiting for passenger at current location (additional fee may be include in final chargesd). |
 | reservation.driver_is_waiting_for_passenger_stopped | Driver has stopped waiting for passenger at current location. |
@@ -2160,7 +2160,7 @@ Check the table of supported `events`:
 | reservation.cancelled | Reservation has been cancelled. |
 | reservation.closed | Reservatoin has been closed. Payload for this event will contain final charges. After this event, any processing of reservation will be suppressed. |
 
-The list of events may be extended in the future.
+The list of events may be extended in future.
 
 The table below describes all possible parameters of <a href="/#reference/notification-subscriptions/web-hook">Web Hook</a> notification.
 
@@ -2173,14 +2173,14 @@ The table below describes all possible parameters of <a href="/#reference/notifi
 | originator_reference_number | string | Reference number for the reservation on originator's side. |
 | state | string | Current reservation state. It is not the same as event. |
 | state_reason | string | The reservation state reason. |
-| driver_phone | string | Driver phone number in E.164 format. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| driver_first_name | string | Driver first name. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| driver_last_name | string | Driver last name. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| car_licence_plate | string | Car license plate. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| car_color | string | Car color. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| car_make | string | Car make. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| car_model | string | Car model. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
-| car_year | number | Year when the car was manufactured. May sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| driver_phone | string | Driver phone number in E.164 format. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| driver_first_name | string | Driver first name. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| driver_last_name | string | Driver last name. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_licence_plate | string | Car license plate. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_color | string | Car color. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_make | string | Car make. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_model | string | Car model. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
+| car_year | number | Year when the car was manufactured. May be sent on `reservation.assigned`, `reservation.driver_is_on_the_way` and `reservation.driver_is_at_pickup` events. |
 | actual_pickup_at | datetime | Sent only on `reservation.closed` event. |
 | scheduled_pickup_at | datetime |Sent only on `reservation.closed` event. |
 | scheduled_duration | number | Sent only on `reservation.closed` event. |
