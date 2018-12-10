@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://sandbox-api.mylimobiz.com/
+HOST: https://sandbox-api.mylimobiz.com/v0/
 
 # Partner API
 
@@ -122,7 +122,7 @@ Parameter `grant_type` will depend on Authorization method:
             {
                 "grant_type": "client_credentials",
                 "client_id": "tpp_integration_test",
-                "client_secret": "lcdLYzj7RaUgmRp7sVngt2fpD5JaBJ18Pkk2IrNSmF75GI5kAR",
+                "client_secret": "lcdLYzj7RaUgmRp7sVng4typD5JaBJ18Pkk2IrNSsds32",
             }
 
 + Response 200 (application/json)
@@ -130,7 +130,7 @@ Parameter `grant_type` will depend on Authorization method:
     + Body
 
             {
-                "access_token": "YE0W7CSdfVaQFmC8GTQ1",
+                "access_token": "YE0W7CSdfVaQrt8GTQ1",
                 "token_type": "bearer",
                 "expires_in": 3600,
             }
@@ -156,9 +156,9 @@ Your access token will expire after a period of time and must be refreshed. Time
 
             {
                 "grant_type": "refresh_token",
-                "refresh_token": "CSYE0W7dfVaQFmC8GTQPL",
-                "client_id": "la_customer_test",
-                "client_secret": "lcfLYzj7RaUgmRp8sVngt2fpD5GaBJ19Ptt2MrNSlF57GI5kAR"
+                "refresh_token": "CSYE0W7dfedfrQFmC8GTQPL",
+                "client_id": "tpp_integration_test",
+                "client_secret": "lcdLYzj7RaUgmRp7sVng4typD5JaBJ18Pkk2IrNSsds32"
             }
 
 + Response 200 (application/json)
@@ -346,8 +346,7 @@ In 'execution' console you can see request/response samples, data types and size
 Allows you to see pricing for your trip requirements by returning a collection of charges.
 
  + Request
-
-   + `executors[]` (optional, array[string]) 
+    + `executors[]` (optional, array[string]) 
         The count of elements should be less or equals to 5. 
     + `executor_billing_contact_account_number` (optional, string) 
         The value must be non-empty string with maximum length 50. 
@@ -363,6 +362,28 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `billing_contact.email` (optional, string) 
         The value must be string with email address. 
         The value must be non-empty string with maximum length 255. 
+    + `vehicle_types[]` (required, array[enum[string]]) 
+        The count of elements should be greater or equals to 1. 
+        The count of elements should be less or equals to 10. 
+        + Members 
+            + `economy_sedan` 
+            + `hybrid_sedan` 
+            + `vip_sedan` 
+            + `sedan` 
+            + `economy_suv` 
+            + `hybrid_suv` 
+            + `vip_suv` 
+            + `suv` 
+            + `mini_van` 
+            + `passenger_van` 
+            + `other_van` 
+            + `limousine` 
+            + `mini_bus` 
+            + `party_bus` 
+            + `coach_bus` 
+            + `other_bus` 
+            + `shared_vehicle` 
+            + `other_vehicle` 
     + `scheduled_pickup_at` (required, string) 
         The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
     + `luggage_count` (optional, number) 
@@ -416,6 +437,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `pickup.flight.flight_number` (optional, string) 
         The value must be string with flight number digits. 
     + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
         + Members 
             + `none` 
             + `curbside` 
@@ -455,6 +477,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `stops[].flight.flight_number` (optional, string) 
         The value must be string with flight number digits. 
     + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
         + Members 
             + `none` 
             + `curbside` 
@@ -494,164 +517,353 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `dropoff.flight.flight_number` (optional, string) 
         The value must be string with flight number digits. 
     + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
         + Members 
             + `none` 
             + `curbside` 
             + `inside` 
     + `dropoff.notes` (optional, string) 
         The value must be non-empty string with maximum length 4000. 
+        
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
+        
+    + Body 
+        {  
+           "executors":[  
+              "dfw-limo",
+              "dfw-limo-2"
+           ],
+           "vehicle_types":[  
+              "sedan"
+           ],
+           "scheduled_pickup_at":"2019-12-22T15:00:00",
+           "luggage_count":2,
+           "passenger_count":2,
+           "infant_child_seat_count":0,
+           "booster_child_seat_count":1,
+           "toddler_child_seat_count":0,
+           "is_handicap_access_required":false,
+           "pickup":{  
+              "scheduled_arriving_at":"13:10:00",
+              "address":{  
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "latitude":"40.76257",
+                 "longitude":"-73.83143"
+              }
+           },
+           "stops":[  
+              {  
+                 "address":{  
+                    "latitude":40.70922,
+                    "longitude":-74.0137558,
+                    "country_code":"US",
+                    "state_code":"NY",
+                    "postal_code":"10006",
+                    "city":"New York",
+                    "address_line1":"123 Washington St"
+                 }
+              }
+           ],
+           "dropoff":{  
+              "scheduled_arriving_at":"14:05:00",
+              "address":{  
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "latitude":"40.76257",
+                 "longitude":"-73.83143"
+              }
+           }
+        } 
 
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-
-    + Body
-
-    {  
-       "executors":[  
-          "dfw-limo",
-          "dfw-limo2",
-          "dfw-limo3"
-       ],
-       "vehicle_types":[  
-          "vip_sedan",
-          "other_sedan"
-       ],
-       "billing_contact": {
-           "company_name": "SomeCompany",
-           "first_name": "FirstName",
-           "last_name": "LastName",
-           "phone": "+380966666666",
-           "email": "someEmal@email.com"
-        },
-       "scheduled_pickup_at":"2017-03-24T00:00:00",
-       "luggage_count":2,
-       "passenger_count":1,
-       "infant_child_seat_count":0,
-       "booster_child_seat_count":1,
-       "toddler_child_seat_count":0,
-       "duration":8100,
-       "is_handicap_access_required":false,
-       "pickup":{  
-          "scheduled_arriving_at":"00:10:00",
-          "address":{  
-             "latitude":42.3505135,
-             "longitude":-71.10737,
-             "name":"Metropolitan College & Extended Education",
-             "country_code":"US",
-             "state_code":"MA",
-             "postal_code":"02125",
-             "city":"Boston",
-             "address_line1":"745 Commonwealth Ave"
-          }
-       },
-       "stops":[  
-          {  
-             "address":{  
-                "latitude":42.3501854,
-                "longitude":-71.1045456,
-                "name":"Tsai Performance Center",
-                "country_code":"US",
-                "state_code":"MA",
-                "postal_code":"02125",
-                "city":"Boston",
-                "address_line1":"685 Commonwealth Ave"
-             }
-          }
-       ],
-       "dropoff":{  
-          "scheduled_arriving_at":"02:05:00",
-          "address":{  
-             "latitude":42.36552,
-             "longitude":-71.0214844,
-             "name":"Boston Logan Airport",
-             "country_code":"US",
-             "state_code":"MA",
-             "postal_code":"02128"
-          },
-          "flight":{  
-             "airport_code":"BOS",
-             "airline_code":"AF",
-             "flight_number":"123",
-             "airport_pickup_option":"none"
-          }
-       }
-    }
-
- + Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            { "results": [ { "search_result_id": 546225, "executor": "rosalimo", "vehicle_type": "hybrid_sedan", "vehicle_type_name": "SEDAN", "vehicle_type_description": "Sedan Town Car", "vehicle_type_images": [ "https://test_path/vehicle_image.png", "https://test_path_2/vehicle_image.png" ], "passenger_capacity": 3, "luggage_capacity": 5, "is_handicap_accessible": true, "currency_code": "USD", "total_amount": 99.99 } ] } 
++ Response 200 
+    + `results[]` (array[object]) 
+    + `results[].search_result_id` (number) 
+    + `results[].executor` (string) 
+    + `results[].vehicle_type` (enum[string]) 
+    + `results[].vehicle_type_name` (string) 
+    + `results[].vehicle_type_description` (string) 
+    + `results[].vehicle_type_images[]` (array[string]) 
+    + `results[].passenger_capacity` (number) 
+    + `results[].luggage_capacity` (number) 
+    + `results[].is_handicap_accessible` (boolean) 
+    + `results[].currency_code` (string) 
+    + `results[].total_amount` (number) 
+    + `errors[]` (array[object]) 
+    + `errors[].executor` (string) 
+    + `errors[].message` (string) 
+    
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+        
+    + Body 
+        {
+            "results": [
+                {
+                    "search_result_id": 24,
+                    "executor": "dfw-limo",
+                    "vehicle_type": "sedan",
+                    "vehicle_type_name": "Sedan Towncar",
+                    "vehicle_type_images": [
+                        "https://sandbox-manage.mylimobiz.com/Uploads/2/VehicleTypes/5/12720188234_8SlfFAa71Go60Nd5HTs2.jpg",
+                        "https://sandbox-manage.mylimobiz.com/Uploads/2/VehicleTypes/5/12720188239_mRIt4XW331L25LA1NYiu.jpg"
+                    ],
+                    "passenger_capacity": 3,
+                    "luggage_capacity": 3,
+                    "is_handicap_accessible": false,
+                    "currency_code": "USD",
+                    "total_amount": 127.8
+                },
+                {
+                    "search_result_id": 25,
+                    "executor": "dfw-limo-2",
+                    "vehicle_type": "sedan",
+                    "vehicle_type_name": "Sedan Towncar",
+                    "vehicle_type_images": [
+                        "https://sandbox-manage.mylimobiz.com/Uploads/3/VehicleTypes/6/127201883445_fJAm15Pcc8Ea2E6w26bN.jpg"
+                    ],
+                    "passenger_capacity": 4,
+                    "luggage_capacity": 2,
+                    "is_handicap_accessible": false,
+                    "currency_code": "USD",
+                    "total_amount": 182.83
+                }
+            ]
+        }
 
 ### Get Rate Details [GET /partners/self/rate_lookup/results/{id}]
 Returns a detailed (breakdown) list of charges by search_id from the previous method.
 
 + Parameters
-    + id: `1` (required, int)
+    + `id`: 24 (required, number)
 
 + Request
 
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Authorization: bearer {access_token} 
 
 + Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-{  
-   "charges":[  
-      {  
-         "name":"base_charge",
-         "value":10.0,
-         "details":[  
-            {  
-               "name":"BaseRate",
-               "value":10.0
-            }
-         ]
-      },
-      {  
-         "name":"tolls",
-         "value":15.0,
-         "details":[  
-            {  
-               "name":"Tolls1",
-               "value":5.0
-            },
-            {  
-               "name":"Tolls1",
-               "value":10.0
-            }
-         ]
-      }
-   ],
-   "search_result_id":546225,
-   "executor":"rosalimo",
-   "vehicle_type":"hybrid_sedan",
-   "vehicle_type_name":"SEDAN",
-   "vehicle_type_description":"Sedan Town Car",
-   "vehicle_type_images":[  
-      "https://test_path/vehicle_image.png",
-      "https://test_path/vehicle_image2.png"
-   ],
-   "passenger_capacity":3,
-   "luggage_capacity":5,
-   "is_handicap_accessible":true,
-   "currency_code":"USD",
-   "total_amount":100.0
-}
+    + `charges[]` (array[object]) 
+    + `charges[].details[]` (array[object]) 
+    + `details[].name` (string) 
+    + `details[].value` (number) 
+    + `charges[].name` (enum[string]) 
+    + `charges[].value` (number) 
+    + `search_result_id` (number) 
+    + `executor` (string) 
+    + `vehicle_type` (enum[string]) 
+    + `vehicle_type_name` (string) 
+    + `vehicle_type_description` (string) 
+    + `vehicle_type_images[]` (array[string]) 
+    + `passenger_capacity` (number) 
+    + `luggage_capacity` (number) 
+    + `is_handicap_accessible` (boolean) 
+    + `currency_code` (string) 
+    + `total_amount` (number) 
+    
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+        
+    + Body 
+        {
+            "charges": [
+                {
+                    "details": [
+                        {
+                            "name": "Flat Rate",
+                            "value": 127.8
+                        },
+                        {
+                            "name": "Per Unit",
+                            "value": 0
+                        },
+                        {
+                            "name": "OT/Wait Time",
+                            "value": 0
+                        },
+                        {
+                            "name": "Std Grat",
+                            "value": 0
+                        },
+                        {
+                            "name": "Voucher",
+                            "value": 0
+                        },
+                        {
+                            "name": "Fuel Surch",
+                            "value": 0
+                        },
+                        {
+                            "name": "STC Surch",
+                            "value": 0
+                        },
+                        {
+                            "name": "State Tax",
+                            "value": 0
+                        },
+                        {
+                            "name": "Std Tax 1",
+                            "value": 0
+                        },
+                        {
+                            "name": "Std Tax 2",
+                            "value": 0
+                        },
+                        {
+                            "name": "Discount",
+                            "value": 0
+                        },
+                        {
+                            "name": "Discount",
+                            "value": 0
+                        }
+                    ],
+                    "name": "base_charge",
+                    "value": 127.8
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Per Hour",
+                            "value": 0
+                        }
+                    ],
+                    "name": "hourly_charge",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Per Pass",
+                            "value": 0
+                        }
+                    ],
+                    "name": "passenger_charge",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Per Mile",
+                            "value": 0
+                        }
+                    ],
+                    "name": "distance_charge",
+                    "value": 0
+                },
+                {
+                    "name": "gratuity_charge",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Extra Grat",
+                            "value": 0
+                        }
+                    ],
+                    "name": "extra_gratuity",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Extra Stops",
+                            "value": 0
+                        }
+                    ],
+                    "name": "stops_charge",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Tolls",
+                            "value": 0
+                        }
+                    ],
+                    "name": "tolls",
+                    "value": 0
+                },
+                {
+                    "name": "surcharges",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Parking",
+                            "value": 0
+                        }
+                    ],
+                    "name": "parking",
+                    "value": 0
+                },
+                {
+                    "details": [
+                        {
+                            "name": "Setup Fee",
+                            "value": 0
+                        },
+                        {
+                            "name": "Admin Fee",
+                            "value": 0
+                        },
+                        {
+                            "name": "Misc Fee 1",
+                            "value": 0
+                        },
+                        {
+                            "name": "Misc Fee 2",
+                            "value": 0
+                        },
+                        {
+                            "name": "Misc Fee 3",
+                            "value": 0
+                        }
+                    ],
+                    "name": "miscellaneous_charge",
+                    "value": 0
+                },
+                {
+                    "name": "discount",
+                    "value": 0
+                },
+                {
+                    "name": "taxes",
+                    "value": 0
+                }
+            ],
+            "search_result_id": 24,
+            "executor": "dfw-limo",
+            "vehicle_type": "sedan",
+            "vehicle_type_name": "Sedan Towncar",
+            "vehicle_type_images": [
+                "https://sandbox-manage.mylimobiz.com/Uploads/2/VehicleTypes/5/12720188234_8SlfFAa71Go60Nd5HTs2.jpg",
+                "https://sandbox-manage.mylimobiz.com/Uploads/2/VehicleTypes/5/12720188239_mRIt4XW331L25LA1NYiu.jpg"
+            ],
+            "passenger_capacity": 3,
+            "luggage_capacity": 3,
+            "is_handicap_accessible": false,
+            "currency_code": "USD",
+            "total_amount": 127.8
+        }
 
 ## Booking [/Booking]
 
@@ -659,426 +871,15 @@ Returns a detailed (breakdown) list of charges by search_id from the previous me
 Creates new reservation using specified booking information and specified rate lookup information (`search_result_id`) which was accepted previously.
 
  + Request
-
-   + `originator_reference_number` (required, string) 
+    + `originator_reference_number` (required, string) 
         The value must be non-empty string with maximum length 50. 
-    + `notes` (optional, string) 
-        The value must be non-empty string with maximum length 4000. 
-    + `search_result_id` (required, number) 
-        The valus should be number inclusive between 1 and 9.22337203685478E+18. 
-    + `passengers[]` (required, array[object]) 
-        The count of elements should be greater or equals to 1. 
-    + `passengers[].first_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `passengers[].last_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `passengers[].phone` (optional, string) 
-        The value must be a string with a existing phone number in E.164 format. 
-    + `passengers[].email` (optional, string) 
-        The value must be string with email address. 
-        The value must be non-empty string with maximum length 255. 
-    + `pickup_flight_info` (optional, object) 
-    + `pickup_flight_info.airline_code` (optional, string) 
-        The value must be string with valid airline IATA or ICAO code. 
-    + `pickup_flight_info.flight_number` (optional, string) 
-        The value must be string with flight number digits. 
-    + `dropoff_flight_info` (optional, object) 
-    + `dropoff_flight_info.airline_code` (optional, string) 
-        The value must be string with valid airline IATA or ICAO code. 
-    + `dropoff_flight_info.flight_number` (optional, string) 
-        The value must be string with flight number digits. 
     + `credit_card` (optional, object) 
     + `credit_card.card_number` (required, string) 
         The value must be non-empty string with maximum length 20. 
     + `credit_card.holder_name` (optional, string) 
         The value must be non-empty string with maximum length 250. 
     + `credit_card.holder_type` (optional, enum[string]) 
-        + Members 
-            + `unknown` 
-            + `personal` 
-            + `business` 
-    + `credit_card.expiration_year` (required, number) 
-        The valus should be number inclusive between 1 and 9999. 
-    + `credit_card.expiration_month` (required, number) 
-        The valus should be number inclusive between 1 and 12. 
-    + `credit_card.billing_address` (optional, object) 
-    + `credit_card.billing_address.country_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `credit_card.billing_address.state_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `credit_card.billing_address.postal_code` (optional, string) 
-        The value must be non-empty string with maximum length 15. 
-    + `credit_card.billing_address.city` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `credit_card.billing_address.address_line1` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `credit_card.billing_address.address_line2` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `originator_udfs[]` (optional, array[object]) 
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-
-    + Body
-
-    {  
-       "search_result_id":546225,
-       "passengers":[  
-          {  
-             "first_name":"John",
-             "last_name":"Smith",
-             "phone":"+12345678900",
-             "email":"john.smith@test.net"
-          }
-       ],
-       "pickup_flight_info":{  
-    
-       },
-       "dropoff_flight_info":{  
-          "airline_code":"AA",
-          "flight_number":"46"
-       },
-       "credit_card": {
-           "card_number": "4111111111111111",
-           "holder_name": "Holdera Name",
-           "holder_type": "personal",
-           "expiration_year": 2021,
-           "expiration_month": 9,
-           "billing_address": {
-               "country_code": "US",
-               "state_code": "TX",
-               "postal_code": "12454",
-               "city": "Dallas",
-               "address_line1": "some address",
-               "address_line2": "some address"
-           }
-       },
-       "originator_udfs":{  
-          "key":"value"
-       },
-       "originator_reference_number":"gh5ffd123",
-       "notes": "some notes"
-    }
-
- + Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-    {  
-       "reservation_id":557891,
-       "executor_reference_number":"hg77ti56",
-       "executor_udfs":{  
-          "key":"value"
-       }
-    }
-
-
-### Update Booking [PUT /partners/self/bookings/{id}]
-Updates a reservation by reservation Id using specified booking information rate lookup information which was previously returned.
-
-+ Parameters
-    + id: `1` (required, int)
-
-+ Request
-
-    + `search_result_id` (required, number) 
-        The valus should be number inclusive between 1 and 9.22337203685478E+18. 
-    + `passengers[]` (required, array[object]) 
-        The count of elements should be greater or equals to 1. 
-    + `passengers[].first_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `passengers[].last_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `passengers[].phone` (optional, string) 
-        The value must be a string with a existing phone number in E.164 format. 
-    + `passengers[].email` (optional, string) 
-        The value must be string with email address. 
-        The value must be non-empty string with maximum length 255. 
-    + `pickup_flight_info` (optional, object) 
-    + `pickup_flight_info.airline_code` (optional, string) 
-        The value must be string with valid airline IATA or ICAO code. 
-    + `pickup_flight_info.flight_number` (optional, string) 
-        The value must be string with flight number digits. 
-    + `dropoff_flight_info` (optional, object) 
-    + `dropoff_flight_info.airline_code` (optional, string) 
-        The value must be string with valid airline IATA or ICAO code. 
-    + `dropoff_flight_info.flight_number` (optional, string) 
-        The value must be string with flight number digits.
-    + `credit_card_id` (optional, number) 
-        The value must be integer which is not less than 1. 
-    + `originator_udfs[]` (optional, array[object]) 
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-
-    + Body
-
-    {  
-       "search_result_id":546225,
-       "passengers":[  
-          {  
-             "first_name":"John",
-             "last_name":"Smith",
-             "phone":"+12345678900",
-             "email":"john.smith@test.net"
-          }
-       ],
-       "pickup_flight_info":{  
-    
-       },
-       "dropoff_flight_info":{  
-          "airline_code":"AA",
-          "flight_number":"46"
-       },
-       "credit_card_id":123,
-       "originator_udfs":{  
-          "key":"value"
-       }
-    }
-
-+ Response 204
-
-
-## Group Reservations
-
-## Get Reservation [/Reservation/get]
-
-### Get Reservation [GET /partners/self/reservations/{id}] 
-
-Returns detailed reservation info
-
-+ Parameters 
-    + id: `1` (required, int)
-
-+ Request 
-
-    + Headers 
-
-            Content-Type: application/json 
-            Authorization: bearer {access_token}
-
-+ Response 200 
-
-    + Headers 
-
-            Content-Type: application/json 
-
-    + Body 
-
-{
-  "id": 123455,
-  "executor": "rosalimo",
-  "state": "driver_is_at_pickup",
-  "state_reason": "Some reason",
-  "executor_billing_contact_number": "31445",
-  "actual_pickup_at": "2017-12-14T16:18:18",
-  "scheduled_pickup_at": "2017-05-17T03:28:23",
-  "scheduled_duration": 10800,
-  "scheduled_dropoff_at": "2017-12-14T16:18:18",
-  "actual_dropoff_at": "2017-12-14T16:18:18",
-  "scheduled_on_spot_at": "2017-12-14T16:18:18",
-  "actual_on_spot_at": "2017-12-14T16:18:18",
-  "actual_duration": 0,
-  "actual_garage_out_at": "2017-12-14T16:18:18",
-  "actual_garage_in_at": "2017-12-14T16:18:18",
-  "actual_driver_duration": 0,
-  "distance": 200.0,
-  "charges": [
-    {
-      "name": "base_charge",
-      "value": 10.0,
-      "details": [
-       {
-            "name": "BaseRate",
-            "value": 10.0
-       }
-      ]
-    },
-    {
-      "name": "tolls",
-      "value": 15.0,
-      "details": [
-       {
-            "name": "Tolls1",
-            "value": 5.0
-       },
-       {
-            "name": "Tolls1",
-            "value": 10.0
-       }
-      ]
-    }
-  ],
-  "total_amount": 25.0,
-  "notes": "Trip notes",
-  "driver": {
-    "portrait_url": "https://somedomain.com/some.png",
-    "first_name": "Josh",
-    "last_name": "Smith",
-    "email": "driver@emai.com",
-    "phone": "+12345678900"
-  },
-  "car": {
-    "license_plate": "1232125",
-    "car_make": "Toyota",
-    "model": "Corolla",
-    "color": "Green",
-    "phone": "+12345678900"
-  },
-  "executor_reference_number": "0023423",
-  "originator_reference_number": "ref12345",
-  "vehicle_type": "coach_bus",
-  "passenger_count": 1,
-  "passengers": [
-    {
-      "first_name": "John",
-      "last_name": "Smith",
-      "phone": "+12345678900",
-      "email": "john.smith@test.net"
-    }
-  ],
-  "pickup": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes"
-  },
-  "stops": [
-    {
-      "scheduled_arriving_at": "00:30:00",
-      "address": {
-        "latitude": 0.0,
-        "longitude": 0.0,
-        "name": "JFK Airport"
-      },
-      "flight": {
-        "airport_code": "JFK",
-        "airline_code": "AA",
-        "flight_number": "1466",
-        "airport_pickup_option": "inside"
-      },
-      "notes": "Notes"
-    }
-  ],
-  "dropoff": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes"
-  },
-  "credit_card_id": 123,
-  "credit_card": {
-      "card_number_first_digit": "4",
-      "card_number_last_digits": "1111",
-      "card_network": "visa",
-      "holder_name": "josh Smith",
-      "holder_type": "personal",
-      "expiration_year": 2021,
-      "expiration_month": 5,
-      "billing_address": {
-          "country_code": "US",
-          "state_code": "TX",
-          "postal_code": "12345",
-          "city": "Dallas",
-          "address_line1": "123 Some Street",
-          "address_line2": "24 ap"
-      },
-      "notes": "Some CC notes"
-  },
-  "currency_code": "USD",
-  "luggage_count": 1,
-  "is_handicap_access_required": true,
-  "infant_child_seat_count": 1,
-  "booster_child_seat_count": 1,
-  "toddler_child_seat_count": 1,
-  "originator_udfs": {
-    "key": "value"
-  }
-}
-
-## Create Reservation [/Reservation/create]
-
-### Create Reservation [POST /partners/self/reservations] 
-
-Creates reservation for specified executor using originator price 
-
-+ Parameters 
-
-+ Request 
-
-     + `originator_reference_number` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `executor` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `executor_billing_contact_account_number` (optional, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `billing_contact` (optional, object) 
-    + `billing_contact.company_name` (optional, string) 
-        The value must be non-empty string with maximum length 150. 
-    + `billing_contact.first_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `billing_contact.last_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `billing_contact.phone` (optional, string) 
-        The value must be a string with a existing phone number in E.164 format. 
-    + `billing_contact.email` (optional, string) 
-        The value must be string with email address. 
-        The value must be non-empty string with maximum length 255. 
-    + `notes` (optional, string) 
-        The value must be non-empty string with maximum length 4000. 
-    + `vehicle_type` (required, enum[string]) 
-        + Members 
-            + `economy_sedan` 
-            + `hybrid_sedan` 
-            + `vip_sedan` 
-            + `sedan` 
-            + `economy_suv` 
-            + `hybrid_suv` 
-            + `vip_suv` 
-            + `suv` 
-            + `mini_van` 
-            + `passenger_van` 
-            + `other_van` 
-            + `limousine` 
-            + `mini_bus` 
-            + `party_bus` 
-            + `coach_bus` 
-            + `other_bus` 
-            + `shared_vehicle` 
-            + `other_vehicle` 
-            + `undefined` 
-    + `credit_card` (optional, object) 
-    + `credit_card.card_number` (required, string) 
-        The value must be non-empty string with maximum length 20. 
-    + `credit_card.holder_name` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `credit_card.holder_type` (optional, enum[string]) 
+        + Default: `unknown` 
         + Members 
             + `unknown` 
             + `personal` 
@@ -1102,12 +903,12 @@ Creates reservation for specified executor using originator price
         The value must be non-empty string with maximum length 250. 
     + `credit_card.billing_address.address_line2` (optional, string) 
         The value must be non-empty string with maximum length 250. 
-    + `scheduled_pickup_at` (required, string) 
-        The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
-    + `scheduled_duration` (optional, number) 
-        The value must be integer which is not less than 60. 
-    + `passenger_count` (required, number) 
-        The value must be integer which is not less than 1. 
+    + `credit_card.notes` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `search_result_id` (required, number) 
+        The valus should be number inclusive between 1 and 9.22337203685478E+18. 
     + `passengers[]` (required, array[object]) 
         The count of elements should be greater or equals to 1. 
     + `passengers[].first_name` (required, string) 
@@ -1119,125 +920,191 @@ Creates reservation for specified executor using originator price
     + `passengers[].email` (optional, string) 
         The value must be string with email address. 
         The value must be non-empty string with maximum length 255. 
-    + `pickup` (required, object) 
-    + `pickup.scheduled_arriving_at` (optional, string) 
-        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
-    + `pickup.address` (required, object) 
-        Latitude and Longitude cannot be zero at the same time. 
-    + `pickup.address.latitude` (optional, number) 
-        The value must be the decimal which inclusive between -90 and 90. 
-        + Default: `0` 
-    + `pickup.address.longitude` (optional, number) 
-        The value must be the decimal which inclusive between -180 and 180. 
-        + Default: `0` 
-    + `pickup.address.name` (optional, string) 
-        The value must be non-empty string with maximum length 500. 
-    + `pickup.address.country_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `pickup.address.state_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `pickup.address.postal_code` (optional, string) 
-        The value must be non-empty string with maximum length 15. 
-    + `pickup.address.city` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `pickup.address.address_line1` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `pickup.address.address_line2` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `pickup.flight` (optional, object) 
-    + `pickup.flight.airport_code` (optional, string) 
-        The value must be string with valid airport IATA or ICAO code. 
-    + `pickup.flight.airline_code` (optional, string) 
+    + `pickup_flight_info` (optional, object) 
+    + `pickup_flight_info.airline_code` (optional, string) 
         The value must be string with valid airline IATA or ICAO code. 
-    + `pickup.flight.flight_number` (optional, string) 
+    + `pickup_flight_info.flight_number` (optional, string) 
         The value must be string with flight number digits. 
-    + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
-        + Members 
-            + `none` 
-            + `curbside` 
-            + `inside` 
-    + `pickup.notes` (optional, string) 
-        The value must be non-empty string with maximum length 4000. 
-    + `stops[]` (optional, array[object]) 
-    + `stops[].scheduled_arriving_at` (optional, string) 
-        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
-    + `stops[].address` (required, object) 
-        Latitude and Longitude cannot be zero at the same time. 
-    + `stops[].address.latitude` (optional, number) 
-        The value must be the decimal which inclusive between -90 and 90. 
-        + Default: `0` 
-    + `stops[].address.longitude` (optional, number) 
-        The value must be the decimal which inclusive between -180 and 180. 
-        + Default: `0` 
-    + `stops[].address.name` (optional, string) 
-        The value must be non-empty string with maximum length 500. 
-    + `stops[].address.country_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `stops[].address.state_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `stops[].address.postal_code` (optional, string) 
-        The value must be non-empty string with maximum length 15. 
-    + `stops[].address.city` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `stops[].address.address_line1` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `stops[].address.address_line2` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `stops[].flight` (optional, object) 
-    + `stops[].flight.airport_code` (optional, string) 
-        The value must be string with valid airport IATA or ICAO code. 
-    + `stops[].flight.airline_code` (optional, string) 
+    + `dropoff_flight_info` (optional, object) 
+    + `dropoff_flight_info.airline_code` (optional, string) 
         The value must be string with valid airline IATA or ICAO code. 
-    + `stops[].flight.flight_number` (optional, string) 
+    + `dropoff_flight_info.flight_number` (optional, string) 
         The value must be string with flight number digits. 
-    + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
-        + Members 
-            + `none` 
-            + `curbside` 
-            + `inside` 
-    + `stops[].notes` (optional, string) 
-        The value must be non-empty string with maximum length 4000. 
-    + `dropoff` (optional, object) 
-    + `dropoff.scheduled_arriving_at` (optional, string) 
-        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
-    + `dropoff.address` (required, object) 
-        Latitude and Longitude cannot be zero at the same time. 
-    + `dropoff.address.latitude` (optional, number) 
-        The value must be the decimal which inclusive between -90 and 90. 
-        + Default: `0` 
-    + `dropoff.address.longitude` (optional, number) 
-        The value must be the decimal which inclusive between -180 and 180. 
-        + Default: `0` 
-    + `dropoff.address.name` (optional, string) 
-        The value must be non-empty string with maximum length 500. 
-    + `dropoff.address.country_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `dropoff.address.state_code` (optional, string) 
-        The value must be non-empty string with maximum length 5. 
-    + `dropoff.address.postal_code` (optional, string) 
-        The value must be non-empty string with maximum length 15. 
-    + `dropoff.address.city` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `dropoff.address.address_line1` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `dropoff.address.address_line2` (optional, string) 
-        The value must be non-empty string with maximum length 250. 
-    + `dropoff.flight` (optional, object) 
-    + `dropoff.flight.airport_code` (optional, string) 
-        The value must be string with valid airport IATA or ICAO code. 
-    + `dropoff.flight.airline_code` (optional, string) 
+    + `originator_udfs[]` (optional, array[object]) 
+    
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
+        
+    + Body 
+        {  
+           "search_result_id":24,
+           "passengers":[  
+              {  
+                 "first_name":"John",
+                 "last_name":"Smith",
+                 "phone":"+12312345678",
+                 "email":"la.demo.john.smith@gmail.com"
+              }
+           ],
+           "credit_card":{  
+              "card_number":"4111111111111111",
+              "holder_name":"John Smith",
+              "holder_type":"personal",
+              "expiration_year":2026,
+              "expiration_month":9,
+              "billing_address":{  
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "address_line2":""
+              }
+           },
+           "notes":"I need bottle of water without gas.",
+           "originator_reference_number":"94391091"
+        }
+
++ Response 200
+    + `reservation_id` (number) 
+    + `executor_reference_number` (string) 
+    + `executor_udfs[]` (array[object]) 
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+        
+    + Body 
+        {
+            "reservation_id": 377,
+            "executor_reference_number": "11024"
+        }
+
+
+### Update Booking [PUT /partners/self/bookings/{id}]
+Updates a reservation by reservation Id using specified booking information rate lookup information which was previously returned.
+
++ Parameters
+    + `id`: 377 (required, number) 
+
++ Request
+    + `credit_card_id` (optional, number) 
+        The value must be integer which is not less than 1. 
+    + `search_result_id` (required, number) 
+        The valus should be number inclusive between 1 and 9.22337203685478E+18. 
+    + `passengers[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `passengers[].first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `passengers[].email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `pickup_flight_info` (optional, object) 
+    + `pickup_flight_info.airline_code` (optional, string) 
         The value must be string with valid airline IATA or ICAO code. 
-    + `dropoff.flight.flight_number` (optional, string) 
+    + `pickup_flight_info.flight_number` (optional, string) 
         The value must be string with flight number digits. 
-    + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+    + `dropoff_flight_info` (optional, object) 
+    + `dropoff_flight_info.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff_flight_info.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `originator_udfs[]` (optional, array[object]) 
+    
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
+        
+    + Body 
+        {  
+           "search_result_id":24,
+           "credit_card_id":363,
+           "passengers":[  
+              {  
+                 "first_name":"James",
+                 "last_name":"Brown",
+                 "phone":"+12312345678",
+                 "email":"la.demo.james.brown@gmail.com"
+              }
+           ],
+           "pick_up_info":{  
+              "airline_code":"AA",
+              "flight_number":"10"
+           }
+        }
+
++ Response 202
++ Response 204
+
+
+## Group Reservations
+
+## Create Reservation [/Reservation/create]
+
+### Create Reservation [POST /partners/self/reservations] 
+
+Creates reservation for specified executor using originator price 
+
++ Request
+    + `originator_reference_number` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `executor` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `executor_billing_contact_account_number` (optional, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact` (optional, object) 
+    + `billing_contact.company_name` (optional, string) 
+        The value must be non-empty string with maximum length 150. 
+    + `billing_contact.first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact.last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `billing_contact.phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `billing_contact.email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `credit_card` (optional, object) 
+    + `credit_card.card_number` (required, string) 
+        The value must be non-empty string with maximum length 20. 
+    + `credit_card.holder_name` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.holder_type` (optional, enum[string]) 
+        + Default: `unknown` 
         + Members 
-            + `none` 
-            + `curbside` 
-            + `inside` 
-    + `dropoff.notes` (optional, string) 
-        The value must be non-empty string with maximum length 4000. 
-    + `currency_code` (required, string) 
-        The value must be string with valid ISO 4217 currency alpha code. 
+            + `unknown` 
+            + `personal` 
+            + `business` 
+    + `credit_card.expiration_year` (required, number) 
+        The valus should be number inclusive between 1 and 9999. 
+    + `credit_card.expiration_month` (required, number) 
+        The valus should be number inclusive between 1 and 12. 
+    + `credit_card.billing_address` (optional, object) 
+    + `credit_card.billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `credit_card.billing_address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `credit_card.billing_address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `credit_card.billing_address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.billing_address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `credit_card.notes` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
     + `charges[]` (required, array[object]) 
         The count of elements should be greater or equals to 1. 
     + `charges[].name` (required, enum[string]) 
@@ -1257,288 +1124,8 @@ Creates reservation for specified executor using originator price
             + `taxes` 
     + `charges[].value` (optional, number) 
         + Default: `0` 
-    + `luggage_count` (optional, number) 
-        The value must be integer which is not less than 0. 
-        + Default: `0` 
-    + `is_handicap_access_required` (optional, boolean) 
-        + Default: `false` 
-    + `infant_child_seat_count` (optional, number) 
-        The value must be integer which is not less than 0. 
-        + Default: `0` 
-    + `booster_child_seat_count` (optional, number) 
-        The value must be integer which is not less than 0. 
-        + Default: `0` 
-    + `toddler_child_seat_count` (optional, number) 
-        The value must be integer which is not less than 0. 
-        + Default: `0` 
-    + `originator_udfs[]` (optional, array[object]) 
-
-    + Headers 
-
-            Content-Type: application/json 
-            Authorization: bearer {access_token} 
-
-    + Body 
-
-{
-  "originator_reference_number": "ref12345",
-  "executor": "rosalimo",
-  "billing_contact": {
-     "company_name": "SomeCompany",
-     "first_name": "FirstName",
-     "last_name": "LastName",
-     "phone": "+380966666666",
-     "email": "someEmal@email.com"
-  },
-  "credit_card": {
-      "card_number": "4111111111111111",
-      "holder_name": "Holdera Name",
-      "holder_type": "personal",
-      "expiration_year": 2021,
-      "expiration_month": 9,
-      "billing_address": {
-          "country_code": "US",
-          "state_code": "TX",
-          "postal_code": "12454",
-          "city": "Dallas",
-          "address_line1": "some address",
-          "address_line2": "some address"
-      }
-  },
-  "notes": "Trip notes",
-  "charges": [
-    {
-      "name": "base_charge",
-      "value": 10.0
-    },
-    {
-      "name": "tolls",
-      "value": 15.0
-    }
-  ],
-  "vehicle_type": "coach_bus",
-  "scheduled_pickup_at": "2017-05-17T03:28:23",
-  "scheduled_duration": 10800,
-  "passenger_count": 1,
-  "passengers": [
-    {
-      "first_name": "John",
-      "last_name": "Smith",
-      "phone": "+12345678900",
-      "email": "john.smith@test.net"
-    }
-  ],
-  "pickup": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes"
-  },
-  "stops": [
-    {
-      "scheduled_arriving_at": "00:30:00",
-      "address": {
-        "latitude": 0.0,
-        "longitude": 0.0,
-        "name": "JFK Airport"
-      },
-      "flight": {
-        "airport_code": "JFK",
-        "airline_code": "AA",
-        "flight_number": "1466",
-        "airport_pickup_option": "inside"
-      },
-      "notes": "Notes"
-    }
-  ],
-  "dropoff": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes"
-  },
-  "currency_code": "USD",
-  "luggage_count": 1,
-  "is_handicap_access_required": true,
-  "infant_child_seat_count": 1,
-  "booster_child_seat_count": 1,
-  "toddler_child_seat_count": 1,
-  "originator_udfs": {
-    "key": "value"
-  }
-}
-
-+ Response 200 
-
-    + Headers 
-
-            Content-Type: application/json 
-
-    + Body 
-
-{
-  "id": 123455,
-  "executor": "rosalimo",
-  "state": "driver_is_at_pickup",
-  "state_reason": "Some reason",
-  "executor_billing_contact_number": "31445",
-  "actual_pickup_at": "2017-12-14T16:18:18",
-  "scheduled_pickup_at": "2017-05-17T03:28:23",
-  "scheduled_duration": 10800,
-  "scheduled_dropoff_at": "2017-12-14T16:18:18",
-  "actual_dropoff_at": "2017-12-14T16:18:18",
-  "scheduled_on_spot_at": "2017-12-14T16:18:18",
-  "actual_on_spot_at": "2017-12-14T16:18:18",
-  "actual_duration": 0,
-  "actual_garage_out_at": "2017-12-14T16:18:18",
-  "actual_garage_in_at": "2017-12-14T16:18:18",
-  "actual_driver_duration": 0,
-  "distance": 200.0,
-  "charges": [
-    {
-      "name": "base_charge",
-      "value": 10.0,
-      "details": [
-       {
-            "name": "BaseRate",
-            "value": 10.0
-       }
-      ]
-    },
-    {
-      "name": "tolls",
-      "value": 15.0,
-      "details": [
-       {
-            "name": "Tolls1",
-            "value": 5.0
-       },
-       {
-            "name": "Tolls1",
-            "value": 10.0
-       }
-      ]
-    }
-  ],
-  "total_amount": 25.0,
-  "notes": "Trip notes",
-  "driver": {
-    "portrait_url": "https://somedomain.com/some.png",
-    "first_name": "Josh",
-    "last_name": "Smith",
-    "email": "driver@emai.com",
-    "phone": "+12345678900"
-  },
-  "car": {
-    "license_plate": "1232125",
-    "car_make": "Toyota",
-    "model": "Corolla",
-    "color": "Green",
-    "phone": "+12345678900"
-  },
-  "executor_reference_number": "0023423",
-  "originator_reference_number": "ref12345",
-  "vehicle_type": "coach_bus",
-  "passenger_count": 1,
-  "passengers": [
-    {
-      "first_name": "John",
-      "last_name": "Smith",
-      "phone": "+12345678900",
-      "email": "john.smith@test.net"
-    }
-  ],
-  "pickup": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes"
-  },
-  "stops": [
-    {
-      "scheduled_arriving_at": "00:30:00",
-      "address": {
-        "latitude": 0.0,
-        "longitude": 0.0,
-        "name": "JFK Airport"
-      },
-      "flight": {
-        "airport_code": "JFK",
-        "airline_code": "AA",
-        "flight_number": "1466",
-        "airport_pickup_option": "inside"
-      },
-      "notes": "Notes"
-    }
-  ],
-  "dropoff": {
-    "scheduled_arriving_at": "00:30:00",
-    "address": {
-      "latitude": 45.0,
-      "longitude": 46.0,
-      "name": "Super important steet",
-      "country_code": "US",
-      "state_code": "TX",
-      "postal_code": "12345",
-      "city": "City",
-      "address_line1": "123 Some Street",
-      "address_line2": "2 apartment"
-    },
-    "notes": "Notes"
-  },
-  "currency_code": "USD",
-  "luggage_count": 1,
-  "is_handicap_access_required": true,
-  "infant_child_seat_count": 1,
-  "booster_child_seat_count": 1,
-  "toddler_child_seat_count": 1,
-  "originator_udfs": {
-    "key": "value"
-  }missi
-}
-
-## Update Reservation [/Reservation/update]
-
-### Update Reservation [PUT /partners/self/reservations/{id}] 
-Updates the reservation by reservation ID.
-In most of the cases the API will return responses with <b>204 No Content</b> or <b>200 OK</b> HTTP status codes, but if reservation update should be confirmed by the operator, the API will return response with <b>202 Accepted</b> HTTP status code.
-If update request was accepted by the operator 'reservation.update_accepted' event will occur.
-If update request was rejected by the operator 'reservation.update_rejected' event will occur.
-A client application may send multiple updates before an operator will accept or reject previous updates.
-In this case, an operator will handle these updates as single update request and the associated event will occur only one time.
-+ Parameters
-    + `id` (required, number)
-+ Request(application/json;charset=utf-8)
-
-    + `credit_card_id` (optional, number) 
-        The value must be integer which is not less than 1. 
+    + `notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
     + `vehicle_type` (required, enum[string]) 
         + Members 
             + `economy_sedan` 
@@ -1559,7 +1146,6 @@ In this case, an operator will handle these updates as single update request and
             + `other_bus` 
             + `shared_vehicle` 
             + `other_vehicle` 
-            + `undefined`
     + `scheduled_pickup_at` (required, string) 
         The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
     + `scheduled_duration` (optional, number) 
@@ -1610,6 +1196,7 @@ In this case, an operator will handle these updates as single update request and
     + `pickup.flight.flight_number` (optional, string) 
         The value must be string with flight number digits. 
     + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
         + Members 
             + `none` 
             + `curbside` 
@@ -1649,6 +1236,7 @@ In this case, an operator will handle these updates as single update request and
     + `stops[].flight.flight_number` (optional, string) 
         The value must be string with flight number digits. 
     + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
         + Members 
             + `none` 
             + `curbside` 
@@ -1688,6 +1276,7 @@ In this case, an operator will handle these updates as single update request and
     + `dropoff.flight.flight_number` (optional, string) 
         The value must be string with flight number digits. 
     + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
         + Members 
             + `none` 
             + `curbside` 
@@ -1696,25 +1285,6 @@ In this case, an operator will handle these updates as single update request and
         The value must be non-empty string with maximum length 4000. 
     + `currency_code` (required, string) 
         The value must be string with valid ISO 4217 currency alpha code. 
-    + `charges[]` (required, array[object]) 
-        The count of elements should be greater or equals to 1. 
-    + `charges[].name` (required, enum[string]) 
-        + Members 
-            + `base_charge` 
-            + `hourly_charge` 
-            + `passenger_charge` 
-            + `distance_charge` 
-            + `gratuity_charge` 
-            + `extra_gratuity` 
-            + `stops_charge` 
-            + `tolls` 
-            + `surcharges` 
-            + `parking` 
-            + `miscellaneous_charge` 
-            + `discount` 
-            + `taxes` 
-    + `charges[].value` (optional, number) 
-        + Default: `0` 
     + `luggage_count` (optional, number) 
         The value must be integer which is not less than 0. 
         + Default: `0` 
@@ -1734,119 +1304,665 @@ In this case, an operator will handle these updates as single update request and
     + Headers 
         Accept-Encoding: gzip 
         Accept-Charset: utf-8 
-        Accept: application/json
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
         Authorization: bearer {access_token} 
         
     + Body 
-        {
-            "scheduled_pickup_at": "2017-05-17T03:28:23",
-            "scheduled_duration": 10800,
-            "passenger_count": 1,
-            "passengers": [
-                {
-                   "first_name": "John",
-                   "last_name": "Smith",
-                   "phone": "+12345678900",
-                   "email": "john.smith@test.net"
-                }
-            ],
-            "pickup": {
-                "scheduled_arriving_at": "00:30:00",
-                    "address": {
-                    "latitude": 45.0,
-                    "longitude": 46.0,
-                    "name": "Super important steet",
-                    "country_code": "US",
-                    "state_code": "TX",
-                    "postal_code": "12345",
-                    "city": "City",
-                    "address_line1": "123 Some Street",
-                    "address_line2": "2 apartment"
-                },
-                "notes": "Notes"
-            },
-            "stops": [
-                {
-                    "scheduled_arriving_at": "00:30:00",
-                    "address": {
-                        "latitude": 1.1,
-                        "longitude": 2.1,
-                        "name": "JFK Airport"
-                    },
-                    "flight": {
-                      "airport_code": "JFK",
-                      "airline_code": "AA",
-                      "flight_number": "1466",
-                      "airport_pickup_option": "inside"
-                    },
-                    "notes": "Notes"
-                }
-            ],
-            "dropoff": {
-                "scheduled_arriving_at": "00:30:00",
-                "address": {
-                  "latitude": 45.0,
-                  "longitude": 46.0,
-                  "name": "Super important steet",
-                  "country_code": "US",
-                  "state_code": "TX",
-                  "postal_code": "12345",
-                  "city": "City",
-                  "address_line1": "123 Some Street",
-                  "address_line2": "2 apartment"
-                },
-                "notes": "Notes"
-            },
-            "currency_code": "USD",
-                      "charges": [
-              {
-                "name": "base_charge",
-                "value": 10.0
-              },
-              {
-                "name": "tolls",
-                "value": 15.0
+        {  
+           "originator_reference_number":"94391091",
+           "executor":"dfw-limo",
+           "billing_contact":{  
+              "company_name":"Aircraft Businesses for Sale",
+              "first_name":"John",
+              "last_name":"Smith",
+              "phone":"+12312345678",
+              "email":"la.demo.john.smith@gmail.com"
+           },
+           "credit_card":{  
+              "card_number":"4111111111111111",
+              "holder_name":"John Smith",
+              "holder_type":"personal",
+              "expiration_year":2026,
+              "expiration_month":9,
+              "billing_address":{  
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "address_line2":""
               }
-            ],
-            "credit_card_id": 123,
-            "luggage_count": 4,
-            "is_handicap_access_required": true,
-            "infant_child_seat_count": 6,
-            "booster_child_seat_count": 7,
-            "toddler_childseat_count": 8,
-            "originator_udfs": {
-               "key": "value"
-            }
+           },
+           "notes":"I need bottle of water without gas.",
+           "charges":[  
+              {  
+                 "name":"base_charge",
+                 "value":175.99
+              }
+           ],
+           "vehicle_type":"sedan",
+           "scheduled_pickup_at":"2019-12-23T13:33:23",
+           "scheduled_duration":10800,
+           "passenger_count":1,
+           "passengers":[  
+              {  
+                 "first_name":"John",
+                 "last_name":"Smith",
+                 "phone":"+12312345678",
+                 "email":"la.demo.john.smith@gmail.com"
+              }
+           ],
+           "pickup":{  
+              "scheduled_arriving_at":"13:28:23",
+              "address":{  
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "latitude":"40.76257",
+                 "longitude":"-73.83143"
+              },
+              "notes":"Passenger will wait for the phone call from driver."
+           },
+           "stops":[  
+              {  
+                 "address":{  
+                    "latitude":40.70922,
+                    "longitude":-74.0137558,
+                    "country_code":"US",
+                    "state_code":"NY",
+                    "postal_code":"10006",
+                    "city":"New York",
+                    "address_line1":"123 Washington St"
+                 }
+              }
+           ],
+           "dropoff":{  
+              "scheduled_arriving_at":"18:30:00",
+              "address":{  
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "latitude":"40.76257",
+                 "longitude":"-73.83143"
+              }
+           },
+           "currency_code":"USD",
+           "luggage_count":1,
+           "is_handicap_access_required":false,
+           "infant_child_seat_count":2
+        }        
+
++ Response 200
+    + `id` (number) 
+    + `executor` (string) 
+    + `state` (enum[string]) 
+    + `state_reason` (enum[string]) 
+    + `executor_billing_contact_number` (string) 
+    + `actual_pickup_at` (string) 
+    + `scheduled_dropoff_at` (string) 
+    + `actual_dropoff_at` (string) 
+    + `scheduled_on_spot_at` (string) 
+    + `actual_on_spot_at` (string) 
+    + `actual_duration` (number) 
+    + `actual_garage_out_at` (string) 
+    + `actual_garage_in_at` (string) 
+    + `actual_driver_duration` (number) 
+    + `distance` (number) 
+    + `credit_card_id` (number) 
+    + `credit_card` (object) 
+    + `credit_card.card_number_first_digit` (string) 
+    + `credit_card.card_number_last_digits` (string) 
+    + `credit_card.card_network` (enum[string]) 
+    + `credit_card.holder_name` (string) 
+    + `credit_card.holder_type` (enum[string]) 
+    + `credit_card.expiration_year` (number) 
+    + `credit_card.expiration_month` (number) 
+    + `credit_card.billing_address` (object) 
+    + `credit_card.billing_address.name` (string) 
+    + `credit_card.billing_address.country_code` (string) 
+    + `credit_card.billing_address.state_code` (string) 
+    + `credit_card.billing_address.postal_code` (string) 
+    + `credit_card.billing_address.city` (string) 
+    + `credit_card.billing_address.address_line1` (string) 
+    + `credit_card.billing_address.address_line2` (string) 
+    + `credit_card.notes` (string) 
+    + `charges[]` (array[object]) 
+    + `charges[].details[]` (array[object]) 
+    + `details[].name` (string) 
+    + `details[].value` (number) 
+    + `charges[].name` (enum[string]) 
+    + `charges[].value` (number) 
+    + `total_amount` (number) 
+    + `notes` (string) 
+    + `driver` (object) 
+    + `driver.portrait_url` (string) 
+    + `driver.first_name` (string) 
+    + `driver.last_name` (string) 
+    + `driver.email` (string) 
+    + `driver.phone` (string) 
+    + `car` (object) 
+    + `car.license_plate` (string) 
+    + `car.make` (string) 
+    + `car.year` (number) 
+    + `car.model` (string) 
+    + `car.color` (string) 
+    + `car.phone` (string) 
+    + `executor_reference_number` (string) 
+    + `originator_reference_number` (string) 
+    + `vehicle_type` (enum[string]) 
+    + `scheduled_pickup_at` (string) 
+    + `scheduled_duration` (number) 
+    + `passenger_count` (number) 
+    + `passengers[]` (array[object]) 
+    + `passengers[].first_name` (string) 
+    + `passengers[].last_name` (string) 
+    + `passengers[].phone` (string) 
+    + `passengers[].email` (string) 
+    + `pickup` (object) 
+    + `pickup.scheduled_arriving_at` (string) 
+    + `pickup.address` (object) 
+    + `pickup.address.latitude` (number) 
+    + `pickup.address.longitude` (number) 
+    + `pickup.address.name` (string) 
+    + `pickup.address.country_code` (string) 
+    + `pickup.address.state_code` (string) 
+    + `pickup.address.postal_code` (string) 
+    + `pickup.address.city` (string) 
+    + `pickup.address.address_line1` (string) 
+    + `pickup.address.address_line2` (string) 
+    + `pickup.flight` (object) 
+    + `pickup.flight.airport_code` (string) 
+    + `pickup.flight.airline_code` (string) 
+    + `pickup.flight.flight_number` (string) 
+    + `pickup.flight.airport_pickup_option` (enum[string]) 
+    + `pickup.notes` (string) 
+    + `stops[]` (array[object]) 
+    + `stops[].scheduled_arriving_at` (string) 
+    + `stops[].address` (object) 
+    + `stops[].address.latitude` (number) 
+    + `stops[].address.longitude` (number) 
+    + `stops[].address.name` (string) 
+    + `stops[].address.country_code` (string) 
+    + `stops[].address.state_code` (string) 
+    + `stops[].address.postal_code` (string) 
+    + `stops[].address.city` (string) 
+    + `stops[].address.address_line1` (string) 
+    + `stops[].address.address_line2` (string) 
+    + `stops[].flight` (object) 
+    + `stops[].flight.airport_code` (string) 
+    + `stops[].flight.airline_code` (string) 
+    + `stops[].flight.flight_number` (string) 
+    + `stops[].flight.airport_pickup_option` (enum[string]) 
+    + `stops[].notes` (string) 
+    + `dropoff` (object) 
+    + `dropoff.scheduled_arriving_at` (string) 
+    + `dropoff.address` (object) 
+    + `dropoff.address.latitude` (number) 
+    + `dropoff.address.longitude` (number) 
+    + `dropoff.address.name` (string) 
+    + `dropoff.address.country_code` (string) 
+    + `dropoff.address.state_code` (string) 
+    + `dropoff.address.postal_code` (string) 
+    + `dropoff.address.city` (string) 
+    + `dropoff.address.address_line1` (string) 
+    + `dropoff.address.address_line2` (string) 
+    + `dropoff.flight` (object) 
+    + `dropoff.flight.airport_code` (string) 
+    + `dropoff.flight.airline_code` (string) 
+    + `dropoff.flight.flight_number` (string) 
+    + `dropoff.flight.airport_pickup_option` (enum[string]) 
+    + `dropoff.notes` (string) 
+    + `currency_code` (string) 
+    + `luggage_count` (number) 
+    + `is_handicap_access_required` (boolean) 
+    + `infant_child_seat_count` (number) 
+    + `booster_child_seat_count` (number) 
+    + `toddler_child_seat_count` (number) 
+    + `originator_udfs[]` (array[object]) 
+    
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+        
+    + Body 
+        {  
+           "id":378,
+           "executor":"dfw-limo",
+           "state":"created",
+           "state_reason":"undefined",
+           "scheduled_dropoff_at":"2019-12-23T16:33:00",
+           "credit_card_id":364,
+           "credit_card":{  
+              "card_number_first_digit":"4",
+              "card_number_last_digits":"1111",
+              "card_network":"visa",
+              "holder_name":"John Smith",
+              "holder_type":"personal",
+              "expiration_year":2026,
+              "expiration_month":9,
+              "billing_address":{  
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St"
+              }
+           },
+           "charges":[  
+              {  
+                 "details":[  
+                    {  
+                       "name":"Flat Rate",
+                       "value":175.99
+                    }
+                 ],
+                 "name":"base_charge",
+                 "value":175.99
+              }
+           ],
+           "total_amount":175.99,
+           "notes":"--- Partner Notes Start ---\r\n\r\nI need bottle of water without gas.\r\n\r\nBilling Contact Email:la.demo.john.smith@gmail.com Phone:+12312345678\r\n--- Partner Notes End ---",
+           "executor_reference_number":"11025",
+           "originator_reference_number":"94391091",
+           "vehicle_type":"sedan",
+           "scheduled_pickup_at":"2019-12-23T13:33:00",
+           "scheduled_duration":10800,
+           "passenger_count":1,
+           "passengers":[  
+              {  
+                 "first_name":"John",
+                 "last_name":"Smith",
+                 "phone":"+12312345678",
+                 "email":"la.demo.john.smith@gmail.com"
+              }
+           ],
+           "pickup":{  
+              "scheduled_arriving_at":"13:28:23",
+              "address":{  
+                 "latitude":40.76257,
+                 "longitude":-73.83143,
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St"
+              },
+              "notes":"Passenger will wait for the phone call from driver."
+           },
+           "stops":[  
+              {  
+                 "address":{  
+                    "latitude":40.70922,
+                    "longitude":-74.0137558,
+                    "country_code":"US",
+                    "state_code":"NY",
+                    "postal_code":"10006",
+                    "city":"New York",
+                    "address_line1":"123 Washington St"
+                 }
+              }
+           ],
+           "dropoff":{  
+              "scheduled_arriving_at":"18:30:00",
+              "address":{  
+                 "latitude":40.76257,
+                 "longitude":-73.83143,
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St"
+              }
+           },
+           "currency_code":"USD",
+           "luggage_count":1,
+           "is_handicap_access_required":false,
+           "infant_child_seat_count":2,
+           "booster_child_seat_count":0,
+           "toddler_child_seat_count":0
         } 
+
+## Update Reservation [/Reservation/update]
+
+### Update Reservation [PUT /partners/self/reservations/{id}] 
+Updates the reservation by reservation ID.
+In most of the cases the API will return responses with <b>204 No Content</b> or <b>200 OK</b> HTTP status codes, but if reservation update should be confirmed by the operator, the API will return response with <b>202 Accepted</b> HTTP status code.
+If update request was accepted by the operator 'reservation.update_accepted' event will occur.
+If update request was rejected by the operator 'reservation.update_rejected' event will occur.
+A client application may send multiple updates before an operator will accept or reject previous updates.
+In this case, an operator will handle these updates as single update request and the associated event will occur only one time.
+
++ Parameters
+    + `id`: 378 (required, number) 
+
++ Request
+    + `credit_card_id` (optional, number) 
+        The value must be integer which is not less than 1. 
+    + `charges[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `charges[].name` (required, enum[string]) 
+        + Members 
+            + `base_charge` 
+            + `hourly_charge` 
+            + `passenger_charge` 
+            + `distance_charge` 
+            + `gratuity_charge` 
+            + `extra_gratuity` 
+            + `stops_charge` 
+            + `tolls` 
+            + `surcharges` 
+            + `parking` 
+            + `miscellaneous_charge` 
+            + `discount` 
+            + `taxes` 
+    + `charges[].value` (optional, number) 
+        + Default: `0` 
+    + `vehicle_type` (required, enum[string]) 
+        + Members 
+            + `economy_sedan` 
+            + `hybrid_sedan` 
+            + `vip_sedan` 
+            + `sedan` 
+            + `economy_suv` 
+            + `hybrid_suv` 
+            + `vip_suv` 
+            + `suv` 
+            + `mini_van` 
+            + `passenger_van` 
+            + `other_van` 
+            + `limousine` 
+            + `mini_bus` 
+            + `party_bus` 
+            + `coach_bus` 
+            + `other_bus` 
+            + `shared_vehicle` 
+            + `other_vehicle` 
+    + `scheduled_pickup_at` (required, string) 
+        The value must be the string with date&time in ISO 8601 format between '1753-01-01T00:00:00' and '9999-12-31T23:59:59'.
+    + `scheduled_duration` (optional, number) 
+        The value must be integer which is not less than 60. 
+    + `passenger_count` (required, number) 
+        The value must be integer which is not less than 1. 
+    + `passengers[]` (required, array[object]) 
+        The count of elements should be greater or equals to 1. 
+    + `passengers[].first_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].last_name` (required, string) 
+        The value must be non-empty string with maximum length 50. 
+    + `passengers[].phone` (optional, string) 
+        The value must be a string with a existing phone number in E.164 format. 
+    + `passengers[].email` (optional, string) 
+        The value must be string with email address. 
+        The value must be non-empty string with maximum length 255. 
+    + `pickup` (required, object) 
+    + `pickup.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `pickup.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `pickup.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `pickup.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `pickup.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `pickup.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `pickup.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `pickup.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `pickup.flight` (optional, object) 
+    + `pickup.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `pickup.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `pickup.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `pickup.flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `pickup.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `stops[]` (optional, array[object]) 
+    + `stops[].scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `stops[].address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `stops[].address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `stops[].address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `stops[].address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `stops[].address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `stops[].address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `stops[].address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `stops[].flight` (optional, object) 
+    + `stops[].flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `stops[].flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `stops[].flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `stops[].flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `stops[].notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `dropoff` (optional, object) 
+    + `dropoff.scheduled_arriving_at` (optional, string) 
+        The value must be the string with time in ISO 8601 format between '00:00:00' and 23:59:59. 
+    + `dropoff.address` (required, object) 
+        Latitude and Longitude cannot be zero at the same time. 
+    + `dropoff.address.latitude` (optional, number) 
+        The value must be the decimal which inclusive between -90 and 90. 
+        + Default: `0` 
+    + `dropoff.address.longitude` (optional, number) 
+        The value must be the decimal which inclusive between -180 and 180. 
+        + Default: `0` 
+    + `dropoff.address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
+    + `dropoff.address.country_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.state_code` (optional, string) 
+        The value must be non-empty string with maximum length 5. 
+    + `dropoff.address.postal_code` (optional, string) 
+        The value must be non-empty string with maximum length 15. 
+    + `dropoff.address.city` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line1` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.address.address_line2` (optional, string) 
+        The value must be non-empty string with maximum length 250. 
+    + `dropoff.flight` (optional, object) 
+    + `dropoff.flight.airport_code` (optional, string) 
+        The value must be string with valid airport IATA or ICAO code. 
+    + `dropoff.flight.airline_code` (optional, string) 
+        The value must be string with valid airline IATA or ICAO code. 
+    + `dropoff.flight.flight_number` (optional, string) 
+        The value must be string with flight number digits. 
+    + `dropoff.flight.airport_pickup_option` (optional, enum[string]) 
+        + Default: `none` 
+        + Members 
+            + `none` 
+            + `curbside` 
+            + `inside` 
+    + `dropoff.notes` (optional, string) 
+        The value must be non-empty string with maximum length 4000. 
+    + `currency_code` (required, string) 
+        The value must be string with valid ISO 4217 currency alpha code. 
+    + `luggage_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `is_handicap_access_required` (optional, boolean) 
+        + Default: `false` 
+    + `infant_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `booster_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `toddler_child_seat_count` (optional, number) 
+        The value must be integer which is not less than 0. 
+        + Default: `0` 
+    + `originator_udfs[]` (optional, array[object]) 
+    
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
+        
+    + Body 
+        {  
+           "scheduled_pickup_at":"2019-12-19T03:02:41",
+           "passenger_count":1,
+           "passengers":[  
+              {  
+                 "first_name":"James",
+                 "last_name":"Brown",
+                 "phone":"+12312345678",
+                 "email":"la.demo.james.brown@gmail.com"
+              }
+           ],
+           "pickup":{  
+              "scheduled_arriving_at":"13:10:00",
+              "address":{  
+                 "name":"John F Kennedy International Airport",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11430",
+                 "latitude":"40.63975",
+                 "longitude":"-73.77892"
+              },
+              "flight":{  
+                 "airport_code":"JFK",
+                 "airline_code":"AA",
+                 "flight_number":"10",
+                 "airport_pickup_option":"none"
+              }
+           },
+           "dropoff":{  
+              "scheduled_arriving_at":"14:05:00",
+              "address":{  
+                 "name":"123 Main St",
+                 "country_code":"US",
+                 "state_code":"NY",
+                 "postal_code":"11354",
+                 "city":"Queens",
+                 "address_line1":"123 Main St",
+                 "latitude":"40.76257",
+                 "longitude":"-73.83143"
+              }
+           },
+           "currency_code":"USD",
+           "charges":[  
+              {  
+                 "name":"base_charge",
+                 "value":1000
+              },
+              {  
+                 "name":"hourly_charge",
+                 "value":22
+              },
+              {  
+                 "name":"passenger_charge",
+                 "value":33
+              },
+              {  
+                 "name":"distance_charge",
+                 "value":44
+              },
+              {  
+                 "name":"gratuity_charge",
+                 "value":55
+              },
+              {  
+                 "name":"extra_gratuity",
+                 "value":66
+              },
+              {  
+                 "name":"stops_charge",
+                 "value":77
+              },
+              {  
+                 "name":"tolls",
+                 "value":88
+              },
+              {  
+                 "name":"surcharges",
+                 "value":99
+              },
+              {  
+                 "name":"parking",
+                 "value":11
+              },
+              {  
+                 "name":"miscellaneous_charge",
+                 "value":12
+              },
+              {  
+                 "name":"discount",
+                 "value":13
+              },
+              {  
+                 "name":"taxes",
+                 "value":14
+              }
+           ],
+           "vehicle_type":"sedan",
+           "pick_up_info":{  
+              "airline_code":"AA",
+              "flight_number":"180"
+           },
+           "originator_reference_number":"94391091"
+        }
 
 + Response 202
 + Response 204
 
-## Cancel Reservation [/Reservation/cancel]
+## Get Reservation [/Reservation/get]
 
-### Cancel Reservation [PUT /partners/self/reservations/{id}/cancel] 
+### Get Reservation [GET /partners/self/reservations/{id}] 
 
-Cancels the reservation on behalf of affiliate. 
+Returns detailed reservation info
 
-+ Parameters 
-    + id: `1` (required, int)
-
-+ Request 
-
-    + Headers 
-
-            Content-Type: application/json 
-            Authorization: bearer {access_token}
-
-
-
-## Reservation Credit Card [/Reservation/credit_card]
-
-### Get Credit Card [GET /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
-Returns credit card.
 + Parameters
-    + `reservation_id` (required, number) 
-    + `id` (required, number) 
+    + `id`: 378 (required, number) 
 
 + Request
     + Headers 
@@ -1855,34 +1971,258 @@ Returns credit card.
         Accept: application/json 
         Authorization: bearer {access_token} 
 
-+ Response 200 (application/json)
++ Response 200
+    + `id` (number) 
+    + `executor` (string) 
+    + `state` (enum[string]) 
+    + `state_reason` (enum[string]) 
+    + `executor_billing_contact_number` (string) 
+    + `actual_pickup_at` (string) 
+    + `scheduled_dropoff_at` (string) 
+    + `actual_dropoff_at` (string) 
+    + `scheduled_on_spot_at` (string) 
+    + `actual_on_spot_at` (string) 
+    + `actual_duration` (number) 
+    + `actual_garage_out_at` (string) 
+    + `actual_garage_in_at` (string) 
+    + `actual_driver_duration` (number) 
+    + `distance` (number) 
+    + `credit_card_id` (number) 
+    + `credit_card` (object) 
+    + `credit_card.card_number_first_digit` (string) 
+    + `credit_card.card_number_last_digits` (string) 
+    + `credit_card.card_network` (enum[string]) 
+    + `credit_card.holder_name` (string) 
+    + `credit_card.holder_type` (enum[string]) 
+    + `credit_card.expiration_year` (number) 
+    + `credit_card.expiration_month` (number) 
+    + `credit_card.billing_address` (object) 
+    + `credit_card.billing_address.name` (string) 
+    + `credit_card.billing_address.country_code` (string) 
+    + `credit_card.billing_address.state_code` (string) 
+    + `credit_card.billing_address.postal_code` (string) 
+    + `credit_card.billing_address.city` (string) 
+    + `credit_card.billing_address.address_line1` (string) 
+    + `credit_card.billing_address.address_line2` (string) 
+    + `credit_card.notes` (string) 
+    + `charges[]` (array[object]) 
+    + `charges[].details[]` (array[object]) 
+    + `details[].name` (string) 
+    + `details[].value` (number) 
+    + `charges[].name` (enum[string]) 
+    + `charges[].value` (number) 
+    + `total_amount` (number) 
+    + `notes` (string) 
+    + `driver` (object) 
+    + `driver.portrait_url` (string) 
+    + `driver.first_name` (string) 
+    + `driver.last_name` (string) 
+    + `driver.email` (string) 
+    + `driver.phone` (string) 
+    + `car` (object) 
+    + `car.license_plate` (string) 
+    + `car.make` (string) 
+    + `car.year` (number) 
+    + `car.model` (string) 
+    + `car.color` (string) 
+    + `car.phone` (string) 
+    + `executor_reference_number` (string) 
+    + `originator_reference_number` (string) 
+    + `vehicle_type` (enum[string]) 
+    + `scheduled_pickup_at` (string) 
+    + `scheduled_duration` (number) 
+    + `passenger_count` (number) 
+    + `passengers[]` (array[object]) 
+    + `passengers[].first_name` (string) 
+    + `passengers[].last_name` (string) 
+    + `passengers[].phone` (string) 
+    + `passengers[].email` (string) 
+    + `pickup` (object) 
+    + `pickup.scheduled_arriving_at` (string) 
+    + `pickup.address` (object) 
+    + `pickup.address.latitude` (number) 
+    + `pickup.address.longitude` (number) 
+    + `pickup.address.name` (string) 
+    + `pickup.address.country_code` (string) 
+    + `pickup.address.state_code` (string) 
+    + `pickup.address.postal_code` (string) 
+    + `pickup.address.city` (string) 
+    + `pickup.address.address_line1` (string) 
+    + `pickup.address.address_line2` (string) 
+    + `pickup.flight` (object) 
+    + `pickup.flight.airport_code` (string) 
+    + `pickup.flight.airline_code` (string) 
+    + `pickup.flight.flight_number` (string) 
+    + `pickup.flight.airport_pickup_option` (enum[string]) 
+    + `pickup.notes` (string) 
+    + `stops[]` (array[object]) 
+    + `stops[].scheduled_arriving_at` (string) 
+    + `stops[].address` (object) 
+    + `stops[].address.latitude` (number) 
+    + `stops[].address.longitude` (number) 
+    + `stops[].address.name` (string) 
+    + `stops[].address.country_code` (string) 
+    + `stops[].address.state_code` (string) 
+    + `stops[].address.postal_code` (string) 
+    + `stops[].address.city` (string) 
+    + `stops[].address.address_line1` (string) 
+    + `stops[].address.address_line2` (string) 
+    + `stops[].flight` (object) 
+    + `stops[].flight.airport_code` (string) 
+    + `stops[].flight.airline_code` (string) 
+    + `stops[].flight.flight_number` (string) 
+    + `stops[].flight.airport_pickup_option` (enum[string]) 
+    + `stops[].notes` (string) 
+    + `dropoff` (object) 
+    + `dropoff.scheduled_arriving_at` (string) 
+    + `dropoff.address` (object) 
+    + `dropoff.address.latitude` (number) 
+    + `dropoff.address.longitude` (number) 
+    + `dropoff.address.name` (string) 
+    + `dropoff.address.country_code` (string) 
+    + `dropoff.address.state_code` (string) 
+    + `dropoff.address.postal_code` (string) 
+    + `dropoff.address.city` (string) 
+    + `dropoff.address.address_line1` (string) 
+    + `dropoff.address.address_line2` (string) 
+    + `dropoff.flight` (object) 
+    + `dropoff.flight.airport_code` (string) 
+    + `dropoff.flight.airline_code` (string) 
+    + `dropoff.flight.flight_number` (string) 
+    + `dropoff.flight.airport_pickup_option` (enum[string]) 
+    + `dropoff.notes` (string) 
+    + `currency_code` (string) 
+    + `luggage_count` (number) 
+    + `is_handicap_access_required` (boolean) 
+    + `infant_child_seat_count` (number) 
+    + `booster_child_seat_count` (number) 
+    + `toddler_child_seat_count` (number) 
+    + `originator_udfs[]` (array[object]) 
+    
     + Headers 
         Content-Type: application/json; charset=utf-8 
+        
     + Body 
         {
-            "id": 1,
-            "card_number_first_digit": "4",
-            "card_number_last_digits": "1111",
-            "card_network": "visa",
-            "holder_name": "Josh Smith",
-            "holder_type": "personal",
-            "expiration_year": 2021,
-            "expiration_month": 6,
-            "billing_address": {
-                "country_code": "US",
-                "state_code": "TX",
-                "postal_code": "12345",
-                "city": "Dallas",
-                "address_line1": "123 Some Street",
-                "address_line2": "24 ap"
+            "id": 378,
+            "executor": "dfw-limo",
+            "state": "driver_is_closing_job",
+            "state_reason": "undefined",
+            "scheduled_dropoff_at": "2019-12-09T04:02:00",
+            "scheduled_on_spot_at": "2019-12-08T15:05:00",
+            "actual_garage_out_at": "2019-12-08T15:00:00",
+            "actual_garage_in_at": "2019-12-09T16:30:00",
+            "actual_driver_duration": 91800,
+            "credit_card_id": 365,
+            "credit_card": {
+                "card_number_first_digit": "4",
+                "card_number_last_digits": "1111",
+                "card_network": "visa",
+                "holder_name": "Josh Smith",
+                "holder_type": "personal",
+                "expiration_year": 2026,
+                "expiration_month": 6,
+                "billing_address": {
+                    "state_code": "NY",
+                    "postal_code": "11354",
+                    "address_line1": "123 Main St"
+                }
             },
-            "notes": "Some CC notes"
+            "total_amount": 0,
+            "notes": "--- Partner Notes Start ---\r\n\r\nI need bottle of water without gas.\r\n\r\nBilling Contact Email:la.demo.john.smith@gmail.com Phone:+12312345678\r\n--- Partner Notes End ---",
+            "driver": {
+                "portrait_url": "https://sandbox-manage.mylimobiz.com/Uploads/2/Drivers/2/127201881053_qu4xoc0nnipksoeiqc48.jpg",
+                "first_name": "Brandon",
+                "last_name": "Stark",
+                "phone": "+14157778844"
+            },
+            "car": {
+                "license_plate": "WFY-8231",
+                "make": "Pontiac",
+                "model": "Firebird",
+                "color": "Black",
+                "phone": "+12313232232"
+            },
+            "executor_reference_number": "11025",
+            "originator_reference_number": "94391091",
+            "vehicle_type": "sedan",
+            "scheduled_pickup_at": "2019-12-09T03:02:00",
+            "scheduled_duration": 3600,
+            "passenger_count": 1,
+            "passengers": [
+                {
+                    "first_name": "AhsXXXXXXXXXmed",
+                    "last_name": "Stronk",
+                    "phone": "+380938124760",
+                    "email": "ahmed@Ahmed.net"
+                }
+            ],
+            "pickup": {
+                "scheduled_arriving_at": "13:10:00",
+                "address": {
+                    "latitude": 40.63975,
+                    "longitude": -73.77892,
+                    "name": "John F Kennedy International Airport",
+                    "country_code": "US",
+                    "state_code": "NY",
+                    "postal_code": "11430"
+                },
+                "flight": {
+                    "airport_code": "JFK",
+                    "airline_code": "AA",
+                    "flight_number": "10",
+                    "airport_pickup_option": "none"
+                }
+            },
+            "dropoff": {
+                "scheduled_arriving_at": "14:05:00",
+                "address": {
+                    "latitude": 40.76257,
+                    "longitude": -73.83143,
+                    "name": "123 Main St",
+                    "country_code": "US",
+                    "state_code": "NY",
+                    "postal_code": "11354",
+                    "city": "Queens",
+                    "address_line1": "123 Main St"
+                }
+            },
+            "currency_code": "AED",
+            "luggage_count": 1,
+            "is_handicap_access_required": false,
+            "infant_child_seat_count": 0,
+            "booster_child_seat_count": 0,
+            "toddler_child_seat_count": 2,
+            "originator_udfs": {
+                "key": "value"
+            }
         } 
+
+## Cancel Reservation [/Reservation/cancel]
+
+### Cancel Reservation [PUT /partners/self/reservations/{id}/cancel] 
+
+Cancels the reservation on behalf of affiliate. 
+
++ Parameters
+    + `id`: 378 (required, number) 
+
++ Request
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Authorization: bearer {access_token} 
+
++ Response 204
+
+## Reservation Payment [/Reservation/credit_card]
 
 ### Get List of Reservation Credit Cards [GET /partners/self/reservations/{reservation_id}/credit_cards?sort_by={sort_by}&sort_order={sort_order}&page_index={page_index}&page_size={page_size}] 
 Returns credit card.
+
 + Parameters
-    + `reservation_id` (required, number) 
+    + `reservation_id`: 378 (required, number) 
     + `sort_by` (optional, enum[string]) 
         + Members 
             + `number` 
@@ -1893,12 +2233,8 @@ Returns credit card.
         + Members 
             + `asc` 
             + `desc` 
-    + `page_index` (optional, number) 
-        The value must be integer which inclusive between 1 and 40000000. 
-        + Default: `1` 
-    + `page_size` (optional, number) 
-        The value must be integer which inclusive between 1 and 50. 
-        + Default: `20` 
+    + `page_index`: 1 (optional, number) 
+    + `page_size`: 20 (optional, number) 
 
 + Request
     + Headers 
@@ -1907,32 +2243,107 @@ Returns credit card.
         Accept: application/json 
         Authorization: bearer {access_token} 
 
-+ Response 200 (application/json)
++ Response 200
+    + `total_count` (number) 
+    + `items[]` (array[object]) 
+    + `items[].id` (number) 
+    + `items[].holder_name` (string) 
+    + `items[].holder_type` (enum[string]) 
+    + `items[].card_number_first_digit` (string) 
+    + `items[].card_number_last_digits` (string) 
+    + `items[].card_network` (enum[string]) 
+    + `items[].expiration_year` (number) 
+    + `items[].expiration_month` (number) 
+    
     + Headers 
         Content-Type: application/json; charset=utf-8 
+        
     + Body 
         {
-            "id": 1,
+            "total_count": 1,
+            "items": [
+                {
+                    "id": 363,
+                    "holder_name": "John Smith",
+                    "holder_type": "personal",
+                    "card_number_first_digit": "4",
+                    "card_number_last_digits": "1111",
+                    "card_network": "visa",
+                    "expiration_year": 2026,
+                    "expiration_month": 9
+                }
+            ]
+        }
+
+### Get Credit Card [GET /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
+Returns credit card.
+
++ Parameters
+    + `reservation_id`: 378 (required, number) 
+    + `id`: 363 (required, number) 
+
++ Request
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Authorization: bearer {access_token} 
+
++ Response 200
+    + `id` (number) 
+    + `card_number_first_digit` (string) 
+    + `card_number_last_digits` (string) 
+    + `card_network` (enum[string]) 
+    + `holder_name` (string) 
+    + `holder_type` (enum[string]) 
+    + `expiration_year` (number) 
+    + `expiration_month` (number) 
+    + `billing_address` (object) 
+    + `billing_address.name` (string) 
+    + `billing_address.country_code` (string) 
+    + `billing_address.state_code` (string) 
+    + `billing_address.postal_code` (string) 
+    + `billing_address.city` (string) 
+    + `billing_address.address_line1` (string) 
+    + `billing_address.address_line2` (string) 
+    + `notes` (string) 
+    
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+        
+    + Body 
+        {
+            "id": 363,
             "card_number_first_digit": "4",
             "card_number_last_digits": "1111",
             "card_network": "visa",
-            "holder_name": "Josh Smith",
+            "holder_name": "John Smith",
             "holder_type": "personal",
-            "expiration_year": 2021,
-            "expiration_month": 6,
-        } 
+            "expiration_year": 2026,
+            "expiration_month": 9,
+            "billing_address": {
+                "country_code": "US",
+                "state_code": "NY",
+                "postal_code": "11354",
+                "city": "Queens",
+                "address_line1": "123 Main St"
+            }
+        }
 
 ### Create Credit Card [POST /partners/self/reservations/{reservation_id}/credit_cards] 
-Creates credit card.
-+ Parameters
-    + `reservation_id` (required, number) 
+Adds new credit card to the list of reservation creadit cards.
+If you want to put newely created CC as default to reservation you should send `credit_card_id` via <a href="/#reference/notification-subscriptions/web-hook">Update Reservation</a>..  
 
-+ Request(application/json)
++ Parameters
+    + `reservation_id`: 378 (required, number) 
+
++ Request
     + `card_number` (required, string) 
         The value must be non-empty string with maximum length 20. 
     + `holder_name` (optional, string) 
         The value must be non-empty string with maximum length 250. 
     + `holder_type` (optional, enum[string]) 
+        + Default: `unknown` 
         + Members 
             + `unknown` 
             + `personal` 
@@ -1942,6 +2353,8 @@ Creates credit card.
     + `expiration_month` (required, number) 
         The valus should be number inclusive between 1 and 12. 
     + `billing_address` (optional, object) 
+    + `billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
     + `billing_address.country_code` (optional, string) 
         The value must be non-empty string with maximum length 5. 
     + `billing_address.state_code` (optional, string) 
@@ -1956,64 +2369,84 @@ Creates credit card.
         The value must be non-empty string with maximum length 250. 
     + `notes` (optional, string) 
         The value must be non-empty string with maximum length 500. 
+        
     + Headers 
         Accept-Encoding: gzip 
         Accept-Charset: utf-8 
         Accept: application/json 
         Content-Type: application/json;charset=utf-8 
         Authorization: bearer {access_token} 
+        
     + Body 
         {
             "card_number": "4111111111111111",
-            "holder_name": "Josh Smith",
+            "holder_name": "John Smith",
             "holder_type": "personal",
-            "expiration_year": 2021,
-            "expiration_month": 6,
+            "expiration_year": 2026,
+            "expiration_month": 9,
             "billing_address": {
-                "country_code": "US",
-                "state_code": "TX",
-                "postal_code": "12345",
-                "city": "Dallas",
-                "address_line1": "123 Some Street",
-                "address_line2": "24 ap"
-            },
-            "notes": "Some CC notes"
-        } 
+            "country_code": "US",
+                   "state_code": "NY",
+                   "postal_code": "11354",
+                   "city": "Queens",
+                   "address_line1": "123 Main St",
+                   "address_line2": ""
+            } 
+        }
 
-+ Response 200 (application/json)
++ Response 200
+    + `id` (number) 
+    + `card_number_first_digit` (string) 
+    + `card_number_last_digits` (string) 
+    + `card_network` (enum[string]) 
+    + `holder_name` (string) 
+    + `holder_type` (enum[string]) 
+    + `expiration_year` (number) 
+    + `expiration_month` (number) 
+    + `billing_address` (object) 
+    + `billing_address.name` (string) 
+    + `billing_address.country_code` (string) 
+    + `billing_address.state_code` (string) 
+    + `billing_address.postal_code` (string) 
+    + `billing_address.city` (string) 
+    + `billing_address.address_line1` (string) 
+    + `billing_address.address_line2` (string) 
+    + `notes` (string) 
+    
     + Headers 
         Content-Type: application/json; charset=utf-8 
+        
     + Body 
         {
-            "id": 1,
+            "id": 364,
             "card_number_first_digit": "4",
             "card_number_last_digits": "1111",
             "card_network": "visa",
-            "holder_name": "Josh Smith",
+            "holder_name": "John Smith",
             "holder_type": "personal",
-            "expiration_year": 2021,
-            "expiration_month": 6,
+            "expiration_year": 2026,
+            "expiration_month": 9,
             "billing_address": {
                 "country_code": "US",
-                "state_code": "TX",
-                "postal_code": "12345",
-                "city": "Dallas",
-                "address_line1": "123 Some Street",
-                "address_line2": "24 ap"
-            },
-            "notes": "Some CC notes"
+                "state_code": "NY",
+                "postal_code": "11354",
+                "city": "Queens",
+                "address_line1": "123 Main St"
+            }
         } 
 
 ### Edit Credit Card [PUT /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
 Edit credit card.
-+ Parameters
-    + `reservation_id` (required, number) 
-    + `id` (required, number) 
 
-+ Request(application/json)
++ Parameters
+    + `reservation_id`: 378 (required, number) 
+    + `id`: 364 (required, number) 
+
++ Request
     + `holder_name` (optional, string) 
         The value must be non-empty string with maximum length 250. 
     + `holder_type` (optional, enum[string]) 
+        + Default: `unknown` 
         + Members 
             + `unknown` 
             + `personal` 
@@ -2023,6 +2456,8 @@ Edit credit card.
     + `expiration_month` (required, number) 
         The valus should be number inclusive between 1 and 12. 
     + `billing_address` (optional, object) 
+    + `billing_address.name` (optional, string) 
+        The value must be non-empty string with maximum length 500. 
     + `billing_address.country_code` (optional, string) 
         The value must be non-empty string with maximum length 5. 
     + `billing_address.state_code` (optional, string) 
@@ -2037,86 +2472,37 @@ Edit credit card.
         The value must be non-empty string with maximum length 250. 
     + `notes` (optional, string) 
         The value must be non-empty string with maximum length 500. 
+        
     + Headers 
         Accept-Encoding: gzip 
         Accept-Charset: utf-8 
         Accept: application/json 
         Content-Type: application/json;charset=utf-8 
         Authorization: bearer {access_token} 
+        
     + Body 
-        {
-            "holder_name": "Josh Smith",
-            "holder_type": "personal",
-            "expiration_year": 2021,
-            "expiration_month": 6,
-            "billing_address": {
+       {
+          "holder_name": "James Brown",
+          "holder_type": "personal",
+          "expiration_year": 2022,
+          "expiration_month": 7,
+          "billing_address": {
                 "country_code": "US",
-                "state_code": "TX",
-                "postal_code": "12345",
-                "city": "Dallas",
-                "address_line1": "123 Some Street",
-                "address_line2": "24 ap"
-            },
-            "notes": "Some CC notes"
-        } 
+                "state_code": "NY",
+                "postal_code": "11354",
+                "city": "Queens",
+                "address_line1": "123 Main St"
+          },
+          "notes": "Do not charge immidiatelly."
+        }
 
 + Response 204
 
-## Driver GPS [/Gps]
-
-Provides the following abilities:
-
-- Check current position of the driver for the reservation.
-
-
-To check driver's position, you just need to have the `reservation_id`, 
-received during booking the ride and call <a href="/#reference/reservations/driver-gps/get">gps</a> endpoint
-
-
-The tables below describe all possible response parameters for the Reservation group methods:
-
-
-#### *Get Driver GPS* response parameters
-
-| Name | Type | Description |
-|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------|
-| latitude | float | Latitude |
-| longitude | float | Longitude |
-
-In 'execution' console you can see request/response samples, data types and sizes of parameters.
-
-### Get [GET /partners/self/reservations/{id}/driver/gps]
-Returns current position of the driver for the reservation.
-
-
-+ Parameters
-    + id: `1` (required, int)
-
-+ Request
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
-
-+ Response 200
-
-    + Headers
-
-            Content-Type: application/json
-
-    + Body
-
-            { "latitude": 1.1, "longitude": 2.1 } 
-            
-            
 ## Group Notification Subscriptions
 
 Partners can subscribe to receive notifications about reservation events via <a href="/#reference/notification-subscriptions/web-hook">Web Hooks</a>.
 
-
 The tables below describes all possible request/response parameters for the Subscription process methods:
-
 
 #### *Create Web Hook Subscription* request parameters
 
@@ -2197,36 +2583,103 @@ To subscribe you need to specify the list of events and the url you would want t
 Allows you to specify the list of events you want to subscribe to.
 
 + Request
-
-    + `url` (string) Required.
-    + `events` (object) Required.
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
+    + `url` (required, string) 
+    + `events[]` (required, array[string]) 
+        The count of elements should be greater or equals to 1. 
+        
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
 
     + Body
+        {
+            "url": "http://some-partner.net",
+            "events": [
+                "reservation.cancelled",
+                "reservation.closed"
+            ]
+        }
 
-            { "url": "http://some-partner.net", "events": [ "reservation.cancelled", "reservation.closed" ] }
-
-+ Response 202
++ Response 204
 
 ### Delete [DELETE /partners/self/subscriptions/webhook]
 Allows you to remove events you want to unsubscribe from.
 
 + Request
-
-    + `url` (string) Required.
-    + `events` (object) Required.
-
-    + Headers
-
-            Content-Type: application/json
-            Authorization: bearer {access_token}
+    + `url` (required, string) 
+    + `events[]` (required, array[string]) 
+        The count of elements should be greater or equals to 1. 
+        
+    + Headers 
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Content-Type: application/json;charset=utf-8 
+        Authorization: bearer {access_token} 
 
     + Body
+        {
+            "url": "http://some-partner.net",
+            "events": [
+                "reservation.cancelled",
+                "reservation.closed"
+            ]
+        }
 
-            { "url": "http://some-partner.net", "events": [ "reservation.cancelled", "reservation.closed" ] }
++ Response 204
 
-+ Response 202
+
+
+## Group Driver GPS
+
+Provides the following abilities:
+
+- Check current position of the driver for the reservation.
+
+
+To check driver's position, you just need to have the `reservation_id`, 
+received during booking the ride and call <a href="/#reference/reservations/driver-gps/get">gps</a> endpoint
+
+
+The tables below describe all possible response parameters for the Reservation group methods:
+
+
+#### *Get Driver GPS* response parameters
+
+| Name | Type | Description |
+|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------|
+| latitude | float | Latitude |
+| longitude | float | Longitude |
+
+In 'execution' console you can see request/response samples, data types and sizes of parameters.
+
+### Get [GET /partners/self/reservations/{id}/driver/gps]
+Returns current position of the driver for the reservation.
+
+
++ Parameters
+    + `id`: `378` (required, int)
+
++ Request
+
+    + Headers
+        Accept-Encoding: gzip 
+        Accept-Charset: utf-8 
+        Accept: application/json 
+        Authorization: bearer {access_token} 
+
++ Response 200
+    + `latitude` (number) 
+    + `longitude` (number) 
+    
+    + Headers 
+        Content-Type: application/json; charset=utf-8 
+
+    + Body
+        {
+            "latitude":"40.63975",
+            "longitude":"-73.77892"
+        }
