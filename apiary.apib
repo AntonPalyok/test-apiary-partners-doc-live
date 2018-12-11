@@ -33,7 +33,7 @@ If you have not done this and would like to use the API, please email api@limoan
 |401 | Unauthorized | Request wasn't processed because client didn't send `Authorization` header with valid scheme and parameter. |
 |403 | Forbidden | Request wasn't processed because client didn't have enough permissions to access requested resource. |
 |404 | Not Found | Request wasn't processed because requested resource is not existing. |
-|409 | Conflict | Request wasn't processed because conflict was occurred. Response body will contain infomration about occurred conlict and reason phrase of the response may contain custom value which can be used by client to handle occurred conflict.  |
+|409 | Conflict | Request wasn't processed because conflict was occurred. Response body will contain infomration about occurred conflict and reason phrase of the response may contain custom value which can be used by client to handle occurred conflict.  |
 |429 | Too Many Requests Per Minute | Request count limit has been reached. `Retry-After` header will contain information about the time when the request query counter will be reset. |
 |429 | Too Many Requests Per Day | Request count limit has been reached. `Retry-After` header will contain information about the time when the request query counter will be reset. |
 |500 | Internal Server Error | Request wasn't processed because internal server error was occurred and the response contains `correlation_id` field which should be used for future investigation of the issue. |
@@ -77,9 +77,9 @@ The tables below describe all possible request/response parameters of the Authen
 | client_secret | The client Secret of your application |
 | company_alias | The Alias of your company |
 | username | Username or Email |
-| passwod | Password |
+| password | Password |
 
-#####Response:
+#####qusponse:
 
 | Parameter | Description |
 |------------------|------------------------------------------------------------|
@@ -186,7 +186,7 @@ Provides the following abilities:
 1. Call the <a href="/#reference/booking/rate-lookup/rate-lookup">Rate Lookup</a> method to get the pricing for your trip requirements. Choose the optimal pricing and hold the Id of this rate from the `results` array. To get a breakdown of the chosen rate, call the <a href="/#reference/booking/rate-lookup/get-rate-details">Get Rate Details</a> method.
 
 2. Use the <a href="/#reference/booking/booking/booking">Booking</a> method. In `search_result_id` parameter set the rate Id of the desired rate and provide additional necessary information: passengers, flight information etc.
-In booking requst we accept `pickup_flight_info` and `dropoff_flight_info`. This can be useful if you would want to specify them after rate lookup.
+In booking request we accept `pickup_flight_info` and `dropoff_flight_info`. This can be useful if you would want to specify them after rate lookup.
 
 3. To update an existing reservation use the <a href="/#reference/booking/booking/update-booking">Update Booking</a> method. Request information is the same as for `Booking` method.
 
@@ -2331,8 +2331,8 @@ Returns credit card.
         }
 
 ### Create Credit Card [POST /partners/self/reservations/{reservation_id}/credit_cards] 
-Adds new credit card to the list of reservation creadit cards.
-If you want to put newely created CC as default to reservation you should send `credit_card_id` via <a href="/#reference/notification-subscriptions/web-hook">Update Reservation</a>..  
+Adds new credit card to the list of reservation credit cards.
+If you want to put newely created CC as default to reservation you should send `credit_card_id` via <a href="/#reference/reservations/update-reservation">Update Reservation</a>..  
 
 + Parameters
     + `reservation_id`: 378 (required, number) 
@@ -2502,7 +2502,7 @@ Edit credit card.
 
 Partners can subscribe to receive notifications about reservation events via <a href="/#reference/notification-subscriptions/web-hook">Web Hooks</a>.
 
-The tables below describes all possible request/response parameters for the Subscription process methods:
+The tables below describe all possible request/response parameters for the Subscription process methods:
 
 #### *Create Web Hook Subscription* request parameters
 
@@ -2524,7 +2524,7 @@ Check the table of supported `events`:
 | reservation.driver_is_on_the_way | Driver is on the way to pick-up location. Payload of webhook for this event may contain driver and car information. |
 | reservation.driver_is_at_pickup | Driver has arrived at the pick-up location. Payload of webhook for this event may contain driver and car information. |
 | reservation.driver_is_waiting_at_pickup | Driver has started waiting for passenger at pickup location (additional fee may be included in final charges). |
-| reservation.driver_is_waiting_for_passenger_started | Driver has started waiting for passenger at current location (additional fee may be include in final chargesd). |
+| reservation.driver_is_waiting_for_passenger_started | Driver has started waiting for passenger at current location (additional fee may be include in final charges). |
 | reservation.driver_is_waiting_for_passenger_stopped | Driver has stopped waiting for passenger at current location. |
 | reservation.passenger_in_car | Passenger has been picked up. |
 | reservation.passenger_dropped_off | Passenger has been dropped off. |
