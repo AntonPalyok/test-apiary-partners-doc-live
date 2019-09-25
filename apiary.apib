@@ -15,7 +15,7 @@ The API accepts/returns JSON data and attempts to conform to the <a href="https:
 
 ## General Requirements
 
-To use the Limo Anywhere Partner API, you must have an API authorization token from the token endpoint. See the <a href="#reference/authentication">Authentication documentation</a> for the authorization guide.
+To use the Limo Anywhere Partner API, you must have an API authorization token from the token endpoint. See the <a href="#reference/authorization">Authorization documentation</a> for the authorization guide.
 
 <b>Before you can generate an access token, you must agree to the API Terms of Service and receive a Client ID and Client Secret from Limo Anywhere.</b> 
 
@@ -45,7 +45,7 @@ Follow the below steps to complete some of the most popular actions.
 <b> Get Authorization to use the Partner API before doing anything else.</b>
 
 1. Contact api@limoanywhere.com and receive your Client Id & Client Secret.
-2. Use Client Id & Client Secret to generate an access token as described <a href="/#reference/authentication">here.</a>
+2. Use Client Id & Client Secret to generate an access token as described <a href="/#reference/authorization">here.</a>
 
 Once you have completed the above, choose a sub-section to follow:
 
@@ -79,7 +79,7 @@ The tables below describe all possible request/response parameters of the Authen
 | username | Username or Email |
 | password | Password |
 
-#####qusponse:
+#####Response:
 
 | Parameter | Description |
 |------------------|------------------------------------------------------------|
@@ -349,19 +349,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
     + `executors[]` (optional, array[string]) 
         The count of elements should be less or equals to 5. 
     + `executor_billing_contact_account_number` (optional, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `billing_contact` (optional, object) 
-    + `billing_contact.company_name` (optional, string) 
-        The value must be non-empty string with maximum length 150. 
-    + `billing_contact.first_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `billing_contact.last_name` (required, string) 
-        The value must be non-empty string with maximum length 50. 
-    + `billing_contact.phone` (optional, string) 
-        The value must be a string with a existing phone number in E.164 format. 
-    + `billing_contact.email` (optional, string) 
-        The value must be string with email address. 
-        The value must be non-empty string with maximum length 255. 
+        The value must be non-empty string with maximum length 50.''
     + `vehicle_types[]` (required, array[enum[string]]) 
         The count of elements should be greater or equals to 1. 
         The count of elements should be less or equals to 10. 
@@ -2641,7 +2629,7 @@ Provides the following abilities:
 
 
 To check driver's position, you just need to have the `reservation_id`, 
-received during booking the ride and call <a href="/#reference/reservations/driver-gps/get">gps</a> endpoint
+received during booking the ride and call <a href="/#reference/driver-gps/get">gps</a> endpoint
 
 
 The tables below describe all possible response parameters for the Reservation group methods:
