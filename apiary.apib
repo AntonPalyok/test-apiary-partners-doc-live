@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://sandbox-api.mylimobiz.com/v0/
+HOST: https://sandbox-api.mylimobiz.com/
 
 # Partner API
 
@@ -342,7 +342,7 @@ In 'execution' console you can see request/response samples, data types and size
 
 ## Rate Lookup [/Rate Lookup]
 
-### Rate Lookup [POST /partners/self/rate_lookup]
+### Rate Lookup [POST /v0/partners/self/rate_lookup]
 Allows you to see pricing for your trip requirements by returning a collection of charges.
 
  + Request
@@ -632,7 +632,7 @@ Allows you to see pricing for your trip requirements by returning a collection o
             ]
         }
 
-### Get Rate Details [GET /partners/self/rate_lookup/results/{id}]
+### Get Rate Details [GET /v0/partners/self/rate_lookup/results/{id}]
 Returns a detailed (breakdown) list of charges by search_id from the previous method.
 
 + Parameters
@@ -855,7 +855,7 @@ Returns a detailed (breakdown) list of charges by search_id from the previous me
 
 ## Booking [/Booking]
 
-### Booking [POST /partners/self/bookings]
+### Booking [POST /v0/partners/self/bookings]
 Creates new reservation using specified booking information and specified rate lookup information (`search_result_id`) which was accepted previously.
 
  + Request
@@ -971,7 +971,7 @@ Creates new reservation using specified booking information and specified rate l
         }
 
 
-### Update Booking [PUT /partners/self/bookings/{id}]
+### Update Booking [PUT /v0/partners/self/bookings/{id}]
 Updates a reservation by reservation Id using specified booking information rate lookup information which was previously returned.
 
 + Parameters
@@ -1038,7 +1038,7 @@ Updates a reservation by reservation Id using specified booking information rate
 
 ## Create Reservation [/Reservation/create]
 
-### Create Reservation [POST /partners/self/reservations] 
+### Create Reservation [POST /v0/partners/self/reservations] 
 
 Creates reservation for specified executor using originator price 
 
@@ -1620,7 +1620,7 @@ Creates reservation for specified executor using originator price
 
 ## Update Reservation [/Reservation/update]
 
-### Update Reservation [PUT /partners/self/reservations/{id}] 
+### Update Reservation [PUT /v0/partners/self/reservations/{id}] 
 Updates the reservation by reservation ID.
 In most of the cases the API will return responses with <b>204 No Content</b> or <b>200 OK</b> HTTP status codes, but if reservation update should be confirmed by the operator, the API will return response with <b>202 Accepted</b> HTTP status code.
 If update request was accepted by the operator 'reservation.update_accepted' event will occur.
@@ -1945,7 +1945,7 @@ In this case, an operator will handle these updates as single update request and
 
 ## Get Reservation [/Reservation/get]
 
-### Get Reservation [GET /partners/self/reservations/{id}] 
+### Get Reservation [GET /v0/partners/self/reservations/{id}] 
 
 Returns detailed reservation info
 
@@ -2188,7 +2188,7 @@ Returns detailed reservation info
 
 ## Cancel Reservation [/Reservation/cancel]
 
-### Cancel Reservation [PUT /partners/self/reservations/{id}/cancel] 
+### Cancel Reservation [PUT /v0/partners/self/reservations/{id}/cancel] 
 
 Cancels the reservation on behalf of affiliate. 
 
@@ -2206,7 +2206,7 @@ Cancels the reservation on behalf of affiliate.
 
 ## Reservation Payment [/Reservation/credit_card]
 
-### Get List of Reservation Credit Cards [GET /partners/self/reservations/{reservation_id}/credit_cards?sort_by={sort_by}&sort_order={sort_order}&page_index={page_index}&page_size={page_size}] 
+### Get List of Reservation Credit Cards [GET /v0/partners/self/reservations/{reservation_id}/credit_cards?sort_by={sort_by}&sort_order={sort_order}&page_index={page_index}&page_size={page_size}] 
 Returns credit card.
 
 + Parameters
@@ -2263,7 +2263,7 @@ Returns credit card.
             ]
         }
 
-### Get Credit Card [GET /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
+### Get Credit Card [GET /v0/partners/self/reservations/{reservation_id}/credit_cards/{id}] 
 Returns credit card.
 
 + Parameters
@@ -2318,7 +2318,7 @@ Returns credit card.
             }
         }
 
-### Create Credit Card [POST /partners/self/reservations/{reservation_id}/credit_cards] 
+### Create Credit Card [POST /v0/partners/self/reservations/{reservation_id}/credit_cards] 
 Adds new credit card to the list of reservation credit cards.
 If you want to put newely created CC as default to reservation you should send `credit_card_id` via <a href="/#reference/reservations/update-reservation">Update Reservation</a>..  
 
@@ -2423,7 +2423,7 @@ If you want to put newely created CC as default to reservation you should send `
             }
         } 
 
-### Edit Credit Card [PUT /partners/self/reservations/{reservation_id}/credit_cards/{id}] 
+### Edit Credit Card [PUT /v0/partners/self/reservations/{reservation_id}/credit_cards/{id}] 
 Edit credit card.
 
 + Parameters
@@ -2567,7 +2567,7 @@ In 'execution' console you can see request/response samples, data types and size
 
 To subscribe you need to specify the list of events and the url you would want to receive notifications on.
 
-### Create Or Update [PUT /partners/self/subscriptions/webhook]
+### Create Or Update [PUT /v0/partners/self/subscriptions/webhook]
 Allows you to specify the list of events you want to subscribe to.
 
 + Request
@@ -2593,7 +2593,7 @@ Allows you to specify the list of events you want to subscribe to.
 
 + Response 204
 
-### Delete [DELETE /partners/self/subscriptions/webhook]
+### Delete [DELETE /v0/partners/self/subscriptions/webhook]
 Allows you to remove events you want to unsubscribe from.
 
 + Request
@@ -2644,7 +2644,7 @@ The tables below describe all possible response parameters for the Reservation g
 
 In 'execution' console you can see request/response samples, data types and sizes of parameters.
 
-### Get [GET /partners/self/reservations/{id}/driver/gps]
+### Get [GET /v0/partners/self/reservations/{id}/driver/gps]
 Returns current position of the driver for the reservation.
 
 
